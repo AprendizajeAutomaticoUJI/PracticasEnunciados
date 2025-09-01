@@ -26,6 +26,38 @@ Resource(
 	:width => 400
 )
 
+# ╔═╡ 7ad32383-09f9-4aa0-826a-9d836149f98e
+md"""
+# Introducción
+
+En esta práctica vas a familiarizarte con el lenguaje de programación Julia y con el entorno de desarrollo de libros de notas Pluto.
+"""
+
+# ╔═╡ 6ea6788b-2a99-4926-9a3f-76f126cc1746
+md"""
+# Objetivos de aprendizaje
+
+1. Conocer las características del lenguaje de programación Julia.
+1. Conocer el sistema de paquetes en Julia.
+1. Crear un primer libro de notas con Pluto.
+"""
+
+# ╔═╡ ac2c34c8-5b0c-4886-a72f-7d46ae8e93e5
+md"""
+# El lenguaje de programación Julia
+
+[Julia](https://julialang.org) es un lenguaje de programación de propósito general, muy rápido en ejecución, con una sintaxis orientada al cálculo y especialmente bien orienta al tratamiento de datos.
+
+Las principales características de Julia son:
+
+* Sigue el paradigma de programación funcional.
+* Es un lenguaje compilado, pero la compilación se hace en el momento de ser necesaria.
+* La sintaxis está orientada a las matemáticas.
+* Utiliza tipos, pero gracias a la inferencia no es necesario definir tipos.
+* Es muy rápido en ejecución, compite con Fortran y C/C++.
+* Utiliza multi-dispatch (sobrecarga de métodos en Java).
+"""
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -327,5 +359,8 @@ version = "17.4.0+2"
 # ╠═4f3d4b25-349d-4976-8df9-3f2cc66b1d1a
 # ╠═28685d13-736b-49b9-a849-1d0ff17bad27
 # ╠═16cc8dd8-874e-4dab-bece-c19393eb692e
+# ╠═7ad32383-09f9-4aa0-826a-9d836149f98e
+# ╠═6ea6788b-2a99-4926-9a3f-76f126cc1746
+# ╠═ac2c34c8-5b0c-4886-a72f-7d46ae8e93e5
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
