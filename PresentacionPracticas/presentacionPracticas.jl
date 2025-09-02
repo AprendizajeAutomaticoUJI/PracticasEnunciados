@@ -600,6 +600,8 @@ md"""
 
 Existe una gran catidad de paquetes en Julia. Aquí unicamente vamos a ver algunos de los que más vamos a utilizar.
 
+Vamos a empezar con el paquete [**DataFrames**](https://dataframes.juliadata.org/stable/) que nos permite trabajar con datos en forma de tabla.
+
 Definimos la url desde donde queremos descargar los datos:
 """
 
@@ -608,7 +610,7 @@ path = "https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs
 
 # ╔═╡ 09c7e59e-ca03-4c54-95f6-ad9e9f3ce1de
 md"""
-Hacemos la descarga y creamos un DataFrame:
+Hacemos la descarga y creamos un DataFrame a partir de los datos descargados:
 """
 
 # ╔═╡ 038e1dc9-225d-44cf-8284-3ef2e0e13df2

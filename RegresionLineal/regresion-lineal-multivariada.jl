@@ -111,11 +111,9 @@ md"""
 ## Obtener los datos
 
 Los datos los puedes descargar desde el repositorio 
-[UCI](https://archive.ics.uci.edu/dataset/1/abalone)
+[Datos Abalone](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.data).
 
-Además, consulta en el repositorio 
-[UCI](https://archive.ics.uci.edu/dataset/1/abalone) 
-los detalles sobre este conjunto de datos.
+[Aquí](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.names) tienes una descripción de los datos.
 """
 
 # ╔═╡ e8269a48-36e1-4aa3-a279-ef14497349a5
@@ -125,12 +123,12 @@ md"""
 En este caso cada una de las muestras tiene más de dos características, por lo 
 que no puedes representar todos los datos en un único gráfico. Sin embargo, sí 
 que puede representar gráficas con pares de características para tener una 
-primera idea de sus dependencias, para ello es muy útil el método **pairplot**:
+primera idea de sus dependencias, para ello es muy útil el método **pairplot** del paquete **PairPlots**:
 
-```{.python}
-import seaborn as sns
+```.julia
+using PairPlots
 
-sns.pairplot(data)
+pairplot(df) # df es un DataFrame
 ```
 
 ¿Cuál es la correlación del resto de variables con el número de anillos?
@@ -176,7 +174,7 @@ sm.qqplot(residuos, line="s")
 
 # ╔═╡ b8146f5c-758d-48da-a402-eaa2c1da7fda
 md"""
-## Ajustar el modelo para obtener una solución
+## Ajustar el modelo para mejoara la solución
 
 ¿Cómo puedes mejorar los resultados del modelo? Una pista, tu modelo puede 
 estar formado por más de un regresor lineal.
@@ -192,7 +190,7 @@ Presta especial atención a la sección de conclusiones.
 
 # ╔═╡ 5e42450f-9eea-49a0-bdfd-b3ccfdef14c9
 md"""
-## Critica del trabajo y posibles mejoras
+## Critica al trabajo y posibles mejoras
 
 ¿Qué crees que se puede mejorar del trabajo que has hecho? Haz un listado de 
 posibles mejoras, y ordénalas por importancia de mayor a menor.
