@@ -41,7 +41,7 @@ descripción de cada una de las características de las muestras.
 También lo puedes descargar desde el 
 [github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/biopsy.csv) de la asignatura.
 
-Vas a crear un libro de notas de Python para desarrollar la práctica. Este 
+Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este 
 libro lo debes subir a aulavirtual para su evaluación.
 """
 
@@ -114,6 +114,8 @@ Los datos los puedes descargar desde el repositorio
 [Datos Abalone](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.data).
 
 [Aquí](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.names) tienes una descripción de los datos.
+
+Es interesante tener un primer contacto con los datos utilizando el método **describe(df)**.
 """
 
 # ╔═╡ e8269a48-36e1-4aa3-a279-ef14497349a5
@@ -125,7 +127,7 @@ que no puedes representar todos los datos en un único gráfico. Sin embargo, s�
 que puede representar gráficas con pares de características para tener una 
 primera idea de sus dependencias, para ello es muy útil el método **pairplot** del paquete **PairPlots**:
 
-```.julia
+```julia
 using PairPlots
 
 pairplot(df) # df es un DataFrame
@@ -146,17 +148,14 @@ preparar los datos.
 md"""
 ## Crear una primera versión del modelo
 
-Utiliza scikit-learn para crear un modelo de regresión lineal.
+Utiliza el paquete [**GLM**](https://juliastats.org/GLM.jl/stable/) para crear un modelo de regresión lineal.
 
-Divide el conjunto inicial de los datos en dos subconjuntos, el conjunto de 
-datos de entrenamiento (80% de los datos), y el conjunto de datos de prueba 
-(20% restante de los datos). Recuerda especificar el origen de generación de 
-los datos aleatorios para que tus experimentos sean reproducibles.
+Utiliza el paquete [**MLJ**](https://juliaml.ai/) para dividi el conjunto inicial de los datos en dos subconjuntos, el conjunto de datos de entrenamiento (80% de los datos), y el conjunto de datos de prueba (20% restante de los datos). Recuerda especificar el origen de generación de los datos aleatorios para que tus experimentos sean reproducibles.
 
-```{.python}
-from sklearn.model_selection import train_test_split
+```julia
+using MLJ
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=random_state)
+entrenamiento, prueba = partition(df, 0.8, rng = 69)
 ```
 
 Elige una medida de error para poder comparar los resultados entre varios 
@@ -165,10 +164,10 @@ modelos.
 ¿Los residuos siguen una distribución normal? Representa la distribución de los 
 residuos y el diagrama qq-plot.
 
-```{.python}
-import statsmodels.api as sm
+```julia
+using StatsPlots
 
-sm.qqplot(residuos, line="s")
+qqnorm(residuos)
 ```
 """
 
@@ -176,8 +175,9 @@ sm.qqplot(residuos, line="s")
 md"""
 ## Ajustar el modelo para mejoara la solución
 
-¿Cómo puedes mejorar los resultados del modelo? Una pista, tu modelo puede 
-estar formado por más de un regresor lineal.
+¿Cómo puedes mejorar los resultados del modelo?
+
+Una pista, utiliza la variable categórica *Sex* para ajustar los datos por sexo.
 """
 
 # ╔═╡ 7150628a-03ae-4413-bec9-8d89c5912879
@@ -190,10 +190,11 @@ Presta especial atención a la sección de conclusiones.
 
 # ╔═╡ 5e42450f-9eea-49a0-bdfd-b3ccfdef14c9
 md"""
-## Critica al trabajo y posibles mejoras
+## Críticas al trabajo y posibles mejoras
 
-¿Qué crees que se puede mejorar del trabajo que has hecho? Haz un listado de 
-posibles mejoras, y ordénalas por importancia de mayor a menor.
+¿Qué crees que se puede mejorar del trabajo que has hecho?
+
+Haz un listado de posibles mejoras, y ordénalas por importancia de mayor a menor.
 """
 
 # ╔═╡ 6a108dc3-c902-4701-bbc2-d36ca5bcb203
@@ -201,14 +202,13 @@ md"""
 # Entrega
 
 El trabajo que debes entregar para su corrección es el libro de notas 
-(fichero con extensión ipynb).
+(fichero con extensión jl).
 
-Súbelo a aulavirtual. No es necesario que los suban todos los miembros del 
+Súbelo a aulavirtual. No es necesario que lo suban todos los miembros del 
 equipo, basta con que lo suba uno de vosotros.
+
+Recuerda escribir al inicio del fichero el nombre de los miembros de la pareja.
 """
-
-# ╔═╡ 19012299-2d5d-46ee-86ac-0829493a7cfb
-
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -526,6 +526,5 @@ version = "17.4.0+2"
 # ╠═7150628a-03ae-4413-bec9-8d89c5912879
 # ╠═5e42450f-9eea-49a0-bdfd-b3ccfdef14c9
 # ╠═6a108dc3-c902-4701-bbc2-d36ca5bcb203
-# ╠═19012299-2d5d-46ee-86ac-0829493a7cfb
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
