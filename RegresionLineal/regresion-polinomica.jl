@@ -18,7 +18,7 @@ En esta práctica vas a crear un modelo de regresión polinomial para un
 conjunto de datos de dos variables, una variable independiente y una variable 
 dependiente.
 
-Los datos proporcionan información sobre la energía generado por una planta eólica y la velocidad del viento. Tu modelo deberá estimar la energía producida por la planta eólica a partir del dato de velocidad del viento. 
+Los datos proporcionan información sobre la energía generada por una planta eólica dependiendo de la velocidad del viento. Tu modelo deberá estimar la energía producida por la planta eólica a partir del dato de velocidad del viento. 
 
 Los datos los puedes descargar desde [aquí](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/powerproduction.csv).
 
