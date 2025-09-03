@@ -33,16 +33,9 @@ md"""
 En esta práctica vas a crear un modelo lineal con múltiples variables
 independientes para estimar una única variable dependiente.
 
-El modelo deberá dar una estimación la edad de cierta variedad de caracoles de
-mar, a partir de sus características. Los datos los puedes encontrar en el
-repositorio [UCI](https://archive.ics.uci.edu/dataset/1/abalone), junto con una
-descripción de cada una de las características de las muestras.
+El modelo deberá dar una estimación la edad de cierta variedad de caracoles de mar, a partir de sus características. Los datos los puedes encontrar [aquí](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.data), junto con una [descripción](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.names) de cada una de las características de las muestras.
 
-También lo puedes descargar desde el 
-[github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/biopsy.csv) de la asignatura.
-
-Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este 
-libro lo debes subir a aulavirtual para su evaluación.
+Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este libro lo debes subir a aulavirtual para su evaluación.
 """
 
 # ╔═╡ 3393a7cd-f802-4363-bfae-f53536dd8c7a
