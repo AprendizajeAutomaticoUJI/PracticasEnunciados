@@ -12,7 +12,7 @@ TableOfContents(title="Contenidos", depth=1)
 
 # ╔═╡ 78c37d96-3c62-4159-97f0-48f81b5b6019
 md"""
-# Presentación de las prácticas
+# Regresión lineal multivariada
 
 Óscar Belmonte Fernández - IR2130 Aprendizaje Automático
 
@@ -133,17 +133,9 @@ pairplot(df) # df es un DataFrame
 md"""
 ## Preparar lo datos para que muestren los patrones
 
-Este conjunto de datos ya está *limpio*, afortunadamente no tenemos que 
-preparar los datos.
-"""
+Este conjunto de datos ya está *limpio*, no hay datos faltantes, afortunadamente no tenemos que preparar los datos.
 
-# ╔═╡ 4f5228a1-226f-4d04-886c-757f87c385eb
-md"""
-## Crear una primera versión del modelo
-
-Utiliza el paquete [**GLM**](https://juliastats.org/GLM.jl/stable/) para crear un modelo de regresión lineal.
-
-Utiliza el paquete [**MLJ**](https://juliaml.ai/) para dividi el conjunto inicial de los datos en dos subconjuntos, el conjunto de datos de entrenamiento (80% de los datos), y el conjunto de datos de prueba (20% restante de los datos). Recuerda especificar el origen de generación de los datos aleatorios para que tus experimentos sean reproducibles.
+Utiliza el paquete [**MLJ**](https://juliaml.ai/) para dividir el conjunto inicial de los datos en dos subconjuntos, el conjunto de datos de entrenamiento (80% de los datos), y el conjunto de datos de prueba (20% restante de los datos). Recuerda especificar el origen de generación de los datos aleatorios para que tus experimentos sean reproducibles.
 
 ```julia
 using MLJ
@@ -151,8 +143,28 @@ using MLJ
 entrenamiento, prueba = partition(df, 0.8, rng = 69)
 ```
 
-Elige una medida de error para poder comparar los resultados entre varios 
-modelos.
+"""
+
+# ╔═╡ 4f5228a1-226f-4d04-886c-757f87c385eb
+md"""
+## Crear una primera versión del modelo
+
+Vamos utilizar el paquete [**MLJ**](https://juliaml.ai/) para construir el modelo y analizar los resultados.
+
+Esta es una pequeña receta de cómo trabajar con MLJ:
+
+```julia
+using MLJ # No hace falta esta línea, es para que quede más claro el mecanismo.
+using GLM # El modelo que vamos a utilizar, LinearRegressor, está en este paquete.
+using MLJGLMInterface # Nos hace falta para «envolver» el modelo LinearRegressor y 					  # que MLJ pueda trabajar con él.
+
+LinearRegresor = @load LinearRegressor pkg=GLM # Cargamos el modelo.
+regresor = LinearRegresor() # Creamos una instancia.
+maquina = machine(regresor, X, y) |> fit! # Creamos la máquina y la entrenamos.
+predict_mean(maquina, Xprueba) # Hacemos predicciones.
+```
+
+Elige una medida de error para poder comparar las predicciones del modelo.
 
 ¿Los residuos siguen una distribución normal? Representa la distribución de los 
 residuos y el diagrama qq-plot.
@@ -166,7 +178,7 @@ qqnorm(residuos)
 
 # ╔═╡ b8146f5c-758d-48da-a402-eaa2c1da7fda
 md"""
-## Ajustar el modelo para mejoara la solución
+## Ajustar el modelo para mejorar la solución
 
 ¿Cómo puedes mejorar los resultados del modelo?
 
