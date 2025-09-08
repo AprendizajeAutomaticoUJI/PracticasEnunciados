@@ -12,7 +12,7 @@ TableOfContents(title="Contenidos", depth=1)
 
 # ╔═╡ e4948e5c-2afd-4b7c-9b38-853aa17c2356
 md"""
-# Regresión polinómica
+# Regresión logística
 
 Óscar Belmonte Fernández - IR2130 Aprendizaje Automático
 
