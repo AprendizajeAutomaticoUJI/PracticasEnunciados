@@ -4,59 +4,52 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 9e48c088-8ccb-11f0-13de-59949736e3cf
+# ╔═╡ 690fab88-8d5b-11f0-1090-8f2293e1b4c3
 using PlutoUI # Interactividad con Pluto
 
-# ╔═╡ 1d352265-df23-4c93-af53-ebdc0e937f75
+# ╔═╡ 812e93bc-2796-4840-b4e4-0bc645f3f736
 TableOfContents(title="Contenidos", depth=1)
 
-# ╔═╡ e4948e5c-2afd-4b7c-9b38-853aa17c2356
+# ╔═╡ 3b379bc2-fd02-4ec1-8f34-864bbb03a28a
 md"""
-# Regresión logística
+# Máquinas de soporte vectorial
 
 Óscar Belmonte Fernández - IR2130 Aprendizaje Automático
 
 Grado en Inteligencia Robótica - Universitat Jaume I (UJI)
 """
 
-# ╔═╡ 78d8f43e-e2d0-43a9-b3f3-c8fcf21c4e93
+# ╔═╡ 3429dab1-95fb-4560-822d-a8fa0becebcf
 Resource(
 	"https://belmonte.uji.es/imgs/uji.jpg",
 	:alt => "Logo UJI",
 	:width => 400
 )
 
-# ╔═╡ 2b49f649-dbe0-4b47-a7cf-18901e406159
+# ╔═╡ 4485a081-49d6-4445-bc53-095428a8a05d
 md"""
 # Introducción
-
-En esta práctica vas a utilizar el algoritmo de Regresión Logística para clasificar tumores como benignos o malignos.
+En esta práctica vas a utilizar el algoritmo SVM para crear un modelo que te permita clasificar tumores como benignos o malignos.
 
 El modelo deberá predecir si un tumor es benigno o maligno a partir de ciertas características.
 
 Los datos los puedes descargar desde el [github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/biopsy.csv) de la asignatura.
 
-Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este libro lo debes subir a aulavirtual para su evaluación.
+El conjunto de datos es el mismo que has utilizado en la práctica de regresión logística, de modo que puedes comparar los resultados obtenidos por los dos modelos.
+
+Vas a crear un libro de notas de Python para desarrollar la práctica. Este libro lo debes subir a aulavirtual para su evaluación.
 """
 
-# ╔═╡ b33523a2-f4e9-4e6a-a6b4-a7498658da04
-md"""
-# Duración de la práctica
-
-A esta práctica le vamos a dedicar dos sesiones de prácticas.
-"""
-
-# ╔═╡ 089707e4-0a2b-4d69-a121-eedf27d20e60
+# ╔═╡ b8abfa88-6006-4012-8a0c-e24c7a3ad5e7
 md"""
 # Objetivos de aprendizaje
 
-* Emplear el algoritmo de Regresión Logística para realizar tareas de clasificación.
-* Estimar el rendimiento de la Regresión Logística para el conjunto de datos proporcionado.
-* Decidir cuál es el mejor conjunto de características para construir el clasificador.
-* Argumentar las decisiones realizadas.
+* Emplear el algorimo SVM para realizar tareas de clasificación.
+* Estimar el rendimiento del algoritmo SVM para el conjunto de datos proporcionado.
+* Comparar los resultados obtenidos entre SVM y regresión logística.
 """
 
-# ╔═╡ f2595321-d4bc-4303-9d7d-afaec016e845
+# ╔═╡ 96bd28bb-0ab4-4f29-814d-5964b3309003
 md"""
 # Metodología
 
@@ -66,37 +59,36 @@ Vas a seguir una adaptación de los pasos que has visto en la presentación de t
 1. Obtener los datos.
 1. Explorar los datos para conocerlos mejor.
 1. Preparar los datos para que muestren los patrones.
-1. Crear un primera versión del modelo.
+1. Crear un primera versión del modelo. 
 1. Ajustar el modelo para obtener una solución.
 1. Presentar la solución.
 1. Crítica del trabajo y posibles mejoras.
 """
 
-# ╔═╡ 31b2c9a5-183c-43bc-955d-0845730b0bd0
+# ╔═╡ ac36f920-22b8-46e0-9a30-62c0a5c22352
 md"""
 # Objetivo
 
-Utilizar la regresión logística para clasificar un tumor como **benigno** o **maligno** a partir de un conjunto de características.
+Crear un modelo basado en Máquinas de Soporte Vectorial para clasificar un tumor como **maligno** o **benigno** a partir de un conjunto de características.
 """
 
-# ╔═╡ a82a2083-b49f-4eaf-a2d7-0bcef7e4b8fe
+# ╔═╡ 6f1292ca-eab5-4413-a61e-043be9732766
 md"""
 # Tareas a realizar
 
-Vas a seguir una adaptación del esquema que se presentó en el tema de **Proyectos de Aprendizaje Automático**.
+Vas a seguir una adaptación del esquema que se presentó en el tema de**Proyectos de Aprendizaje Automático**.
 """
 
-# ╔═╡ 181df0df-f5e5-4e8b-8cbf-4a6cb45bcab2
+# ╔═╡ 3fa9f9a8-699e-4f41-aa65-51f2b0a297a6
 md"""
-## Definir el problema y tener un imagen del conjunto
+## Definir el problema y tener una imagen del conjunto
 
 Describe, con tus propias palabras cuál es el problema que se pretende resolver y cuál es su alcance.
 """
 
-# ╔═╡ 811e429b-1227-41df-a6ed-dd28710aaad4
+# ╔═╡ 64f50ce6-eac2-4dce-9a7f-39788d4d6136
 md"""
 ## Obtener los datos
-
 Los datos los puedes descargar desde el [github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/biopsy.csv) de la asignatura.
 
 Esta es la descripción de las cada una de las características de los datos:
@@ -116,55 +108,53 @@ Esta es la descripción de las cada una de las características de los datos:
 Revisa y limpia los datos si es necesario.
 """
 
-# ╔═╡ f848c022-e460-40a5-ab8e-aeccb3c35437
+# ╔═╡ dafd89a8-6f6b-45a3-a29a-d3b8e46effce
 md"""
 ## Explorar los datos para conocerlos mejor
 
 Realiza un análisis exploratorio de los datos, para ello, visualiza tus datos, haz un análisis estadístico de ellos y extrae conclusiones.
 """
 
-# ╔═╡ d1689d4a-28d5-47e6-b21e-892793d4780c
+# ╔═╡ 890ebb4b-623f-4c5e-81d5-3b17193be7ae
 md"""
 ## Preparar lo datos para que muestren los patrones
 
 A parir de los resultados del apartado anterior, prepara los datos para resaltar los posibles patrones en ellos.
 """
 
-# ╔═╡ 97aa8b88-436e-4932-8ae3-142c2545adcd
+# ╔═╡ a4173c51-e053-44ef-8e9f-fea645a02537
 md"""
 ## Crear una primera versión del modelo
 
-Con la información que has conseguido del análisis realizado, crea un primera versión de un regresor logístico y estima cuál es su precisión (accuracy).
+Con la información que has conseguido del análisis realizado, utiliza un kernel lineal para crea un primera versión de una Máquina de Soporte Vectorial ycalcula la matriz de confusión y el gráfico ROC.
 """
 
-# ╔═╡ fce036e3-cbac-4e17-bf99-077e4532dafa
+# ╔═╡ 88b1dcf1-b690-45f2-b688-521f3649894b
 md"""
 ## Ajustar el modelo para obtener una solución
 
-Con la información que has conseguido del análisis realizado, crea un primera versión de un regresor logístico que utilice una única característica. ¿Qué característica vas a utilizar? ¿Por qué has elegido esa característica?
+Prueba las versiones del kernel polinómico y gaussiano y compara las tres soluciones entre ellas. ¿Existen diferencias entre los tres modelos? 
 
-Amplia el número de características a dos. ¿Cuál es la segunda característica que has seleccionado? ¿Por qué la has seleccionado? ¿Han mejorado los resultados? ¿Cuanto han mejorado?
-
-Siguen ampliando el número de características justificando el orden de inclusión. ¿Cómo mejoran los resultados al ir añadiendo nuevas características?
-
-Haz una análisis detallado de todas las conclusiones que has extraído.
+Visualiza en una gráfica los hiperplanos generados por los tres modelos (lineal, polinomial y gaussiano), así como los vectores de soporte ¿Qué modelo crees que generalizará mejor a nuevos datos no vistos por el modelo?
 """
 
-# ╔═╡ 1d8c85dc-a009-441f-9bdc-c87b713bd208
+# ╔═╡ accf2243-6489-4497-97c6-0e0318d48a73
 md"""
 ## Presentar la solución
 
-Presenta los principales conclusiones y respalda cada conclusión con los análisis que has realizado.
+Presenta las principales conclusiones y respalda cada conclusión con los análisis que has realizado.
+
+Compara los resultados que has obtenido usando una Máquina de Soporte Vectorial con los que obtuviste al utilizar un regresor logístico.
 """
 
-# ╔═╡ b9a95e32-b469-424e-a501-9a6ad8634da2
+# ╔═╡ 3b8842f4-7a93-422d-b194-0598b9fc23b2
 md"""
 ## Critica del trabajo y posibles mejoras
 
 A la luz de todos los resultados que has obtenido, ¿cómo podrías seguir mejorando tu modelo?
 """
 
-# ╔═╡ cc81a964-0f7a-41aa-84d2-79e4e0dc2347
+# ╔═╡ 070b98cb-885b-41d1-89bf-88d79543198a
 md"""
 # Entrega
 El trabajo que debes entregar para su corrección es el libro de notas de Pluto (fichero con extensión jl).
@@ -469,24 +459,23 @@ version = "17.4.0+2"
 """
 
 # ╔═╡ Cell order:
-# ╠═9e48c088-8ccb-11f0-13de-59949736e3cf
-# ╠═1d352265-df23-4c93-af53-ebdc0e937f75
-# ╠═e4948e5c-2afd-4b7c-9b38-853aa17c2356
-# ╠═78d8f43e-e2d0-43a9-b3f3-c8fcf21c4e93
-# ╠═2b49f649-dbe0-4b47-a7cf-18901e406159
-# ╠═b33523a2-f4e9-4e6a-a6b4-a7498658da04
-# ╠═089707e4-0a2b-4d69-a121-eedf27d20e60
-# ╠═f2595321-d4bc-4303-9d7d-afaec016e845
-# ╠═31b2c9a5-183c-43bc-955d-0845730b0bd0
-# ╠═a82a2083-b49f-4eaf-a2d7-0bcef7e4b8fe
-# ╠═181df0df-f5e5-4e8b-8cbf-4a6cb45bcab2
-# ╠═811e429b-1227-41df-a6ed-dd28710aaad4
-# ╠═f848c022-e460-40a5-ab8e-aeccb3c35437
-# ╠═d1689d4a-28d5-47e6-b21e-892793d4780c
-# ╠═97aa8b88-436e-4932-8ae3-142c2545adcd
-# ╠═fce036e3-cbac-4e17-bf99-077e4532dafa
-# ╠═1d8c85dc-a009-441f-9bdc-c87b713bd208
-# ╠═b9a95e32-b469-424e-a501-9a6ad8634da2
-# ╠═cc81a964-0f7a-41aa-84d2-79e4e0dc2347
+# ╠═690fab88-8d5b-11f0-1090-8f2293e1b4c3
+# ╠═812e93bc-2796-4840-b4e4-0bc645f3f736
+# ╠═3b379bc2-fd02-4ec1-8f34-864bbb03a28a
+# ╠═3429dab1-95fb-4560-822d-a8fa0becebcf
+# ╠═4485a081-49d6-4445-bc53-095428a8a05d
+# ╠═b8abfa88-6006-4012-8a0c-e24c7a3ad5e7
+# ╠═96bd28bb-0ab4-4f29-814d-5964b3309003
+# ╠═ac36f920-22b8-46e0-9a30-62c0a5c22352
+# ╠═6f1292ca-eab5-4413-a61e-043be9732766
+# ╠═3fa9f9a8-699e-4f41-aa65-51f2b0a297a6
+# ╠═64f50ce6-eac2-4dce-9a7f-39788d4d6136
+# ╠═dafd89a8-6f6b-45a3-a29a-d3b8e46effce
+# ╠═890ebb4b-623f-4c5e-81d5-3b17193be7ae
+# ╠═a4173c51-e053-44ef-8e9f-fea645a02537
+# ╠═88b1dcf1-b690-45f2-b688-521f3649894b
+# ╠═accf2243-6489-4497-97c6-0e0318d48a73
+# ╠═3b8842f4-7a93-422d-b194-0598b9fc23b2
+# ╠═070b98cb-885b-41d1-89bf-88d79543198a
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
