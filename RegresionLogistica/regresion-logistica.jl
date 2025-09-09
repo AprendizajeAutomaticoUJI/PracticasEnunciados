@@ -121,13 +121,19 @@ md"""
 ## Explorar los datos para conocerlos mejor
 
 Realiza un análisis exploratorio de los datos, para ello, visualiza tus datos, haz un análisis estadístico de ellos y extrae conclusiones.
+
+Presta atención a la característica V6. A los datos faltantes se lea ha asignado el valor "NA", por eso esta columna es de tipo String.
 """
 
 # ╔═╡ d1689d4a-28d5-47e6-b21e-892793d4780c
 md"""
 ## Preparar lo datos para que muestren los patrones
 
-A parir de los resultados del apartado anterior, prepara los datos para resaltar los posibles patrones en ellos.
+A parir de los resultados del apartado anterior, prepara los datos para resaltar los posibles patrones en ellos. En particular, elimina los datos con V6 igual a "NA", y cambia el tipo de los datos de esta columna, para ello puedes utilizar:
+
+```.julia
+datos[!, :V6] = parse.(Int64, datos[!, :V6])
+```
 """
 
 # ╔═╡ 97aa8b88-436e-4932-8ae3-142c2545adcd
