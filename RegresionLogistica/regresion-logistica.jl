@@ -136,11 +136,41 @@ datos[!, :V6] = parse.(Int64, datos[!, :V6])
 ```
 """
 
+# ╔═╡ aa01f04e-9d46-4802-98dd-915383da8a00
+md"""
+Por otro lado, el modelo [LogisticClassifier](https://juliaai.github.io/MLJ.jl/dev/models/LogisticClassifier_MLJLinearModels/) del paquete [MLJ](https://juliaml.ai/), indica que en los datos de entrenamiento espera que *X* sea un DataFrame con columnas de valores Continuous, y que *y* sea un vector de OrderedFactor.
+
+Puedes consultar los tipos de tu data frame y la conversión que entre tipos de Julia y tipos de MLJ (scitype) se va a aplicacar con la función:
+
+```.julia
+schema(df)
+```
+
+Para cambiar los tipos del DataFrame a los tipos que MLJ espera, utiliza:
+
+```.julia
+convert(df, :Simbolo1 => scitype, :Simbolo2 => scitype,...)
+
+convert(df, :V1 => Continuous, ..., :clase => OrderedFactor)
+```
+"""
+
 # ╔═╡ 97aa8b88-436e-4932-8ae3-142c2545adcd
 md"""
 ## Crear una primera versión del modelo
 
-Con la información que has conseguido del análisis realizado, crea un primera versión de un regresor logístico y estima cuál es su precisión (accuracy).
+Con la información que has conseguido del análisis realizado, crea un primera versión de un regresor logístico y estima cuál es su precisión (accuracy), entropía cruzada (log_loss), muestra la matriz de confusión, la curva roc y calcula el area bajo la curva:
+
+```.julia
+predicciones = predict_mode(maquina, Xprueba)
+confusion_matrix(predicciones, yprueba)
+
+## También puedes hacer, el método predict devuelve más información
+predicciones = predict(maquina, Xprueba)
+confusion_matrix(mode.(prediccion), yprueba)
+roc_curve(predicciones, yprueba)
+auc(predicciones, yprueba)
+```
 """
 
 # ╔═╡ fce036e3-cbac-4e17-bf99-077e4532dafa
@@ -489,6 +519,7 @@ version = "17.4.0+2"
 # ╠═811e429b-1227-41df-a6ed-dd28710aaad4
 # ╠═f848c022-e460-40a5-ab8e-aeccb3c35437
 # ╠═d1689d4a-28d5-47e6-b21e-892793d4780c
+# ╠═aa01f04e-9d46-4802-98dd-915383da8a00
 # ╠═97aa8b88-436e-4932-8ae3-142c2545adcd
 # ╠═fce036e3-cbac-4e17-bf99-077e4532dafa
 # ╠═1d8c85dc-a009-441f-9bdc-c87b713bd208
