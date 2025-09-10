@@ -29,7 +29,7 @@ Resource(
 # ╔═╡ 4485a081-49d6-4445-bc53-095428a8a05d
 md"""
 # Introducción
-En esta práctica vas a utilizar el algoritmo SVM para crear un modelo que te permita clasificar tumores como benignos o malignos.
+En esta práctica vas a utilizar el algoritmo SVM para crear un modelo que te permita clasificar tumores como benignos o malignos. El conjunto de datos es el mismo que en la práctica de regresión logística.
 
 El modelo deberá predecir si un tumor es benigno o maligno a partir de ciertas características.
 
@@ -113,29 +113,70 @@ md"""
 ## Explorar los datos para conocerlos mejor
 
 Realiza un análisis exploratorio de los datos, para ello, visualiza tus datos, haz un análisis estadístico de ellos y extrae conclusiones.
+
+Presta atención a la característica V6. A los datos faltantes se lea ha asignado el valor "NA", por eso esta columna es de tipo String.
 """
 
 # ╔═╡ 890ebb4b-623f-4c5e-81d5-3b17193be7ae
 md"""
 ## Preparar lo datos para que muestren los patrones
 
-A parir de los resultados del apartado anterior, prepara los datos para resaltar los posibles patrones en ellos.
+A parir de los resultados del apartado anterior, prepara los datos para resaltar los posibles patrones en ellos. En particular, elimina los datos con V6 igual a "NA", y cambia el tipo de los datos de esta columna, para ello puedes utilizar:
+
+```.julia
+datos[!, :V6] = parse.(Int64, datos[!, :V6])
+```
+"""
+
+# ╔═╡ db1a39bd-ef71-4641-b3c0-20418f0e9e18
+md"""
+Por otro lado, el modelo [SVC](https://juliaai.github.io/MLJ.jl/dev/models/SVC_LIBSVM/) del paquete [MLJ](https://juliaml.ai/), indica que en los datos de entrenamiento espera que *X* sea un DataFrame con columnas de valores Continuous, y que *y* sea un vector de OrderedFactor.
+
+Puedes consultar los tipos de tu data frame y la conversión que entre tipos de Julia y tipos de MLJ (scitype) se va a aplicacar con la función:
+
+```.julia
+schema(df)
+```
+
+Para cambiar los tipos del DataFrame a los tipos que MLJ espera, utiliza:
+
+```.julia
+convert(df, :Simbolo1 => scitype, :Simbolo2 => scitype,...)
+
+convert(df, :V1 => Continuous, ..., :clase => OrderedFactor)
+```
 """
 
 # ╔═╡ a4173c51-e053-44ef-8e9f-fea645a02537
 md"""
 ## Crear una primera versión del modelo
 
-Con la información que has conseguido del análisis realizado, utiliza un kernel lineal para crea un primera versión de una Máquina de Soporte Vectorial ycalcula la matriz de confusión y el gráfico ROC.
+Con la información que has conseguido del análisis realizado, utiliza un kernel lineal para crea un primera versión de una Máquina de Soporte Vectorial y estima cuál es su precisión (accuracy), entropía cruzada (log_loss), muestra la matriz de confusión, la curva roc y calcula el area bajo la curva:
+
+```.julia
+predicciones = predict_mode(maquina, Xprueba)
+confusion_matrix(predicciones, yprueba)
+
+## También puedes hacer, el método predict devuelve más información
+predicciones = predict(maquina, Xprueba)
+confusion_matrix(mode.(prediccion), yprueba)
+roc_curve(predicciones, yprueba)
+auc(predicciones, yprueba)
+```
 """
 
 # ╔═╡ 88b1dcf1-b690-45f2-b688-521f3649894b
 md"""
 ## Ajustar el modelo para obtener una solución
+Con la información que has conseguido del análisis realizado, crea un primera versión de la máquina de soporte vectorial que utilice una única característica. ¿Qué característica vas a utilizar? ¿Por qué has elegido esa característica?
 
 Prueba las versiones del kernel polinómico y gaussiano y compara las tres soluciones entre ellas. ¿Existen diferencias entre los tres modelos? 
 
-Visualiza en una gráfica los hiperplanos generados por los tres modelos (lineal, polinomial y gaussiano), así como los vectores de soporte ¿Qué modelo crees que generalizará mejor a nuevos datos no vistos por el modelo?
+Amplia el número de características a dos. ¿Cuál es la segunda característica que has seleccionado? ¿Por qué la has seleccionado? ¿Han mejorado los resultados? ¿Cuanto han mejorado?
+
+Siguen ampliando el número de características justificando el orden de inclusión. ¿Cómo mejoran los resultados al ir añadiendo nuevas características?
+
+Haz una análisis detallado de todas las conclusiones que has extraído.
 """
 
 # ╔═╡ accf2243-6489-4497-97c6-0e0318d48a73
@@ -144,7 +185,7 @@ md"""
 
 Presenta las principales conclusiones y respalda cada conclusión con los análisis que has realizado.
 
-Compara los resultados que has obtenido usando una Máquina de Soporte Vectorial con los que obtuviste al utilizar un regresor logístico.
+Compara los resultados que has obtenido usando una máquina de soporte vectorial con los que obtuviste al utilizar un regresor logístico.
 """
 
 # ╔═╡ 3b8842f4-7a93-422d-b194-0598b9fc23b2
@@ -472,6 +513,7 @@ version = "17.4.0+2"
 # ╠═64f50ce6-eac2-4dce-9a7f-39788d4d6136
 # ╠═dafd89a8-6f6b-45a3-a29a-d3b8e46effce
 # ╠═890ebb4b-623f-4c5e-81d5-3b17193be7ae
+# ╠═db1a39bd-ef71-4641-b3c0-20418f0e9e18
 # ╠═a4173c51-e053-44ef-8e9f-fea645a02537
 # ╠═88b1dcf1-b690-45f2-b688-521f3649894b
 # ╠═accf2243-6489-4497-97c6-0e0318d48a73
