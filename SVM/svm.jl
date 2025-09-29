@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.17
+# v0.20.8
 
 using Markdown
 using InteractiveUtils
@@ -38,6 +38,13 @@ Los datos los puedes descargar desde el [github](https://raw.githubusercontent.c
 El conjunto de datos es el mismo que has utilizado en la práctica de regresión logística, de modo que puedes comparar los resultados obtenidos por los dos modelos.
 
 Vas a crear un libro de notas de Python para desarrollar la práctica. Este libro lo debes subir a aulavirtual para su evaluación.
+"""
+
+# ╔═╡ 6c61593b-7418-4a02-a029-60a014bde464
+md"""
+# Duración de la práctica
+
+A esta práctica le vamos a dedicar una sesión de prácticas.
 """
 
 # ╔═╡ b8abfa88-6006-4012-8a0c-e24c7a3ad5e7
@@ -507,6 +514,7 @@ version = "17.4.0+2"
 # ╠═3b379bc2-fd02-4ec1-8f34-864bbb03a28a
 # ╠═3429dab1-95fb-4560-822d-a8fa0becebcf
 # ╠═4485a081-49d6-4445-bc53-095428a8a05d
+# ╠═6c61593b-7418-4a02-a029-60a014bde464
 # ╠═b8abfa88-6006-4012-8a0c-e24c7a3ad5e7
 # ╠═96bd28bb-0ab4-4f29-814d-5964b3309003
 # ╠═ac36f920-22b8-46e0-9a30-62c0a5c22352
