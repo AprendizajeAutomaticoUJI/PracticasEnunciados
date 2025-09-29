@@ -102,7 +102,7 @@ Los datos los puedes descargar desde el [github](https://raw.githubusercontent.c
 Es un fichero CSV donde los valores de cada fila están separados por «;». Además, el separador de decimales es «,». Para leer los datos y convertirlos en un **Dataframe** puedes utilizar:
 
 ```julia
-data = CSS.File("nombre_fichero", delim=";", decimal=",")
+data = CSS.File("nombre_fichero", delim=';', decimal=',')
 ```
 
 Cada dato tiene tres atributos: **Año**, **Periodo** y **Euribor**. El periodo se refiere al mes del año correspondiente.
