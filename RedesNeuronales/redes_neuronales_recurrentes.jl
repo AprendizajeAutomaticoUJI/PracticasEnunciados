@@ -4,62 +4,60 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 690fab88-8d5b-11f0-1090-8f2293e1b4c3
-using PlutoUI # Interactividad con Pluto
+# ╔═╡ 3aa149be-9d44-11f0-17aa-eb647770c269
+using PlutoUI
 
-# ╔═╡ 812e93bc-2796-4840-b4e4-0bc645f3f736
+# ╔═╡ 54cd69eb-b10b-4dbe-86d7-18493250efac
 TableOfContents(title="Contenidos", depth=1)
 
-# ╔═╡ 3b379bc2-fd02-4ec1-8f34-864bbb03a28a
+# ╔═╡ c4c50b45-e3c6-4ed8-9d98-596f0d30f419
 md"""
-# Máquinas de soporte vectorial
+# Redes neuronales recurrentes
 
 Óscar Belmonte Fernández - IR2130 Aprendizaje Automático
 
 Grado en Inteligencia Robótica - Universitat Jaume I (UJI)
 """
 
-# ╔═╡ 3429dab1-95fb-4560-822d-a8fa0becebcf
+# ╔═╡ a1758fe4-7afe-42ff-835c-4ff710b145eb
 Resource(
 	"https://belmonte.uji.es/imgs/uji.jpg",
 	:alt => "Logo UJI",
-	:width => 400
+	:width => 400,
+	:style => "display: block; margin: auto;",
 )
 
-# ╔═╡ 4485a081-49d6-4445-bc53-095428a8a05d
+# ╔═╡ c03e3d69-6460-4608-8a1e-fe64e40146ec
 md"""
 # Introducción
-En esta práctica vas a utilizar el algoritmo SVM para crear un modelo que te permita clasificar tumores como benignos o malignos. El conjunto de datos es el mismo que en la práctica de regresión logística.
 
-El modelo deberá predecir si un tumor es benigno o maligno a partir de ciertas características.
+Las redes neuronales recurrentes y LSTM *aprenden* las correlaciones entre los datos de una serie temporal, y son capaces de hacer predicciones.
 
-Los datos los puedes descargar desde el [github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/biopsy.csv) de la asignatura.
+Las series de datos temporales suelen presentar una alta correlación en sus datos, además de otros posibles fenómenos como una tendencia a lo largo del tiempo, y sobre esa tendencia una estacionalidad (variación periódica).
 
-El conjunto de datos es el mismo que has utilizado en la práctica de regresión logística, de modo que puedes comparar los resultados obtenidos por los dos modelos.
+En esta práctica vas a implementar una red neuronal recurrente y una red LSTM para predecir la variación del link:https://es.wikipedia.org/wikiEur%C3%ADbor[Euribor].
 
-Vas a crear un libro de notas de Python para desarrollar la práctica. Este libro lo debes subir a aulavirtual para su evaluación.
 """
 
-# ╔═╡ 6c61593b-7418-4a02-a029-60a014bde464
+# ╔═╡ 40722903-fe77-41cd-8d4f-6ba87c46dec9
 md"""
 # Duración de la práctica
-
-A esta práctica le vamos a dedicar una sesión de prácticas.
+A esta práctica le vamos a dedicar dos sesiones.
 """
 
-# ╔═╡ b8abfa88-6006-4012-8a0c-e24c7a3ad5e7
+# ╔═╡ 565b929f-b551-47ba-b05b-10494540fbec
 md"""
 # Objetivos de aprendizaje
 
-* Emplear el algorimo SVM para realizar tareas de clasificación.
-* Estimar el rendimiento del algoritmo SVM para el conjunto de datos proporcionado.
-* Comparar los resultados obtenidos entre SVM y regresión logística.
+* Examinar los datos de una serie temporal para detectar su tendencia y estacionalidad y autocorrelación.
+* Crear una red neuronal recurrente para predecir la evolución del Euribor.
+* Crear una red neuronal LSTM para predecir la evolución del Euribor.
+* Valorar el rendimiento de ambas implementaciones.
 """
 
-# ╔═╡ 96bd28bb-0ab4-4f29-814d-5964b3309003
+# ╔═╡ f7bb6033-92c4-4dd1-8a28-e7449ea6b036
 md"""
 # Metodología
-
 Vas a seguir una adaptación de los pasos que has visto en la presentación de teoría **Proyectos de Aprendizaje Automático**.
 
 1. Definir el problema y tener una imagen del conjunto.
@@ -72,141 +70,133 @@ Vas a seguir una adaptación de los pasos que has visto en la presentación de t
 1. Crítica del trabajo y posibles mejoras.
 """
 
-# ╔═╡ ac36f920-22b8-46e0-9a30-62c0a5c22352
+# ╔═╡ e2f1cead-58cb-49e0-8908-80e0477a2441
 md"""
 # Objetivo
 
-Crear un modelo basado en Máquinas de Soporte Vectorial para clasificar un tumor como **maligno** o **benigno** a partir de un conjunto de características.
+Como primera tarea, vas a analizar la autocorrelación de los datos, si presentan algún tipo de tendencia y/o estacionalidad. Una vez que conozcas los datos vas a pasar a implementar un par de modelos que te permitan predecir el valor del Euribor.
+
+Vas a implementar un modelo de red recurrente y otro de red LSTM para predecir la evolución del Euribor en los tres últimos años de la serie temporal (36 meses). Para ello vas 
 """
 
-# ╔═╡ 6f1292ca-eab5-4413-a61e-043be9732766
+# ╔═╡ 2a622058-e74a-4a03-8299-d0d71a180871
 md"""
 # Tareas a realizar
 
-Vas a seguir una adaptación del esquema que se presentó en el tema de**Proyectos de Aprendizaje Automático**.
+Vas a seguir una adaptación del esquema que se presentó en el tema de **Proyectos de Aprendizaje Automático**.
 """
 
-# ╔═╡ 3fa9f9a8-699e-4f41-aa65-51f2b0a297a6
+# ╔═╡ 0f9d6c20-5ba9-4da4-8225-f7e6a1d33cca
 md"""
 ## Definir el problema y tener una imagen del conjunto
 
-Describe, con tus propias palabras cuál es el problema que se pretende resolver y cuál es su alcance.
+Describe, con tus propias palabras, cuál es la problema que se pretende resolver y cuál es su alcance.
 """
 
-# ╔═╡ 64f50ce6-eac2-4dce-9a7f-39788d4d6136
+# ╔═╡ b6ef3b13-54fc-4f81-a544-7ae49fca2d2b
 md"""
 ## Obtener los datos
-Los datos los puedes descargar desde el [github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/biopsy.csv) de la asignatura.
 
-Esta es la descripción de las cada una de las características de los datos:
+Los datos los puedes descargar desde el [github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/evolucion_del_euribor_mensual.csv) de la asignatura.
 
-- **ID**: Código de identificación (puede que no sea único). 
-- **V1**: Grosor de los lóbulos. 
-- **V2**: Uniformidad del tamaño celular. 
-- **V3**: Uniformidad de la forma celular. 
-- **V4**: Adhesión marginal. 
-- **V5**: Tamaño de la célula epitelial única. 
-- **V6**: Núcleos desnudos (faltan 16 valores). 
-- **V7**: Cromatina lisa. 
-- **V8**: Nucleolos normales. 
-- **V9**: Mitosis. 
-- **clase**: "benigno" o "maligno".  
+Es un fichero CSV donde los valores de cada fila están separados por «;». Además, el separador de decimales es «,». Para leer los datos y convertirlos en un **Dataframe** puedes utilizar:
 
-Revisa y limpia los datos si es necesario.
+```julia
+data = CSS.File("nombre_fichero", delim=";", decimal=",")
+```
+
+Cada dato tiene tres atributos: **Año**, **Periodo** y **Euribor**. El periodo se refiere al mes del año correspondiente.
 """
 
-# ╔═╡ dafd89a8-6f6b-45a3-a29a-d3b8e46effce
+# ╔═╡ f70b0dc9-3154-46c7-bf7c-3da35a7a0d8c
 md"""
 ## Explorar los datos para conocerlos mejor
 
-Realiza un análisis exploratorio de los datos, para ello, visualiza tus datos, haz un análisis estadístico de ellos y extrae conclusiones.
+Primero, identifica si existe alguna tendencia en los datos. Para ello calcula 
+un media deslizante sobre los datos:
 
-Presta atención a la característica V6. A los datos faltantes se lea ha asignado el valor "NA", por eso esta columna es de tipo String.
+```python
+df["Promedio"] = df["Euribor"].rolling(12, center=True).mean()
+```
+
+Estudia la autocorrelación de los datos:
+
+```python
+from statsmodels.graphics.tsaplots import plot_acf
+
+plot_acf(df, title="Autocorrelación de Euribor");
+```
+
+El valor de autocorrelación dependiendo del desplazamiento lo puedes calcular 
+con:
+
+```python
+df.autocorr(i) # i es el «desplazamiento»
+```
 """
 
-# ╔═╡ 890ebb4b-623f-4c5e-81d5-3b17193be7ae
+# ╔═╡ 7a22cab9-5089-4b82-90ee-0f38403cf419
 md"""
 ## Preparar lo datos para que muestren los patrones
 
-A parir de los resultados del apartado anterior, prepara los datos para resaltar los posibles patrones en ellos. En particular, elimina los datos con V6 igual a "NA", y cambia el tipo de los datos de esta columna, para ello puedes utilizar:
+Para preparar los datos la siguiente función te puede ser de utilidad:
 
-```.julia
-datos[!, :V6] = parse.(Int64, datos[!, :V6])
+```python
+def get_data(df, steps):      
+    dataX = []
+    dataY = []
+    for i in range(len(df)-steps-1):
+        a = df[i:(i+steps), 0]
+        dataX.append(a)
+        dataY.append(df[i+steps, 0])
+    return np.array(dataX), np.array(dataY)
 ```
+
+**df** es el Dataframe que contiene los datos del Euribor y **steps** es el tamaño de cada una de las secuencias que quieres generar.
+
+
 """
 
-# ╔═╡ db1a39bd-ef71-4641-b3c0-20418f0e9e18
-md"""
-Por otro lado, el modelo [SVC](https://juliaai.github.io/MLJ.jl/dev/models/SVC_LIBSVM/) del paquete [MLJ](https://juliaml.ai/), indica que en los datos de entrenamiento espera que *X* sea un DataFrame con columnas de valores Continuous, y que *y* sea un vector de OrderedFactor.
-
-Puedes consultar los tipos de tu data frame y la conversión que entre tipos de Julia y tipos de MLJ (scitype) se va a aplicacar con la función:
-
-```.julia
-schema(df)
-```
-
-Para cambiar los tipos del DataFrame a los tipos que MLJ espera, utiliza:
-
-```.julia
-convert(df, :Simbolo1 => scitype, :Simbolo2 => scitype,...)
-
-convert(df, :V1 => Continuous, ..., :clase => OrderedFactor)
-```
-"""
-
-# ╔═╡ a4173c51-e053-44ef-8e9f-fea645a02537
+# ╔═╡ 3a3196e1-32dc-42dd-ab2a-51dddbc62ef7
 md"""
 ## Crear una primera versión del modelo
 
-Con la información que has conseguido del análisis realizado, utiliza un kernel lineal para crea un primera versión de una Máquina de Soporte Vectorial y estima cuál es su precisión (accuracy), entropía cruzada (log_loss), y muestra la matriz de confusión:
+Crea primero una RNN con una única capa. Elige el número de neuronas dentro de la capa. Estudia la historia del entrenamiento para ver si hay sobreentrenamiento.
 
-```.julia
-predicciones = predict_mode(maquina, Xprueba)
-confusion_matrix(predicciones, yprueba)
+Amplia el modelo para añadir más capas recurrentes. No olvides activar el parámetro **return_sequences=True** en todas las capas recurrentes intermedias excepto en la última capa recurrente.
 
-## También puedes hacer, el método predict devuelve más información
-predicciones = predict(maquina, Xprueba)
-confusion_matrix(mode.(prediccion), yprueba)
-roc_curve(predicciones, yprueba)
-auc(predicciones, yprueba)
-```
+Crea una red LSTM con una única capa y procede como en el caso de la red recurrente.
 
-Al contrario que el algoritmo de regresión logística, el algoritmo SVC(SVM) no asigna una probabilidad a cada una de las estimaciones, por lo que no es posible, directamente, calcular la curva roc.
+De nuevo, amplia el modelo para añadir más capas LSTM. No olvides activar el parámetro **return_sequences=True** en todas las capas LSTM intermedias excepto en la última capa.
 """
 
-# ╔═╡ 88b1dcf1-b690-45f2-b688-521f3649894b
+# ╔═╡ f3fb9f32-4930-448f-8975-6a06c7805908
 md"""
 ## Ajustar el modelo para obtener una solución
-Con la información que has conseguido del análisis realizado, crea un primera versión de la máquina de soporte vectorial que utilice una única característica. ¿Qué característica vas a utilizar? ¿Por qué has elegido esa característica?
 
-Prueba las versiones del kernel polinómico y gaussiano y compara las tres soluciones entre ellas. ¿Existen diferencias entre los tres modelos? 
+En ambas redes, estudia como varía en error cuadrático medio entre los valores reales y las predicciones dependiendo de parámetros tales como el número de neuronas en cada capa, y el número de capas.
 
-Amplia el número de características a dos. ¿Cuál es la segunda característica que has seleccionado? ¿Por qué la has seleccionado? ¿Han mejorado los resultados? ¿Cuanto han mejorado?
-
-Siguen ampliando el número de características justificando el orden de inclusión. ¿Cómo mejoran los resultados al ir añadiendo nuevas características?
-
-Haz una análisis detallado de todas las conclusiones que has extraído.
+¿Se te ocurre algún otro tipo de capa que puedes incluir para intentar mejorar el modelo?
 """
 
-# ╔═╡ accf2243-6489-4497-97c6-0e0318d48a73
+# ╔═╡ 2d2009a0-ff0d-4319-8dc9-f4e07c9ad8e4
 md"""
 ## Presentar la solución
 
-Presenta las principales conclusiones y respalda cada conclusión con los análisis que has realizado.
-
-Compara los resultados que has obtenido usando una máquina de soporte vectorial con los que obtuviste al utilizar un regresor logístico.
+Presenta las principales conclusiones y respáldalas con los análisis que has realizado.
 """
 
-# ╔═╡ 3b8842f4-7a93-422d-b194-0598b9fc23b2
+# ╔═╡ 4f0b83f4-145b-4186-9661-3d40e34eb509
 md"""
 ## Critica del trabajo y posibles mejoras
 
 A la luz de todos los resultados que has obtenido, ¿cómo podrías seguir mejorando tu modelo?
 """
 
-# ╔═╡ 070b98cb-885b-41d1-89bf-88d79543198a
+# ╔═╡ 2ab4b0d1-4549-4aeb-8302-b20da7a40eb6
 md"""
 # Entrega
+
 El trabajo que debes entregar para su corrección es el libro de notas de Pluto (fichero con extensión jl).
 
 Súbelo a aulavirtual. No es necesario que los suban todos los miembros del equipo, basta con que lo suba uno de vosotros.
@@ -509,25 +499,24 @@ version = "17.4.0+2"
 """
 
 # ╔═╡ Cell order:
-# ╟─690fab88-8d5b-11f0-1090-8f2293e1b4c3
-# ╟─812e93bc-2796-4840-b4e4-0bc645f3f736
-# ╟─3b379bc2-fd02-4ec1-8f34-864bbb03a28a
-# ╟─3429dab1-95fb-4560-822d-a8fa0becebcf
-# ╟─4485a081-49d6-4445-bc53-095428a8a05d
-# ╟─6c61593b-7418-4a02-a029-60a014bde464
-# ╟─b8abfa88-6006-4012-8a0c-e24c7a3ad5e7
-# ╟─96bd28bb-0ab4-4f29-814d-5964b3309003
-# ╟─ac36f920-22b8-46e0-9a30-62c0a5c22352
-# ╟─6f1292ca-eab5-4413-a61e-043be9732766
-# ╟─3fa9f9a8-699e-4f41-aa65-51f2b0a297a6
-# ╟─64f50ce6-eac2-4dce-9a7f-39788d4d6136
-# ╟─dafd89a8-6f6b-45a3-a29a-d3b8e46effce
-# ╟─890ebb4b-623f-4c5e-81d5-3b17193be7ae
-# ╟─db1a39bd-ef71-4641-b3c0-20418f0e9e18
-# ╟─a4173c51-e053-44ef-8e9f-fea645a02537
-# ╟─88b1dcf1-b690-45f2-b688-521f3649894b
-# ╟─accf2243-6489-4497-97c6-0e0318d48a73
-# ╟─3b8842f4-7a93-422d-b194-0598b9fc23b2
-# ╟─070b98cb-885b-41d1-89bf-88d79543198a
+# ╠═3aa149be-9d44-11f0-17aa-eb647770c269
+# ╠═54cd69eb-b10b-4dbe-86d7-18493250efac
+# ╠═c4c50b45-e3c6-4ed8-9d98-596f0d30f419
+# ╠═a1758fe4-7afe-42ff-835c-4ff710b145eb
+# ╠═c03e3d69-6460-4608-8a1e-fe64e40146ec
+# ╠═40722903-fe77-41cd-8d4f-6ba87c46dec9
+# ╠═565b929f-b551-47ba-b05b-10494540fbec
+# ╠═f7bb6033-92c4-4dd1-8a28-e7449ea6b036
+# ╠═e2f1cead-58cb-49e0-8908-80e0477a2441
+# ╠═2a622058-e74a-4a03-8299-d0d71a180871
+# ╠═0f9d6c20-5ba9-4da4-8225-f7e6a1d33cca
+# ╠═b6ef3b13-54fc-4f81-a544-7ae49fca2d2b
+# ╠═f70b0dc9-3154-46c7-bf7c-3da35a7a0d8c
+# ╠═7a22cab9-5089-4b82-90ee-0f38403cf419
+# ╠═3a3196e1-32dc-42dd-ab2a-51dddbc62ef7
+# ╠═f3fb9f32-4930-448f-8975-6a06c7805908
+# ╠═2d2009a0-ff0d-4319-8dc9-f4e07c9ad8e4
+# ╠═4f0b83f4-145b-4186-9661-3d40e34eb509
+# ╠═2ab4b0d1-4549-4aeb-8302-b20da7a40eb6
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
