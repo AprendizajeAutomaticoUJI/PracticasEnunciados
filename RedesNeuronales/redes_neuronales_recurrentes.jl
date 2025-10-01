@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.8
+# v0.20.17
 
 using Markdown
 using InteractiveUtils
@@ -102,7 +102,8 @@ Los datos los puedes descargar desde el [github](https://raw.githubusercontent.c
 Es un fichero CSV donde los valores de cada fila están separados por «;». Además, el separador de decimales es «,». Para leer los datos y convertirlos en un **Dataframe** puedes utilizar:
 
 ```julia
-data = CSS.File("nombre_fichero", delim=';', decimal=',')
+ruta = "https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/evolucion_del_euribor_mensual.csv"
+datos = CSV.File(Downloads.download(ruta), delim=';', decimal=',') |> DataFrame
 ```
 
 Cada dato tiene tres atributos: **Año**, **Periodo** y **Euribor**. El periodo se refiere al mes del año correspondiente.
@@ -115,23 +116,16 @@ md"""
 Primero, identifica si existe alguna tendencia en los datos. Para ello calcula 
 un media deslizante sobre los datos:
 
-```python
-df["Promedio"] = df["Euribor"].rolling(12, center=True).mean()
+```julia
+media_deslizante(serie, tamaño_ventana) = [sum(serie[i:i+tamaño_ventana-1])/(tamaño_ventana) for i ∈ 1:length(serie)-tamaño_ventana];
 ```
 
 Estudia la autocorrelación de los datos:
 
-```python
-from statsmodels.graphics.tsaplots import plot_acf
+```julia
+using StatsBase
 
-plot_acf(df, title="Autocorrelación de Euribor");
-```
-
-El valor de autocorrelación dependiendo del desplazamiento lo puedes calcular 
-con:
-
-```python
-df.autocorr(i) # i es el «desplazamiento»
+autocor(vector)
 ```
 """
 
@@ -141,33 +135,47 @@ md"""
 
 Para preparar los datos la siguiente función te puede ser de utilidad:
 
-```python
-def get_data(df, steps):      
-    dataX = []
-    dataY = []
-    for i in range(len(df)-steps-1):
-        a = df[i:(i+steps), 0]
-        dataX.append(a)
-        dataY.append(df[i+steps, 0])
-    return np.array(dataX), np.array(dataY)
+```julia
+function procesa_datos(euribor, tamaño_lote, fraccion_entrenamiento)
+	indice = Int32(length(euribor) * fraccion_entrenamiento)
+    entrenamiento = euribor[1:indice]
+    prueba = euribor[indice+1:end]
+    escalado = fit(UnitRangeTransform, entrenamiento)
+    entrenamiento_escalado = Float32.(StatsBase.transform(escalado, entrenamiento))
+    prueba_escalado = Float32.(StatsBase.transform(escalado, prueba))
+    Xentrenamiento = stack([entrenamiento_escalado[i : i+(tamaño_lote - 1)] for i ∈ 1:length(entrenamiento_escalado) - tamaño_lote ])
+    yentrenamiento = entrenamiento_escalado[tamaño_lote + 1 : end]'
+    Xprueba = stack([prueba_escalado[i : i+(tamaño_lote - 1)] for i ∈ 1:length(prueba_escalado) - tamaño_lote])
+    yprueba = prueba_escalado[(tamaño_lote + 1):end]'
+    return Xentrenamiento, yentrenamiento, Xprueba, yprueba, escalado
+end
 ```
 
-**df** es el Dataframe que contiene los datos del Euribor y **steps** es el tamaño de cada una de las secuencias que quieres generar.
-
-
+**euribor** es el Dataframe que contiene los datos del Euribor y **tamaño_lote** es el tamaño de cada una de las secuencias que quieres generar. También debes proporcionar la fracción de datos de entrenamiento. Presta atención a los valores de retorno de esta función **escalado**.
 """
 
 # ╔═╡ 3a3196e1-32dc-42dd-ab2a-51dddbc62ef7
 md"""
 ## Crear una primera versión del modelo
 
-Crea primero una RNN con una única capa. Elige el número de neuronas dentro de la capa. Estudia la historia del entrenamiento para ver si hay sobreentrenamiento.
+Crea primero una RNN con una única capa. Elige el número de neuronas dentro de la capa. Entrena el modelo.
 
-Amplia el modelo para añadir más capas recurrentes. No olvides activar el parámetro **return_sequences=True** en todas las capas recurrentes intermedias excepto en la última capa recurrente.
+!!! info "Advertencia"
+	Debes resetear el modelo antes de calcular las pérdidas:
+	```julia
+	function perdidas(modelo, X, y)
+	    Flux.reset!(modelo)
+	    Flux.Losses.mse(modelo(X), y)
+	end
+	```
 
-Crea una red LSTM con una única capa y procede como en el caso de la red recurrente.
+Estudia la historia del entrenamiento para ver si hay sobreentrenamiento.
 
-De nuevo, amplia el modelo para añadir más capas LSTM. No olvides activar el parámetro **return_sequences=True** en todas las capas LSTM intermedias excepto en la última capa.
+Amplia el modelo para añadir más capas recurrentes.
+
+Repite el proceso, crea una red LSTM con una única capa y procede como en el caso de la red recurrente.
+
+Amplia el modelo para añadir más capas LSTM.
 """
 
 # ╔═╡ f3fb9f32-4930-448f-8975-6a06c7805908
@@ -215,7 +223,7 @@ PlutoUI = "~0.7.68"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.6"
+julia_version = "1.11.7"
 manifest_format = "2.0"
 project_hash = "bf4a620d59312f26669e73defd791ec8e864a597"
 
@@ -499,24 +507,24 @@ version = "17.4.0+2"
 """
 
 # ╔═╡ Cell order:
-# ╠═3aa149be-9d44-11f0-17aa-eb647770c269
-# ╠═54cd69eb-b10b-4dbe-86d7-18493250efac
-# ╠═c4c50b45-e3c6-4ed8-9d98-596f0d30f419
-# ╠═a1758fe4-7afe-42ff-835c-4ff710b145eb
-# ╠═c03e3d69-6460-4608-8a1e-fe64e40146ec
-# ╠═40722903-fe77-41cd-8d4f-6ba87c46dec9
-# ╠═565b929f-b551-47ba-b05b-10494540fbec
-# ╠═f7bb6033-92c4-4dd1-8a28-e7449ea6b036
-# ╠═e2f1cead-58cb-49e0-8908-80e0477a2441
-# ╠═2a622058-e74a-4a03-8299-d0d71a180871
-# ╠═0f9d6c20-5ba9-4da4-8225-f7e6a1d33cca
-# ╠═b6ef3b13-54fc-4f81-a544-7ae49fca2d2b
-# ╠═f70b0dc9-3154-46c7-bf7c-3da35a7a0d8c
-# ╠═7a22cab9-5089-4b82-90ee-0f38403cf419
-# ╠═3a3196e1-32dc-42dd-ab2a-51dddbc62ef7
-# ╠═f3fb9f32-4930-448f-8975-6a06c7805908
-# ╠═2d2009a0-ff0d-4319-8dc9-f4e07c9ad8e4
-# ╠═4f0b83f4-145b-4186-9661-3d40e34eb509
-# ╠═2ab4b0d1-4549-4aeb-8302-b20da7a40eb6
+# ╟─3aa149be-9d44-11f0-17aa-eb647770c269
+# ╟─54cd69eb-b10b-4dbe-86d7-18493250efac
+# ╟─c4c50b45-e3c6-4ed8-9d98-596f0d30f419
+# ╟─a1758fe4-7afe-42ff-835c-4ff710b145eb
+# ╟─c03e3d69-6460-4608-8a1e-fe64e40146ec
+# ╟─40722903-fe77-41cd-8d4f-6ba87c46dec9
+# ╟─565b929f-b551-47ba-b05b-10494540fbec
+# ╟─f7bb6033-92c4-4dd1-8a28-e7449ea6b036
+# ╟─e2f1cead-58cb-49e0-8908-80e0477a2441
+# ╟─2a622058-e74a-4a03-8299-d0d71a180871
+# ╟─0f9d6c20-5ba9-4da4-8225-f7e6a1d33cca
+# ╟─b6ef3b13-54fc-4f81-a544-7ae49fca2d2b
+# ╟─f70b0dc9-3154-46c7-bf7c-3da35a7a0d8c
+# ╟─7a22cab9-5089-4b82-90ee-0f38403cf419
+# ╟─3a3196e1-32dc-42dd-ab2a-51dddbc62ef7
+# ╟─f3fb9f32-4930-448f-8975-6a06c7805908
+# ╟─2d2009a0-ff0d-4319-8dc9-f4e07c9ad8e4
+# ╟─4f0b83f4-145b-4186-9661-3d40e34eb509
+# ╟─2ab4b0d1-4549-4aeb-8302-b20da7a40eb6
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
