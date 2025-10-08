@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.17
+# v0.20.8
 
 using Markdown
 using InteractiveUtils
@@ -158,7 +158,7 @@ Resource(
 md"""
 En este caso hemos añadido la biblioteca Pluto a nuestro entorno virtual.
 
-El gestor de bibliotecas descargará la biblioteca que le has indicado y todas las bibliotecas de las que depende. Esta acción puede llevar un poco de tiempo la primera vez, pero esta acción sólo se hace una vez, o cuando hay una actualización de las bibliotecas.
+El gestor de bibliotecas descargará la biblioteca que le has indicado y todas las bibliotecas de las que depende. Esta acción puede llevar un poco de tiempo la primera vez, pero esta acción sólo se hace una vez, o cuando hay una actualización de Julia o de las propias bibliotecas.
 """
 
 # ╔═╡ d76e22cf-a8d0-4fc7-8884-1857c04cb53e
@@ -223,6 +223,20 @@ b = 2
 # ╔═╡ 986d4c4f-e2e6-4dcd-85d3-999998c31f77
 resultado = a + b
 
+# ╔═╡ 1adfba2f-15b8-43c0-8278-9d4a05f415d3
+md"""
+!!! info "Muy importante"
+Debes tener el cuenta lo siguiente:
+
+1. Sólo puedes tener una línea de código en cada celda.
+1. Si quieres tener más líneas, las debes anidar dentro de **begin...end** o dentro de **let...end**
+1. Hay celdas de código, y celdas donde puedes escribir con sintaxis Markdown. Para ingresar código con sintaxis Markdown pulsa *Ctrl + m* dentro de la celda.
+1. *Shift + Enter* ejecuta la celda.
+1. *Ctrl + Enter* ejecuta la celda y crea una nueva celda debajo.
+
+Pero siempre es más interesante que utilices funciones.
+"""
+
 # ╔═╡ c5e939b9-f8cc-4952-9623-3846701b0b47
 md"""
 # Un vistazo muy rápido a Julia
@@ -232,7 +246,7 @@ md"""
 md"""
 ## Declaración de variables
 
-En Julia una variable se declara con un nombre y asignando un valor:
+En Julia una variable se declara con un nombre y asignandoles un valor:
 """
 
 # ╔═╡ a9c66330-5314-4e3b-9583-31b63806b7a0
@@ -240,7 +254,9 @@ peso = 75
 
 # ╔═╡ f65b2469-9ac2-490f-a63c-fd895004e45f
 md"""
-Fíjate en que no hemos definido el tipo de esta variable, sin embargo Julia infiere el tipo de la variable, que podemos consultar así:
+Fíjate en que no hemos definido el tipo de esta variable, sin embargo Julia infiere el tipo de la variable.
+
+El tipo de una variable lo podemos consultar así:
 """
 
 # ╔═╡ ad08abae-daba-4c86-9582-95f93fe37703
@@ -539,6 +555,14 @@ Podemos crear vectores a partir de datos iterables con la siguient sintaxis
 # ╔═╡ 7d59c291-fc19-4e84-b805-35e84077d9c2
 [operacion(x) for x in v]
 
+# ╔═╡ 37f0a519-d659-41d8-a91c-e94444cc8b22
+md"""
+También podemos utilizar directamente una expresión:
+"""
+
+# ╔═╡ 2878a6f0-5370-417b-a23a-b0cac503e531
+[2x-1 for x in v]
+
 # ╔═╡ ffc6695c-af40-44bd-b4d3-9c9a565db53a
 md"""
 ## Algunas utilidades
@@ -626,6 +650,30 @@ Hacemos la descarga y creamos un DataFrame a partir de los datos descargados:
 # ╔═╡ 038e1dc9-225d-44cf-8284-3ef2e0e13df2
 datos = DataFrame(CSV.File(HTTP.get(path).body))
 
+# ╔═╡ 8dc32ec2-7533-4734-b4e3-18bc1f31a374
+md"""
+Podemos obtener una descripción de cada una de las columnas del **DataFrame** con:
+"""
+
+# ╔═╡ f879d8b3-e3a1-4fd9-b9b2-ef494280700c
+describe(datos)
+
+# ╔═╡ 7e6dbdf8-5d03-4a27-bb54-e9892c755978
+md"""
+También podemos añadir nuevas columnas al **DataFrame**:
+"""
+
+# ╔═╡ 21b5e94f-a7b7-405d-bad6-0abecd0771cd
+datos[!, :heightweight] = datos[:, :height] .* datos[:, :weight]
+
+# ╔═╡ 7be7355c-2fd1-4ba3-b55d-c7fb1861708a
+md"""
+Ahora el **DataFrame** tiene una nueva columna:
+"""
+
+# ╔═╡ 90a69721-404a-4423-a089-e2af30071d9d
+datos
+
 # ╔═╡ cc654dcd-d3df-45b1-9536-5721a7e3c37e
 md"""
 Usando el paquete [Plots](https://docs.juliaplots.org/stable/) Podemos visualizar los datos en un gráfico de puntos (scatter plot):
@@ -692,7 +740,7 @@ PlutoUI = "~0.7.68"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.6"
+julia_version = "1.11.7"
 manifest_format = "2.0"
 project_hash = "218a47d1458723ca42056d7e063318d8159b7bba"
 
@@ -1970,6 +2018,7 @@ version = "1.9.2+0"
 # ╠═6fddc634-f4e6-4a18-82ff-76e2d29c8016
 # ╠═ae258a69-9d7a-4f4d-8dee-53e83e0079ad
 # ╠═986d4c4f-e2e6-4dcd-85d3-999998c31f77
+# ╟─1adfba2f-15b8-43c0-8278-9d4a05f415d3
 # ╟─c5e939b9-f8cc-4952-9623-3846701b0b47
 # ╟─0bcb2d76-ab33-4567-a64b-7c6601306dd9
 # ╠═a9c66330-5314-4e3b-9583-31b63806b7a0
@@ -2038,6 +2087,8 @@ version = "1.9.2+0"
 # ╠═60f99f20-a160-4f3f-95b1-74a619474a82
 # ╟─90ec341d-a232-4675-8049-b69569724791
 # ╠═7d59c291-fc19-4e84-b805-35e84077d9c2
+# ╟─37f0a519-d659-41d8-a91c-e94444cc8b22
+# ╠═2878a6f0-5370-417b-a23a-b0cac503e531
 # ╟─ffc6695c-af40-44bd-b4d3-9c9a565db53a
 # ╠═670109c7-d764-44a8-91d6-b60c72e08d47
 # ╟─0293d2e4-47ae-4afa-b5c7-03bc60d3f40b
@@ -2056,9 +2107,15 @@ version = "1.9.2+0"
 # ╠═aa8d9771-240e-4136-96c0-7ef11b07663f
 # ╠═9b887aac-872b-4d95-867a-5f981706f1a6
 # ╟─542cac61-e174-4c0e-b05a-a8d0cced5080
-# ╟─f52daf9d-8d14-4c0c-8f7d-1c231cbb454a
+# ╠═f52daf9d-8d14-4c0c-8f7d-1c231cbb454a
 # ╟─09c7e59e-ca03-4c54-95f6-ad9e9f3ce1de
-# ╟─038e1dc9-225d-44cf-8284-3ef2e0e13df2
+# ╠═038e1dc9-225d-44cf-8284-3ef2e0e13df2
+# ╟─8dc32ec2-7533-4734-b4e3-18bc1f31a374
+# ╠═f879d8b3-e3a1-4fd9-b9b2-ef494280700c
+# ╟─7e6dbdf8-5d03-4a27-bb54-e9892c755978
+# ╠═21b5e94f-a7b7-405d-bad6-0abecd0771cd
+# ╟─7be7355c-2fd1-4ba3-b55d-c7fb1861708a
+# ╠═90a69721-404a-4423-a089-e2af30071d9d
 # ╟─cc654dcd-d3df-45b1-9536-5721a7e3c37e
 # ╟─f8fd8f42-70af-48dc-922a-e0c6418c0991
 # ╟─7338f4f0-1421-47f9-9a85-a1243391047c
