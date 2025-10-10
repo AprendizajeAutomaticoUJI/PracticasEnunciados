@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.8
+# v0.20.19
 
 using Markdown
 using InteractiveUtils
@@ -38,7 +38,8 @@ Grado en Inteligencia Robótica - Universitat Jaume I (UJI)
 Resource(
 	"https://belmonte.uji.es/imgs/uji.jpg",
 	:alt => "Logo UJI",
-	:width => 400
+	:width => 400,
+	:style => "display: block; margin: auto;",
 )
 
 # ╔═╡ 5fb9ecbb-d12f-4ddc-b3ef-668e400d0fd5
@@ -1340,9 +1341,9 @@ version = "1.5.0"
 
 [[deps.OpenSSL_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
-git-tree-sha1 = "2ae7d4ddec2e13ad3bddf5c0796f7547cf682391"
+git-tree-sha1 = "87510f7292a2b21aeff97912b0898f9553cc5c2c"
 uuid = "458c3c95-2e84-50aa-8efc-19380b2a3a95"
-version = "3.5.2+0"
+version = "3.5.1+0"
 
 [[deps.Opus_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -1982,10 +1983,10 @@ version = "1.9.2+0"
 """
 
 # ╔═╡ Cell order:
-# ╟─0b911bfa-8724-11f0-00a2-8fd8ac4db5fc
-# ╟─4f3d4b25-349d-4976-8df9-3f2cc66b1d1a
+# ╠═0b911bfa-8724-11f0-00a2-8fd8ac4db5fc
+# ╠═4f3d4b25-349d-4976-8df9-3f2cc66b1d1a
 # ╟─28685d13-736b-49b9-a849-1d0ff17bad27
-# ╟─16cc8dd8-874e-4dab-bece-c19393eb692e
+# ╠═16cc8dd8-874e-4dab-bece-c19393eb692e
 # ╟─5fb9ecbb-d12f-4ddc-b3ef-668e400d0fd5
 # ╠═cd2961c0-65a8-486d-9253-bedaed423ea2
 # ╠═06aeb727-e150-4f7c-8935-661b2960195a
@@ -2117,7 +2118,7 @@ version = "1.9.2+0"
 # ╟─7be7355c-2fd1-4ba3-b55d-c7fb1861708a
 # ╠═90a69721-404a-4423-a089-e2af30071d9d
 # ╟─cc654dcd-d3df-45b1-9536-5721a7e3c37e
-# ╟─f8fd8f42-70af-48dc-922a-e0c6418c0991
+# ╠═f8fd8f42-70af-48dc-922a-e0c6418c0991
 # ╟─7338f4f0-1421-47f9-9a85-a1243391047c
 # ╠═45444b94-b513-4326-b4f0-06cebc6165be
 # ╟─82a7ab45-c99d-4c3a-881d-c1e390062a00
