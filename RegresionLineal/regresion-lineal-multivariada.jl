@@ -31,12 +31,16 @@ Resource(
 md"""
 # Introducción
 
-En esta práctica vas a crear un modelo lineal con múltiples variables
+En esta práctica vas a crear un modelo lineal con varias variables
 independientes para estimar una única variable dependiente.
 
-El modelo deberá dar una estimación de la edad de cierta variedad de caracoles de mar, a partir de sus características. Los datos los puedes encontrar [aquí](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.data), junto con una [descripción](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.names) de cada una de las características de las muestras.
+El modelo deberá dar una estimación de la edad de cierta variedad de caracoles de mar a partir de sus características. Los datos los puedes encontrar [aquí](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.data), junto con una [descripción](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.names) de cada una de las características de las muestras.
 
 Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este libro lo debes subir a aulavirtual para su evaluación.
+
+!!! important "Recordatorio"
+
+	Recordad escribir al principio de libro vuestros nombres.
 """
 
 # ╔═╡ 3393a7cd-f802-4363-bfae-f53536dd8c7a
@@ -54,7 +58,7 @@ md"""
 1. Construir un modelo de regresión lineal multivariado.
 1. Adaptar el modelo para mejorar su rendimiento.
 1. Plantear posibles mejoras del modelo.
-1. Emplear el esquema de **Proyectos de Aprendizaje Automático** como guía de desarrollo.
+1. Emplear el esquema de **Proyectos de Aprendizaje Automático** como guía de desarrollo de la práctica.
 """
 
 # ╔═╡ fa751513-2fc7-49aa-a581-4dc2071041ad
@@ -87,7 +91,7 @@ md"""
 # Tareas a realizar
 
 Vas a seguir una adaptación del esquema que se presentó en el tema de
-**Proyectos de Aprendizaje Automático**.
+**Proyectos de Aprendizaje Automático** para el desarrollo de la práctica.
 """
 
 # ╔═╡ cb208fa1-fe6a-4b95-86b9-54fbf3a073b6
