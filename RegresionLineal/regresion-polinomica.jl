@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.17
+# v0.20.20
 
 using Markdown
 using InteractiveUtils
@@ -202,7 +202,7 @@ PlutoUI = "~0.7.68"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.6"
+julia_version = "1.11.7"
 manifest_format = "2.0"
 project_hash = "bf4a620d59312f26669e73defd791ec8e864a597"
 
@@ -490,20 +490,20 @@ version = "17.4.0+2"
 # ╠═aad6c742-ff75-48f7-aa06-36a1d9382618
 # ╠═e3390298-0faa-43df-aae7-ea8773cd0533
 # ╠═d2d9fe6a-7c1a-4860-84b1-0905a3b7ed9a
-# ╟─5fdf9a7d-c1ee-4a82-a9a3-05a7470ec662
+# ╠═5fdf9a7d-c1ee-4a82-a9a3-05a7470ec662
 # ╟─1540974b-4987-44bc-b638-63aab0c3062b
-# ╟─8f411dd8-96b6-4d60-9f43-9c7ef4bdd569
+# ╠═8f411dd8-96b6-4d60-9f43-9c7ef4bdd569
 # ╟─7f390ed7-a596-47b0-96a7-318124323a9a
 # ╟─661cb223-9353-4c25-ba80-05fc4ea2524a
 # ╟─74e9b1e1-951b-4ded-9c5f-f4ca2c9af333
 # ╟─2608ec4d-0cfe-4b3f-9fb0-6180d1a142ea
-# ╟─a0151c2e-0aa5-4e0a-93d9-ff4c58f220f7
-# ╟─3a1ec0ba-db78-4130-a6f0-29c7677701c4
-# ╟─826d739c-1663-4e4e-8fa6-24a784c728fe
+# ╠═a0151c2e-0aa5-4e0a-93d9-ff4c58f220f7
+# ╠═3a1ec0ba-db78-4130-a6f0-29c7677701c4
+# ╠═826d739c-1663-4e4e-8fa6-24a784c728fe
 # ╟─e726f9e3-c606-434e-a783-923f7aab4ee0
 # ╟─046f1bfa-7b8c-42ba-8c2d-c8cbf237ad14
 # ╟─936a6fcb-a87b-4089-866d-927290a1dd38
-# ╟─21d0d337-f5a5-4cef-878b-f760757e4ed5
+# ╠═21d0d337-f5a5-4cef-878b-f760757e4ed5
 # ╟─09331abb-3273-4784-909a-94947cdc5f70
 # ╟─88cfae16-6a8a-48ff-8d66-4d78025340cb
 # ╟─00000000-0000-0000-0000-000000000001
