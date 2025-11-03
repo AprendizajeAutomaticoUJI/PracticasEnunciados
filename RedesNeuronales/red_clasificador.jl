@@ -12,7 +12,7 @@ TableOfContents(title = "Contenidos", depth = 1)
 
 # ╔═╡ 760e80d0-e51a-4e76-83c5-da136380ab32
 md"""
-# Red neuronal para regresión multivariada
+# Red neuronal para clasificación
 
 Óscar Belmonte Fernández - IR2130 Aprendizaje Automático
 
