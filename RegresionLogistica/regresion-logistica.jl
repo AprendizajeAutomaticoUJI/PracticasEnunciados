@@ -23,7 +23,8 @@ Grado en Inteligencia Robótica - Universitat Jaume I (UJI)
 Resource(
 	"https://belmonte.uji.es/imgs/uji.jpg",
 	:alt => "Logo UJI",
-	:width => 400
+	:width => 400,
+	:style => "display: block; margin: auto;",
 )
 
 # ╔═╡ 2b49f649-dbe0-4b47-a7cf-18901e406159
@@ -221,7 +222,7 @@ PlutoUI = "~0.7.68"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.6"
+julia_version = "1.11.7"
 manifest_format = "2.0"
 project_hash = "bf4a620d59312f26669e73defd791ec8e864a597"
 

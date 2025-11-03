@@ -1,25 +1,25 @@
 ### A Pluto.jl notebook ###
-# v0.20.17
+# v0.20.19
 
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 0bd06eba-87db-11f0-2fd9-a1c82ad71b09
-using PlutoUI # Interactividad con Pluto
+# ╔═╡ b26a0738-b89e-11f0-2b16-a98168892685
+using PlutoUI
 
-# ╔═╡ 8814a209-1c19-467a-933d-10469506c51c
-TableOfContents(title="Contenidos", depth=1)
+# ╔═╡ 1aec551f-cbc5-4dc7-8bd4-8a29d56af21f
+TableOfContents(title = "Contenidos", depth = 1)
 
-# ╔═╡ 78c37d96-3c62-4159-97f0-48f81b5b6019
+# ╔═╡ 760e80d0-e51a-4e76-83c5-da136380ab32
 md"""
-# Regresión lineal multivariada
+# Red neuronal para regresión multivariada
 
 Óscar Belmonte Fernández - IR2130 Aprendizaje Automático
 
 Grado en Inteligencia Robótica - Universitat Jaume I (UJI)
 """
 
-# ╔═╡ 67e10dea-e182-49b5-ab5d-77c849d26872
+# ╔═╡ 80e917d5-fdb5-4e0f-aa76-e5240d258818
 Resource(
 	"https://belmonte.uji.es/imgs/uji.jpg",
 	:alt => "Logo UJI",
@@ -27,187 +27,211 @@ Resource(
 	:style => "display: block; margin: auto;",
 )
 
-# ╔═╡ be6e3754-b43f-42d5-9015-6bdb9bdfcb81
+# ╔═╡ 45282827-4532-4a29-9048-c28c9a806e03
 md"""
 # Introducción
 
-En esta práctica vas a crear un modelo lineal con varias variables
-independientes para estimar una única variable dependiente.
+En esta práctica vas a crear y entrenar una rede neuronal para realizar tareas de clasificación.
 
-El modelo deberá dar una estimación de la edad de cierta variedad de caracoles de mar a partir de sus características. Los datos los puedes encontrar [aquí](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.data), junto con una [descripción](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.names) de cada una de las características de las muestras.
+Vas autilizar el mismo conjunto de datos que en las prácticas de regresión logística y SVM, lo que te permitirá comparar los resultados obtenidos entre los modelos. El modelo deberá predecir si un tumor es benigno o maligno a partir de ciertas características.
+
+Los datos los puedes descargar desde el [github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/biopsy.csv) de la asignatura.
 
 Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este libro lo debes subir a aulavirtual para su evaluación.
-
-!!! important "Recordatorio"
-
-	Recordad escribir al principio de libro vuestros nombres.
 """
 
-# ╔═╡ 3393a7cd-f802-4363-bfae-f53536dd8c7a
+# ╔═╡ 60f1614b-9995-4604-abeb-390a473df3d7
 md"""
 # Duración de la práctica
 
-A esta práctica le vamos a dedicar dos sesiones de prácticas.
+A esta práctica le vamos a dedicar una sesión.
 """
 
-# ╔═╡ b1b6fdc6-eb9c-4d6d-a77e-c689fbe9c2b0
+# ╔═╡ f61ff3a9-3666-4ab9-8c1d-55606a6e72bd
 md"""
 # Objetivos de aprendizaje
 
-1. Examinar un conjunto de datos multivariado y valorar su utilidad.
-1. Construir un modelo de regresión lineal multivariado.
-1. Adaptar el modelo para mejorar su rendimiento.
-1. Plantear posibles mejoras del modelo.
-1. Emplear el esquema de **Proyectos de Aprendizaje Automático** como guía de desarrollo de la práctica.
+* Crear una red neuronal seleccionando el número de capas, de neuronas en cada capa, las funciones de activación y los optimizadores.
+* Evaluar el rendimiento de la red para distintas combinaciones de los parámetros anteriores.
+* Comparar los resultados con los resultados de la práctica de regresión losgística y Máquinas de Soporte Vectorial (SVM).
 """
 
-# ╔═╡ fa751513-2fc7-49aa-a581-4dc2071041ad
+# ╔═╡ 509cf98c-9507-4a86-b924-3f6d75825349
 md"""
 # Metodología
 
-Vas a seguir una adaptación de los pasos que has visto en la presentación de 
-teoría **Proyectos de Aprendizaje Automático**.
+Vas a seguir una adaptación de los pasos que has visto en la presentación de teoría **Proyectos de Aprendizaje Automático**.
 
 1. Definir el problema y tener una imagen del conjunto.
 1. Obtener los datos.
 1. Explorar los datos para conocerlos mejor.
 1. Preparar los datos para que muestren los patrones.
-1. Crear un primera versión del algoritmo.
+1. Crear un primera versión del modelo.
 1. Ajustar el modelo para obtener una solución.
 1. Presentar la solución.
 1. Crítica del trabajo y posibles mejoras.
 """
 
-# ╔═╡ 87095e1f-dd7d-4762-a1bc-bd4d25a04b17
+# ╔═╡ b5cf7dda-6b01-428a-b37c-533e1e5c41b5
 md"""
 # Objetivo
 
-Crear un modelo de regresión lineal multivariado para estimar el valor de una 
-variable dependiente a partir de un conjunto de otras variables.
+Utilizar una red neuronal para clasificar un tumor como **benigno** o **maligno** a partir de un conjunto de características.
 """
 
-# ╔═╡ 0398e1bc-aff1-4e63-886b-04d344d7aedf
+# ╔═╡ 49e47a6d-61a3-4a85-afb1-b6182b608fbe
 md"""
 # Tareas a realizar
 
-Vas a seguir una adaptación del esquema que se presentó en el tema de
-**Proyectos de Aprendizaje Automático** para el desarrollo de la práctica.
+Vas a seguir una adaptación del esquema que se presentó en el tema de **Proyectos de Aprendizaje Automático**.
 """
 
-# ╔═╡ cb208fa1-fe6a-4b95-86b9-54fbf3a073b6
+# ╔═╡ be55aa9f-3949-49aa-9f4f-8bed90450613
 md"""
 ## Definir el problema y tener un imagen del conjunto
 
-El problema en este caso es calcular la edad de un caracol de mar a partir 
-del resto de variables del conjunto de datos.
-
-La edad de uno de estos caracoles se calcula como el número de anillos + 1.5.
+Describe, con tus propias palabras cuál es el problema que se pretende resolver y cuál es su alcance.
 """
 
-# ╔═╡ 22438c9e-c473-489a-93fb-68d527a39fa9
+# ╔═╡ 8c33d736-ba62-4b7a-9b33-8f55ec457083
 md"""
 ## Obtener los datos
 
-Los datos los puedes descargar desde el repositorio 
-[Datos Abalone](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.data).
+Los datos los puedes descargar desde el [github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/biopsy.csv) de la asignatura.
 
-[Aquí](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.names) tienes una descripción de los datos.
+Esta es la descripción de las cada una de las características de los datos:
 
-Es interesante tener un primer contacto con los datos utilizando el método **describe(df)**.
+- **ID**: Código de identificación (puede que no sea único). 
+- **V1**: Grosor de los lóbulos. 
+- **V2**: Uniformidad del tamaño celular. 
+- **V3**: Uniformidad de la forma celular. 
+- **V4**: Adhesión marginal. 
+- **V5**: Tamaño de la célula epitelial única. 
+- **V6**: Núcleos desnudos (faltan 16 valores). 
+- **V7**: Cromatina lisa. 
+- **V8**: Nucleolos normales. 
+- **V9**: Mitosis. 
+- **clase**: "benigno" o "maligno".  
+
+Revisa y limpia los datos si es necesario.
 """
 
-# ╔═╡ e8269a48-36e1-4aa3-a279-ef14497349a5
+# ╔═╡ 2a3798cc-8249-40b7-81f3-e144fbe0f259
 md"""
 ## Explorar los datos para conocerlos mejor
 
-En este caso cada una de las muestras tiene más de dos características, por lo 
-que no puedes representar todos los datos en un único gráfico. Sin embargo, sí 
-que puede representar gráficas con pares de características para tener una 
-primera idea de sus dependencias, para ello es muy útil el método **pairplot** del paquete **PairPlots**:
+Recuerda que con **describe(df)** puedes obtener una descripción inicial de los datos.
 
-```julia
-using PairPlots
+Ya has trabajado con estos datos. A modo de recordatorio, presta atención a la característica V6. A los datos faltantes se lea ha asignado el valor "NA", por eso esta columna es de tipo String.
 
-pairplot(df) # df es un DataFrame
-```
-
-¿Cuál es la correlación del resto de variables con el número de anillos?
+Además, todos los datos están en el mismo rango (1, 10), inicialmente no hace falta normalizar los datos para trabajar con redes neuronales.
 """
 
-# ╔═╡ a16c7d5c-65fd-4939-b908-0a232bdee53a
+# ╔═╡ 540867cd-2e2c-4e06-affe-ec3c866e97ce
 md"""
 ## Preparar lo datos para que muestren los patrones
 
-Este conjunto de datos ya está *limpio*, no hay datos faltantes, afortunadamente no tenemos que preparar los datos.
+A partir de los resultados del apartado anterior, prepara los datos para resaltar los posibles patrones en ellos. En particular, elimina los datos con :V6 igual a "NA", y cambia el tipo de los datos de esta columna, para ello puedes utilizar:
 
-Utiliza el paquete [**MLJ**](https://juliaml.ai/) para dividir el conjunto inicial de los datos en dos subconjuntos, el conjunto de datos de entrenamiento (80% de los datos), y el conjunto de datos de prueba (20% restante de los datos). Recuerda especificar el origen de generación de los datos aleatorios para que tus experimentos sean reproducibles.
+```.julia
+datos[!, :V6] = parse.(Int64, datos[!, :V6])
+```
+
+Utiliza el paquete [**MLJ**](https://juliaml.ai/) para dividir el conjunto inicial de datos en dos subconjuntos, el conjunto de datos de entrenamiento (80% de los datos), y el conjunto de datos de prueba (20% restante de los datos). Recuerda especificar el origen de generación de los datos aleatorios para que tus experimentos sean reproducibles.
 
 ```julia
-using MLJ
+using MLJ: partition
 
 entrenamiento, prueba = partition(df, 0.8, rng = 69)
 ```
 
+Para entrenar la red neuronal necesitas que cada muestra de entrenamiento sea la columna de una matriz (Matrix), y que la variable a estimar sea un vector fila. Además el tipo de datos debe ser Float32. Puedes conseguir esto con:
+
+```julia
+X = Float32.(Matrix(df))' # df es un DataFrame. Atención a símbolo '
+```
+
+Típicamente, cuando se utilizan redes neuronales para tareas de clasificación, lo capa de salida tiene tantas neuronas como posibles clases, por lo que tenemos que adaptar nuestras variables de salida para que sigan este criterio, para ello utilizados la *codificación one hot*, que en nuestro caso es:
+
+```julia
+y = Int32.(Flux.onehotbatch(df.clase, ("benigno", "maligno")))
+```
 """
 
-# ╔═╡ 4f5228a1-226f-4d04-886c-757f87c385eb
+# ╔═╡ 7d840bdb-e838-4b0b-869b-c37706600107
 md"""
 ## Crear una primera versión del modelo
 
-Vamos utilizar el paquete [**MLJ**](https://juliaml.ai/) para construir el modelo y analizar los resultados.
+Vas a utilizar el paquete Julia [**Flux**](https://fluxml.ai/) para crear y entrenar una red neuronal.
 
-Esta es una pequeña receta de cómo trabajar con MLJ:
+Crea una red neuronal sencilla para comprobar que la puedes entrenar sin problemas. Prueba con una única capa de 5 neuronas y función de activación *sigmoid*, y como optimizador usa **Descent**. En el caso de clasificación, la última capa debe ser una capa softmax:
 
-```julia
-using MLJ # No hace falta esta línea, es para que quede más claro el mecanismo.
-using GLM # El modelo que vamos a utilizar, LinearRegressor, está en este paquete.
-using MLJGLMInterface # Nos hace falta para «envolver» el modelo LinearRegressor y 					  # que MLJ pueda trabajar con él.
-
-LinearRegresor = @load LinearRegressor pkg=GLM # Cargamos el modelo.
-regresor = LinearRegresor() # Creamos una instancia.
-maquina = machine(regresor, X, y) |> fit! # Creamos la máquina y la entrenamos.
-predict_mean(maquina, Xprueba) # Hacemos predicciones.
-```
-
-Elige una medida de error para poder comparar las predicciones del modelo.
-
-¿Los residuos siguen una distribución normal? Representa la distribución de los 
-residuos y el diagrama qq-plot.
+Recuerda que en Flux una red se define con:
 
 ```julia
-using StatsPlots
-
-qqnorm(residuos)
+modelo = Chain(
+	# Aquí cada una de las capas
+	softmax
+)
 ```
+
+La función de pérdidas que debes utilizar en el caso de clasificación es *log cross entropy**:
+
+```julia
+perdidas(modelo, X, y) = Flux.Losses.logitbinarycrossentropy(modelo(X), y)
+```
+
+Para entrenar el modelo, el bucle básico es:
+
+```julia
+with_logger(NullLogger()) do
+	for _ in 1:1000
+		Flux.train!(perdidas, modelo, [(X, y)], optimizador)
+	end
+end
+```
+
+Utiliza el conjunto de datos de prueba para evaluar el rendimiento del modelo. Para ello tendras que desacer la coficación *one hot* y comparar con las etiquetas reales de cada muestra, esto lo puedes hacer con:
+
+```julia
+predicciones = Flux.onecold(modelo(X), ("benigno", "maligno"))
+```
+
+Donde X debe ser tu conjunto de prueba.
 """
 
-# ╔═╡ b8146f5c-758d-48da-a402-eaa2c1da7fda
+# ╔═╡ 4b8e3d7f-e76d-46f2-8df6-be75b1349b8d
 md"""
 ## Ajustar el modelo para mejorar la solución
 
-¿Cómo puedes mejorar los resultados del modelo?
+Una vez que hayas comprobado que puedes entrenar el modelo y evaluar su rendimiento mostrando los resultados como una matriz de confusión, intenta mejorar el rendimiento de la red, para ello:
 
-Una pista, utiliza la variable categórica *Sex* para ajustar los datos por sexo.
+1. Añade más capas a la red.
+1. Varía el número de neuronas en las capas.
+1. Varía la función de activación.
+1. Varía el optimizador.
+1. Cualquier otro detalle que se te ocurra.
 """
 
-# ╔═╡ 7150628a-03ae-4413-bec9-8d89c5912879
+# ╔═╡ ed5abb40-7911-4f8f-932e-95d5cd80abfa
 md"""
 ## Presentar la solución
 
-Mejora tu libro de notas para que sea descriptivo del trabajo que has realizado. 
-Presta especial atención a la sección de conclusiones.
+Haz un pequeño estudio comentando las conclusiones a las que has llegado con todos los experimentos que has hecho.
 """
 
-# ╔═╡ 5e42450f-9eea-49a0-bdfd-b3ccfdef14c9
+# ╔═╡ 910422e6-7e79-4264-ade8-cdafc5accef3
 md"""
 ## Críticas al trabajo y posibles mejoras
+
+Compara los reesultados que has obtenido con el resultado que obtuviste en las prácticas de regresión logística y SVM.
 
 ¿Qué crees que se puede mejorar del trabajo que has hecho?
 
 Haz un listado de posibles mejoras, y ordénalas por importancia de mayor a menor.
 """
 
-# ╔═╡ 6a108dc3-c902-4701-bbc2-d36ca5bcb203
+# ╔═╡ 24be8b13-9d05-4329-8025-9fb84d41cdf4
 md"""
 # Entrega
 
@@ -226,7 +250,7 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
-PlutoUI = "~0.7.68"
+PlutoUI = "~0.7.71"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -235,7 +259,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.11.7"
 manifest_format = "2.0"
-project_hash = "bf4a620d59312f26669e73defd791ec8e864a597"
+project_hash = "0c76a76c3ac8f04e01e91e0dc955aee1f9d81e4a"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -410,9 +434,9 @@ version = "1.11.0"
 
 [[deps.PlutoUI]]
 deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "Downloads", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
-git-tree-sha1 = "ec9e63bd098c50e4ad28e7cb95ca7a4860603298"
+git-tree-sha1 = "8329a3a4f75e178c11c1ce2342778bcbbbfa7e3c"
 uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
-version = "0.7.68"
+version = "0.7.71"
 
 [[deps.PrecompileTools]]
 deps = ["Preferences"]
@@ -517,24 +541,24 @@ version = "17.4.0+2"
 """
 
 # ╔═╡ Cell order:
-# ╟─0bd06eba-87db-11f0-2fd9-a1c82ad71b09
-# ╟─8814a209-1c19-467a-933d-10469506c51c
-# ╟─78c37d96-3c62-4159-97f0-48f81b5b6019
-# ╟─67e10dea-e182-49b5-ab5d-77c849d26872
-# ╠═be6e3754-b43f-42d5-9015-6bdb9bdfcb81
-# ╟─3393a7cd-f802-4363-bfae-f53536dd8c7a
-# ╟─b1b6fdc6-eb9c-4d6d-a77e-c689fbe9c2b0
-# ╟─fa751513-2fc7-49aa-a581-4dc2071041ad
-# ╟─87095e1f-dd7d-4762-a1bc-bd4d25a04b17
-# ╟─0398e1bc-aff1-4e63-886b-04d344d7aedf
-# ╟─cb208fa1-fe6a-4b95-86b9-54fbf3a073b6
-# ╠═22438c9e-c473-489a-93fb-68d527a39fa9
-# ╠═e8269a48-36e1-4aa3-a279-ef14497349a5
-# ╠═a16c7d5c-65fd-4939-b908-0a232bdee53a
-# ╠═4f5228a1-226f-4d04-886c-757f87c385eb
-# ╟─b8146f5c-758d-48da-a402-eaa2c1da7fda
-# ╟─7150628a-03ae-4413-bec9-8d89c5912879
-# ╠═5e42450f-9eea-49a0-bdfd-b3ccfdef14c9
-# ╠═6a108dc3-c902-4701-bbc2-d36ca5bcb203
+# ╟─b26a0738-b89e-11f0-2b16-a98168892685
+# ╟─1aec551f-cbc5-4dc7-8bd4-8a29d56af21f
+# ╟─760e80d0-e51a-4e76-83c5-da136380ab32
+# ╟─80e917d5-fdb5-4e0f-aa76-e5240d258818
+# ╟─45282827-4532-4a29-9048-c28c9a806e03
+# ╟─60f1614b-9995-4604-abeb-390a473df3d7
+# ╟─f61ff3a9-3666-4ab9-8c1d-55606a6e72bd
+# ╟─509cf98c-9507-4a86-b924-3f6d75825349
+# ╟─b5cf7dda-6b01-428a-b37c-533e1e5c41b5
+# ╟─49e47a6d-61a3-4a85-afb1-b6182b608fbe
+# ╟─be55aa9f-3949-49aa-9f4f-8bed90450613
+# ╟─8c33d736-ba62-4b7a-9b33-8f55ec457083
+# ╟─2a3798cc-8249-40b7-81f3-e144fbe0f259
+# ╟─540867cd-2e2c-4e06-affe-ec3c866e97ce
+# ╟─7d840bdb-e838-4b0b-869b-c37706600107
+# ╟─4b8e3d7f-e76d-46f2-8df6-be75b1349b8d
+# ╟─ed5abb40-7911-4f8f-932e-95d5cd80abfa
+# ╟─910422e6-7e79-4264-ade8-cdafc5accef3
+# ╟─24be8b13-9d05-4329-8025-9fb84d41cdf4
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
