@@ -4,22 +4,22 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 9e48c088-8ccb-11f0-13de-59949736e3cf
-using PlutoUI # Interactividad con Pluto
+# ╔═╡ 924604ca-b892-11f0-27de-9dac36120a13
+using PlutoUI
 
-# ╔═╡ 1d352265-df23-4c93-af53-ebdc0e937f75
-TableOfContents(title="Contenidos", depth=1)
+# ╔═╡ b41c3d0a-4afb-4c1a-8cf2-a49026d4fe03
+TableOfContents(title = "Contenidos", depth = 1)
 
-# ╔═╡ e4948e5c-2afd-4b7c-9b38-853aa17c2356
+# ╔═╡ 7a6003d0-5f9a-4f6f-b7b9-ef7dbb6fc50a
 md"""
-# Regresión logística
+# Red neuronal para regresión multivariada
 
 Óscar Belmonte Fernández - IR2130 Aprendizaje Automático
 
 Grado en Inteligencia Robótica - Universitat Jaume I (UJI)
 """
 
-# ╔═╡ 78d8f43e-e2d0-43a9-b3f3-c8fcf21c4e93
+# ╔═╡ a67e7786-ab9b-468f-88eb-3214fb0716cb
 Resource(
 	"https://belmonte.uji.es/imgs/uji.jpg",
 	:alt => "Logo UJI",
@@ -27,37 +27,38 @@ Resource(
 	:style => "display: block; margin: auto;",
 )
 
-# ╔═╡ 2b49f649-dbe0-4b47-a7cf-18901e406159
+# ╔═╡ 050732a5-4fcc-4b19-bb7a-c9a283ab247b
 md"""
 # Introducción
 
-En esta práctica vas a utilizar el algoritmo de Regresión Logística para clasificar tumores como benignos o malignos.
+En esta práctica vas a crear y entrenar una red neuronal para realizar tareas de regresión multivariada.
 
-El modelo deberá predecir si un tumor es benigno o maligno a partir de ciertas características.
+Vas autilizar el mismo conjunto de datos que en la práctica de regresión lineal multivariada, lo que te permitirá comparar los resultados obtenidos con los dos modelos.
 
-Los datos los puedes descargar desde el [github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/biopsy.csv) de la asignatura.
+El modelo deberá dar una estimación de la edad de cierta variedad de caracoles de mar a partir de sus características. Los datos los puedes encontrar [aquí](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.data), junto con una [descripción](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.names) de cada una de las características de las muestras.
+
+Vas a pobar varias arquitecturas de red, funciones de activación y optimizadores para ver cómo varian los resultados al elegir unos u otros.
 
 Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este libro lo debes subir a aulavirtual para su evaluación.
 """
 
-# ╔═╡ b33523a2-f4e9-4e6a-a6b4-a7498658da04
+# ╔═╡ 80aa6cad-5f03-43f1-9675-ed011cdba495
 md"""
 # Duración de la práctica
 
-A esta práctica le vamos a dedicar una sesión de prácticas.
+A esta práctica le vamos a dedicar una sesión.
 """
 
-# ╔═╡ 089707e4-0a2b-4d69-a121-eedf27d20e60
+# ╔═╡ 73c1101c-513d-4e76-af58-18ddf5646e2c
 md"""
 # Objetivos de aprendizaje
 
-* Emplear el algoritmo de Regresión Logística para realizar tareas de clasificación.
-* Estimar el rendimiento de la Regresión Logística para el conjunto de datos proporcionado.
-* Decidir cuál es el mejor conjunto de características para construir el clasificador.
-* Argumentar las decisiones realizadas.
+* Crear una red neuronal seleccionando el número de capas, de neuronas en cada capa, las funciones de activación y los optimizadores.
+* Evaluar el rendimiento de la red para distintas combinaciones de los parámetros anteriores.
+* Comparar los resultados con los resultados de la práctica de regresión lineal multivariada.
 """
 
-# ╔═╡ f2595321-d4bc-4303-9d7d-afaec016e845
+# ╔═╡ fdf5fe1a-552c-4c67-a275-14e0cb52fdc7
 md"""
 # Metodología
 
@@ -73,140 +74,166 @@ Vas a seguir una adaptación de los pasos que has visto en la presentación de t
 1. Crítica del trabajo y posibles mejoras.
 """
 
-# ╔═╡ 31b2c9a5-183c-43bc-955d-0845730b0bd0
+# ╔═╡ 4e831c3d-59d3-4dfd-beb9-2aace5b8e95d
 md"""
 # Objetivo
 
-Utilizar la regresión logística para clasificar un tumor como **benigno** o **maligno** a partir de un conjunto de características.
+Utilizar una red neuronal para realizar una regresión multivariada, que estime el valor de una variable dependiente a partir de un conjunto de variables predictoras.
 """
 
-# ╔═╡ a82a2083-b49f-4eaf-a2d7-0bcef7e4b8fe
+# ╔═╡ cb85ee6c-789c-4d5a-90e3-25b1f240e376
 md"""
 # Tareas a realizar
 
 Vas a seguir una adaptación del esquema que se presentó en el tema de **Proyectos de Aprendizaje Automático**.
 """
 
-# ╔═╡ 181df0df-f5e5-4e8b-8cbf-4a6cb45bcab2
+# ╔═╡ eeb7b986-f1d4-40f2-b72b-dec522133c37
 md"""
 ## Definir el problema y tener un imagen del conjunto
 
 Describe, con tus propias palabras cuál es el problema que se pretende resolver y cuál es su alcance.
 """
 
-# ╔═╡ 811e429b-1227-41df-a6ed-dd28710aaad4
+# ╔═╡ cb51ae51-4144-4894-b41a-d72d87911384
 md"""
 ## Obtener los datos
 
-Los datos los puedes descargar desde el [github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/biopsy.csv) de la asignatura.
+Los datos los puedes descargar desde el repositorio 
+[Datos Abalone](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.data).
 
-Esta es la descripción de las cada una de las características de los datos:
-
-- **ID**: Código de identificación (puede que no sea único). 
-- **V1**: Grosor de los lóbulos. 
-- **V2**: Uniformidad del tamaño celular. 
-- **V3**: Uniformidad de la forma celular. 
-- **V4**: Adhesión marginal. 
-- **V5**: Tamaño de la célula epitelial única. 
-- **V6**: Núcleos desnudos (faltan 16 valores). 
-- **V7**: Cromatina lisa. 
-- **V8**: Nucleolos normales. 
-- **V9**: Mitosis. 
-- **clase**: "benigno" o "maligno".  
-
-Revisa y limpia los datos si es necesario.
+[Aquí](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/refs/heads/master/Abalone/abalone.names) tienes una descripción de los datos.
 """
 
-# ╔═╡ f848c022-e460-40a5-ab8e-aeccb3c35437
+# ╔═╡ a13cd61b-0dc5-4c98-ab56-0118a6a3bcb4
 md"""
 ## Explorar los datos para conocerlos mejor
 
-Realiza un análisis exploratorio de los datos, para ello, visualiza tus datos, haz un análisis estadístico de ellos y extrae conclusiones.
+Aunque ya conoces los datos, esto es un recordatorio de lo que hiciste en la práctica de regresión lineal multivariada.
 
-Presta atención a la característica V6. A los datos faltantes se lea ha asignado el valor "NA", por eso esta columna es de tipo String.
+Puedes obtener una descripción del conjunto de datos con:
+
+```julia
+describe(df) # df es el nombre del conjunto de datos
+```
+
+Comprobarás que este conjunto de datos ya está *limpio*, no hay datos faltantes, afortunadamente no tenemos que preparar los datos.
+
+En este caso cada una de las muestras tiene más de dos características, por lo que no puedes representar todos los datos en un único gráfico. Sin embargo, sí que puede representar gráficas con pares de características para tener una  primera idea de sus dependencias, para ello es muy útil el método **pairplot** del paquete **PairPlots**:
+
+```julia
+using PairPlots
+
+pairplot(df) # df es un DataFrame
+```
+
+¿Cuál es la correlación del resto de variables con el número de anillos?
 """
 
-# ╔═╡ d1689d4a-28d5-47e6-b21e-892793d4780c
+# ╔═╡ 71f8bec7-66aa-495a-9e78-c66e94b37573
 md"""
 ## Preparar lo datos para que muestren los patrones
 
-A parir de los resultados del apartado anterior, prepara los datos para resaltar los posibles patrones en ellos. En particular, elimina los datos con V6 igual a "NA", y cambia el tipo de los datos de esta columna, para ello puedes utilizar:
+Utiliza el paquete [**MLJ**](https://juliaml.ai/) para dividir el conjunto inicial de los datos en dos subconjuntos, el conjunto de datos de entrenamiento (80% de los datos), y el conjunto de datos de prueba (20% restante de los datos). Recuerda especificar el origen de generación de los datos aleatorios para que tus experimentos sean reproducibles.
 
-```.julia
-datos[!, :V6] = parse.(Int64, datos[!, :V6])
+```julia
+using MLJ: partition
+
+entrenamiento, prueba = partition(df, 0.8, rng = 69)
+```
+
+Para entrenar la red neuronal necesitas que cada muestra de entrenamiento sea la columna de una matriz (Matrix), y que la variable a estimar sea un vector fila. Además el tipo de datos debe ser Float32. Puedes conseguir esto con:
+
+```julia
+X = Float32.(Matrix(df))' # df es un DataFrame. Atención a símbolo '
+```
+
+Además, ya sabes que las redes neuronales dan mejores resultados si todos los datos están en la misma escala. En nuestro caso, exccepto el número de anillos, todos los valores tienen una escala razonablemente parecida. Para normalizar el número de anillos del tal modo que (min, max) -> (0, 1) puedes usar el paquete Normalization del sigiente modo:
+
+```julia
+using Normalization
+
+normalizador = fit(MinMax, y) # Creamos el normalizador
+ynormalizada = normalize(y, normalizador)
+
+# Para deshacer la normalizacion
+y = denormalize(y, normalizador)
 ```
 """
 
-# ╔═╡ aa01f04e-9d46-4802-98dd-915383da8a00
-md"""
-Por otro lado, el modelo [LogisticClassifier](https://juliaai.github.io/MLJ.jl/dev/models/LogisticClassifier_MLJLinearModels/) del paquete [MLJ](https://juliaml.ai/), indica que en los datos de entrenamiento espera que *X* sea un DataFrame con columnas de valores Continuous, y que *y* sea un vector de OrderedFactor.
-
-Puedes consultar los tipos de tu data frame y la conversión que entre tipos de Julia y tipos de MLJ (scitype) se va a aplicacar con la función:
-
-```.julia
-schema(df)
-```
-
-Para cambiar los tipos del DataFrame a los tipos que MLJ espera, utiliza:
-
-```.julia
-convert(df, :Simbolo1 => scitype, :Simbolo2 => scitype,...)
-
-convert(df, :V1 => Continuous, ..., :clase => OrderedFactor)
-```
-"""
-
-# ╔═╡ 97aa8b88-436e-4932-8ae3-142c2545adcd
+# ╔═╡ 76ce7bf5-595d-4bc2-9afa-06f3468f9a12
 md"""
 ## Crear una primera versión del modelo
 
-Con la información que has conseguido del análisis realizado, crea un primera versión de un regresor logístico y estima cuál es su precisión (accuracy), entropía cruzada (log_loss), muestra la matriz de confusión, la curva roc y calcula el area bajo la curva:
+Vas a utilizar el paquete Julia [**Flux**](https://fluxml.ai/) para crear y entrenar una red neuronal.
 
-```.julia
-predicciones = predict_mode(maquina, Xprueba)
-confusion_matrix(predicciones, yprueba)
+Crea una red neuronal sencilla para comprobar que la puedes entrenar sin problemas. Prueba con una única capa de 5 neuronas y función de activación *sigmoid*, como optimizador usa **Descent**, y como función de pérdidas mse (está definida en **Flux.Losses**).
 
-## También puedes hacer, el método predict devuelve más información
-predicciones = predict(maquina, Xprueba)
-confusion_matrix(mode.(prediccion), yprueba)
-roc_curve(predicciones, yprueba)
-auc(predicciones, yprueba)
+Recuerda que en Flux una red se define con:
+
+```julia
+modelo = Chain(
+	# Aquí cada una de las capas
+)
 ```
+
+Para entrenar el modelo, el bucle básico es:
+
+```julia
+with_logger(NullLogger()) do
+	for _ in 1:1000
+		Flux.train!(perdidas, modelo, [(X, y)], optimizador)
+	end
+end
+```
+
+Utiliza el conjunto de datos de prueba para evaluar el rendimiento del modelo.
 """
 
-# ╔═╡ fce036e3-cbac-4e17-bf99-077e4532dafa
+# ╔═╡ 2441ad82-6e4b-4753-b8c0-067f781ac16f
 md"""
-## Ajustar el modelo para obtener una solución
+## Ajustar el modelo para mejorar la solución
 
-Con la información que has conseguido del análisis realizado, crea un primera versión de un regresor logístico que utilice una única característica. ¿Qué característica vas a utilizar? ¿Por qué has elegido esa característica?
+Una vez que hayas comprobado que puedes entrenar el modelo y evaluar su rendimiento con *mse*, intenta mejorarla; para ello:
 
-Amplia el número de características a dos. ¿Cuál es la segunda característica que has seleccionado? ¿Por qué la has seleccionado? ¿Han mejorado los resultados? ¿Cuanto han mejorado?
+1. Añade más capas a la red.
+1. Varía el número de neuronas en las capas.
+1. Varía la función de activación.
+1. Varía el optimizador.
+1. Cualquier otro detalle que se te ocurra.
 
-Siguen ampliando el número de características justificando el orden de inclusión. ¿Cómo mejoran los resultados al ir añadiendo nuevas características?
 
-Haz una análisis detallado de todas las conclusiones que has extraído.
 """
 
-# ╔═╡ 1d8c85dc-a009-441f-9bdc-c87b713bd208
+# ╔═╡ 287150a6-d363-42fc-80d5-7acf7a952bbc
 md"""
 ## Presentar la solución
 
-Presenta los principales conclusiones y respalda cada conclusión con los análisis que has realizado.
+Haz un pequeño estudio comentando las conclusiones a las que has llegado con todos los experimentos que has hecho.
 """
 
-# ╔═╡ b9a95e32-b469-424e-a501-9a6ad8634da2
+# ╔═╡ c25b0b57-8792-42fa-8c7d-0f6e86c05336
 md"""
-## Critica del trabajo y posibles mejoras
+## Críticas al trabajo y posibles mejoras
 
-A la luz de todos los resultados que has obtenido, ¿cómo podrías seguir mejorando tu modelo?
+Compara los reesultados que has obtenido con el resultado que obtuviste en la práctia de regresión lineal multivariada.
+
+¿Qué crees que se puede mejorar del trabajo que has hecho?
+
+Haz un listado de posibles mejoras, y ordénalas por importancia de mayor a menor.
 """
 
-# ╔═╡ cc81a964-0f7a-41aa-84d2-79e4e0dc2347
+# ╔═╡ 2fdd4b04-f3cc-4d62-b97c-050c0ef89b69
 md"""
 # Entrega
-El trabajo que debes entregar para su corrección es el libro de notas de Pluto (fichero con extensión jl).
 
-Súbelo a aulavirtual. No es necesario que los suban todos los miembros del equipo, basta con que lo suba uno de vosotros.
+El trabajo que debes entregar para su corrección es el libro de notas 
+(fichero con extensión jl).
+
+Súbelo a aulavirtual. No es necesario que lo suban todos los miembros del 
+equipo, basta con que lo suba uno de vosotros.
+
+Recuerda escribir al inicio del fichero el nombre de los miembros de la pareja.
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -215,7 +242,7 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
-PlutoUI = "~0.7.68"
+PlutoUI = "~0.7.71"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -224,7 +251,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.11.7"
 manifest_format = "2.0"
-project_hash = "bf4a620d59312f26669e73defd791ec8e864a597"
+project_hash = "0c76a76c3ac8f04e01e91e0dc955aee1f9d81e4a"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -399,9 +426,9 @@ version = "1.11.0"
 
 [[deps.PlutoUI]]
 deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "Downloads", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
-git-tree-sha1 = "ec9e63bd098c50e4ad28e7cb95ca7a4860603298"
+git-tree-sha1 = "8329a3a4f75e178c11c1ce2342778bcbbbfa7e3c"
 uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
-version = "0.7.68"
+version = "0.7.71"
 
 [[deps.PrecompileTools]]
 deps = ["Preferences"]
@@ -506,25 +533,24 @@ version = "17.4.0+2"
 """
 
 # ╔═╡ Cell order:
-# ╟─9e48c088-8ccb-11f0-13de-59949736e3cf
-# ╟─1d352265-df23-4c93-af53-ebdc0e937f75
-# ╟─e4948e5c-2afd-4b7c-9b38-853aa17c2356
-# ╟─78d8f43e-e2d0-43a9-b3f3-c8fcf21c4e93
-# ╟─2b49f649-dbe0-4b47-a7cf-18901e406159
-# ╟─b33523a2-f4e9-4e6a-a6b4-a7498658da04
-# ╟─089707e4-0a2b-4d69-a121-eedf27d20e60
-# ╟─f2595321-d4bc-4303-9d7d-afaec016e845
-# ╟─31b2c9a5-183c-43bc-955d-0845730b0bd0
-# ╟─a82a2083-b49f-4eaf-a2d7-0bcef7e4b8fe
-# ╟─181df0df-f5e5-4e8b-8cbf-4a6cb45bcab2
-# ╟─811e429b-1227-41df-a6ed-dd28710aaad4
-# ╟─f848c022-e460-40a5-ab8e-aeccb3c35437
-# ╟─d1689d4a-28d5-47e6-b21e-892793d4780c
-# ╟─aa01f04e-9d46-4802-98dd-915383da8a00
-# ╟─97aa8b88-436e-4932-8ae3-142c2545adcd
-# ╟─fce036e3-cbac-4e17-bf99-077e4532dafa
-# ╟─1d8c85dc-a009-441f-9bdc-c87b713bd208
-# ╟─b9a95e32-b469-424e-a501-9a6ad8634da2
-# ╟─cc81a964-0f7a-41aa-84d2-79e4e0dc2347
+# ╟─924604ca-b892-11f0-27de-9dac36120a13
+# ╟─b41c3d0a-4afb-4c1a-8cf2-a49026d4fe03
+# ╟─7a6003d0-5f9a-4f6f-b7b9-ef7dbb6fc50a
+# ╟─a67e7786-ab9b-468f-88eb-3214fb0716cb
+# ╟─050732a5-4fcc-4b19-bb7a-c9a283ab247b
+# ╟─80aa6cad-5f03-43f1-9675-ed011cdba495
+# ╟─73c1101c-513d-4e76-af58-18ddf5646e2c
+# ╟─fdf5fe1a-552c-4c67-a275-14e0cb52fdc7
+# ╟─4e831c3d-59d3-4dfd-beb9-2aace5b8e95d
+# ╟─cb85ee6c-789c-4d5a-90e3-25b1f240e376
+# ╟─eeb7b986-f1d4-40f2-b72b-dec522133c37
+# ╟─cb51ae51-4144-4894-b41a-d72d87911384
+# ╟─a13cd61b-0dc5-4c98-ab56-0118a6a3bcb4
+# ╟─71f8bec7-66aa-495a-9e78-c66e94b37573
+# ╟─76ce7bf5-595d-4bc2-9afa-06f3468f9a12
+# ╟─2441ad82-6e4b-4753-b8c0-067f781ac16f
+# ╟─287150a6-d363-42fc-80d5-7acf7a952bbc
+# ╟─c25b0b57-8792-42fa-8c7d-0f6e86c05336
+# ╟─2fdd4b04-f3cc-4d62-b97c-050c0ef89b69
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.19
+# v0.20.17
 
 using Markdown
 using InteractiveUtils
@@ -528,13 +528,13 @@ version = "17.4.0+2"
 # ╟─87095e1f-dd7d-4762-a1bc-bd4d25a04b17
 # ╟─0398e1bc-aff1-4e63-886b-04d344d7aedf
 # ╟─cb208fa1-fe6a-4b95-86b9-54fbf3a073b6
-# ╟─22438c9e-c473-489a-93fb-68d527a39fa9
-# ╟─e8269a48-36e1-4aa3-a279-ef14497349a5
-# ╟─a16c7d5c-65fd-4939-b908-0a232bdee53a
-# ╟─4f5228a1-226f-4d04-886c-757f87c385eb
+# ╠═22438c9e-c473-489a-93fb-68d527a39fa9
+# ╠═e8269a48-36e1-4aa3-a279-ef14497349a5
+# ╠═a16c7d5c-65fd-4939-b908-0a232bdee53a
+# ╠═4f5228a1-226f-4d04-886c-757f87c385eb
 # ╟─b8146f5c-758d-48da-a402-eaa2c1da7fda
 # ╟─7150628a-03ae-4413-bec9-8d89c5912879
-# ╟─5e42450f-9eea-49a0-bdfd-b3ccfdef14c9
-# ╟─6a108dc3-c902-4701-bbc2-d36ca5bcb203
+# ╠═5e42450f-9eea-49a0-bdfd-b3ccfdef14c9
+# ╠═6a108dc3-c902-4701-bbc2-d36ca5bcb203
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

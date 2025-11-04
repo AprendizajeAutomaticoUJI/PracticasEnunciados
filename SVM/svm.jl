@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.8
+# v0.20.19
 
 using Markdown
 using InteractiveUtils
@@ -23,7 +23,8 @@ Grado en Inteligencia Robótica - Universitat Jaume I (UJI)
 Resource(
 	"https://belmonte.uji.es/imgs/uji.jpg",
 	:alt => "Logo UJI",
-	:width => 400
+	:width => 400,
+	:style => "display: block; margin: auto;",
 )
 
 # ╔═╡ 4485a081-49d6-4445-bc53-095428a8a05d
@@ -225,7 +226,7 @@ PlutoUI = "~0.7.68"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.6"
+julia_version = "1.11.7"
 manifest_format = "2.0"
 project_hash = "bf4a620d59312f26669e73defd791ec8e864a597"
 
