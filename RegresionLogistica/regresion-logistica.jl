@@ -124,6 +124,8 @@ md"""
 Realiza un análisis exploratorio de los datos, para ello, visualiza tus datos, haz un análisis estadístico de ellos y extrae conclusiones.
 
 Presta atención a la característica V6. A los datos faltantes se lea ha asignado el valor "NA", por eso esta columna es de tipo String.
+
+También puedes comprobar que el conjunto de datos está desbalaceado, hay más datos de la clase «benigno» que de la clase «maligno».
 """
 
 # ╔═╡ d1689d4a-28d5-47e6-b21e-892793d4780c
@@ -155,11 +157,9 @@ convert(df, :Simbolo1 => scitype, :Simbolo2 => scitype,...)
 convert(df, :V1 => Continuous, ..., :clase => OrderedFactor)
 ```
 
-También pudes comprobar que el conjunto de datos está desbalaceado, hay más datos 
-
 Además, a partir del conjunto original, debes crear dos conjuntos, una para entrenar el modelo y otro para hacer pruebas, como el conjunto de datos está desbalanceado, debes estratificar la partición de los datos, es decir, tomar del cojunto original la misma proporción de datos de las dos clases (en este caso tenemos sólo dos).
 
-Esto lo pudes conseguir del siguiente modo:
+Esto lo puedes conseguir del siguiente modo:
 
 ```.julia
 using MLJ
@@ -208,7 +208,7 @@ Con la información que has conseguido del análisis realizado, crea una primera
 
 Amplia el número de características a dos. ¿Cuál es la segunda característica que has seleccionado? ¿Por qué la has seleccionado? ¿Han mejorado los resultados? ¿Cuanto han mejorado?
 
-Siguen ampliando el número de características justificando el orden de inclusión. ¿Cómo mejoran los resultados al ir añadiendo nuevas características?
+Finalmente, añade todas las características. ¿Cómo mejoran los resultados al ir añadiendo nuevas características?
 
 Haz una análisis detallado de todas las conclusiones que has extraído.
 """
