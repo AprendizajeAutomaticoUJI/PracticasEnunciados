@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.19
+# v0.20.8
 
 using Markdown
 using InteractiveUtils
@@ -154,6 +154,20 @@ convert(df, :Simbolo1 => scitype, :Simbolo2 => scitype,...)
 
 convert(df, :V1 => Continuous, ..., :clase => OrderedFactor)
 ```
+
+También pudes comprobar que el conjunto de datos está desbalaceado, hay más datos 
+
+Además, a partir del conjunto original, debes crear dos conjuntos, una para entrenar el modelo y otro para hacer pruebas, como el conjunto de datos está desbalanceado, debes estratificar la partición de los datos, es decir, tomar del cojunto original la misma proporción de datos de las dos clases (en este caso tenemos sólo dos).
+
+Esto lo pudes conseguir del siguiente modo:
+
+```.julia
+using MLJ
+
+partition(df, 0.8, rng = 69, stratify = df.clase, shuffle = true)
+```
+
+donde df es el nombre de tu DataFrame y df.clase es el vector que contiene información de las clases del conjunto de datos
 """
 
 # ╔═╡ 97aa8b88-436e-4932-8ae3-142c2545adcd
@@ -172,13 +186,25 @@ confusion_matrix(mode.(prediccion), yprueba)
 roc_curve(predicciones, yprueba)
 auc(predicciones, yprueba)
 ```
+
+Aunque el conjunto de datos tienen suficientes muestras, es interesante realizar una validación cruzada, generando varios experimentos y promediando los resultados. Esto se puede realizar de una manera muy sencialla del siguiente modo:
+
+```.julia
+evaluate!(
+	maquina,
+	resampling = StratifiedCV(nfolds = 5, rng = 69),
+	measures = [log_loss, accuracy],
+)
+```
+
+donde **nfolds** es el número de experimentos que vas a realizar
 """
 
 # ╔═╡ fce036e3-cbac-4e17-bf99-077e4532dafa
 md"""
 ## Ajustar el modelo para obtener una solución
 
-Con la información que has conseguido del análisis realizado, crea un primera versión de un regresor logístico que utilice una única característica. ¿Qué característica vas a utilizar? ¿Por qué has elegido esa característica?
+Con la información que has conseguido del análisis realizado, crea una primera versión de un regresor logístico que utilice una única característica. ¿Qué característica vas a utilizar? ¿Por qué has elegido esa característica?
 
 Amplia el número de características a dos. ¿Cuál es la segunda característica que has seleccionado? ¿Por qué la has seleccionado? ¿Han mejorado los resultados? ¿Cuanto han mejorado?
 
