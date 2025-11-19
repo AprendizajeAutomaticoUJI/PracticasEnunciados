@@ -38,7 +38,7 @@ Los datos los puedes descargar desde el [github](https://raw.githubusercontent.c
 
 El conjunto de datos es el mismo que has utilizado en la práctica de regresión logística, de modo que puedes comparar los resultados obtenidos por los dos modelos.
 
-Vas a crear un libro de notas de Python para desarrollar la práctica. Este libro lo debes subir a aulavirtual para su evaluación.
+Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este libro lo debes subir a aulavirtual para su evaluación.
 """
 
 # ╔═╡ 6c61593b-7418-4a02-a029-60a014bde464
