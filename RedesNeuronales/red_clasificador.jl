@@ -142,19 +142,19 @@ Utiliza el paquete [**MLJ**](https://juliaml.ai/) para dividir el conjunto inici
 ```julia
 using MLJ: partition
 
-entrenamiento, prueba = partition(df, 0.8, rng = 69)
+entrenamiento, prueba = partition(DataFrame, 0.8, rng = 69)
 ```
 
 Para entrenar la red neuronal necesitas que cada muestra de entrenamiento sea la columna de una matriz (Matrix), y que la variable a estimar sea un vector fila. Además el tipo de datos debe ser Float32. Puedes conseguir esto con:
 
 ```julia
-X = Float32.(Matrix(df))' # df es un DataFrame. Atención al símbolo '
+X = Float32.(Matrix(DataFrame))' # Atención al símbolo '
 ```
 
 Típicamente, cuando se utilizan redes neuronales para tareas de clasificación, lo capa de salida tiene tantas neuronas como posibles clases, por lo que tenemos que adaptar nuestras variables de salida para que sigan este criterio, para ello utilizados la *codificación one hot*, que en nuestro caso es:
 
 ```julia
-y = Int32.(Flux.onehotbatch(df.clase, ("benigno", "maligno")))
+y = Int32.(Flux.onehotbatch(DataFrame.clase, ("benigno", "maligno")))
 ```
 """
 
