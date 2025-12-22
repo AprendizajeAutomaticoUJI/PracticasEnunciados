@@ -13,6 +13,9 @@ using PlutoTeachingTools
 # ╔═╡ 9bce1c4f-050f-48b7-977d-c92dcce4f7eb
 TableOfContents(title="Contenidos", depth=1)
 
+# ╔═╡ 86559088-487c-4fce-a226-96dc4c07a9fc
+imagenes = "https://belmonte.uji.es/Docencia/IR2130/Teoria/AprendizajePorRefuerzo/Imagenes/";
+
 # ╔═╡ a0e19c16-d03f-11f0-b6de-c7536e08b67c
 md"""
 # Aprendizaje por Refuerzo
@@ -44,6 +47,11 @@ md"""
 # Duración de la práctica
 
 A esta práctica le vamos a dedicar una sesión.
+
+!!! danger "Esta práctica no se entrega"
+	Esta práctica no tiene entrega.
+
+	El objetivo es que tengas una primera aproximación con el aprendizaje por refuerzo con Julia.
 """
 
 # ╔═╡ 77c12d2f-9567-40e2-b48f-14f4c8d0b6a3
@@ -78,11 +86,23 @@ using StaticArrays
 ```
 """
 
+# ╔═╡ 4f22c30f-22a4-4583-b6be-e5cdbe2d260c
+md"""
+# Definición del entorno
+"""
+
+# ╔═╡ f5570c7d-b746-4c4c-8196-821a1c65e765
+Resource(
+	imagenes * "frozen_lake.png",
+	:alt => "Lago helado",
+	:style => "display: block; margin: auto;",
+)
+
 # ╔═╡ b403959f-81ea-4a6e-95cb-dae040793304
 md"""
 # Definición del entorno
 
-Para crear el lago helado que hemos utilizado en prácticas necesitamos indicar:
+Para crear el lago helado que hemos utilizado en teoría necesitamos indicar:
 
 1. El tamaño del lago.
 1. Las recompensas de cada estado.
@@ -161,8 +181,8 @@ simulate(simulador, entorno, politica, SVector(1,4))
 
 # ╔═╡ 02ddfd12-f114-431b-b7c5-8c283ca0654e
 Resource(
-	"https://belmonte.uji.es/Docencia/IR2130/Practicas/AprendizajePorRefuerzo/simulacion.gif",
-	:alt => "Logo UJI",
+	"https://belmonte.uji.es/Docencia/IR2130/Practicas/AprendizajePorRefuerzo/Imagenes/simulacion.gif",
+	:alt => "Simulación lago helado 4x4",
 	:width => 400,
 	:style => "display: block; margin: auto;",
 )
@@ -636,27 +656,30 @@ version = "17.7.0+0"
 """
 
 # ╔═╡ Cell order:
-# ╠═4f398a75-d3b5-4737-8d2d-d7dd9175467f
-# ╠═6a0d9078-fe9e-4263-b4b5-57476200112b
-# ╠═9bce1c4f-050f-48b7-977d-c92dcce4f7eb
-# ╠═a0e19c16-d03f-11f0-b6de-c7536e08b67c
-# ╠═31674476-f661-42a7-af34-26c825da1db4
-# ╠═c84b4cd3-a5c3-46b8-a790-d3edd08aa221
-# ╠═0971106b-5943-4777-9efe-93123e212565
-# ╠═77c12d2f-9567-40e2-b48f-14f4c8d0b6a3
-# ╠═850130b5-a553-4e65-a29a-0e67ff17eead
-# ╠═b403959f-81ea-4a6e-95cb-dae040793304
-# ╠═0730f9b3-96ca-49e2-9179-84d011b4fc1f
-# ╠═a4342ae4-14a2-4f0e-b995-a2675288afb8
-# ╠═16fb3b57-946c-405a-8b8d-db1a723c0c60
-# ╠═b4d86c5f-f0ff-404a-8114-8b8ab1e3e2b3
-# ╠═02ddfd12-f114-431b-b7c5-8c283ca0654e
-# ╠═cc3ddc15-f0c0-4ace-99b5-d11e7bd95708
-# ╠═d0c2dd28-3983-4049-b1f1-199e044d5042
-# ╠═bb351c3f-eab1-47b1-b09c-e37163bc9ab6
-# ╠═8495e7df-f200-4676-b4d0-d6cf826ff00f
-# ╠═5dc488e2-3482-4a3d-9627-2dad6f2b4668
-# ╠═f2ddf5c0-23f4-4308-b1e6-efe19e2b8f54
-# ╠═78b2a341-8536-46a8-b0f8-7d07ab0c265f
+# ╟─4f398a75-d3b5-4737-8d2d-d7dd9175467f
+# ╟─6a0d9078-fe9e-4263-b4b5-57476200112b
+# ╟─9bce1c4f-050f-48b7-977d-c92dcce4f7eb
+# ╟─86559088-487c-4fce-a226-96dc4c07a9fc
+# ╟─a0e19c16-d03f-11f0-b6de-c7536e08b67c
+# ╟─31674476-f661-42a7-af34-26c825da1db4
+# ╟─c84b4cd3-a5c3-46b8-a790-d3edd08aa221
+# ╟─0971106b-5943-4777-9efe-93123e212565
+# ╟─77c12d2f-9567-40e2-b48f-14f4c8d0b6a3
+# ╟─850130b5-a553-4e65-a29a-0e67ff17eead
+# ╟─4f22c30f-22a4-4583-b6be-e5cdbe2d260c
+# ╟─f5570c7d-b746-4c4c-8196-821a1c65e765
+# ╟─b403959f-81ea-4a6e-95cb-dae040793304
+# ╟─0730f9b3-96ca-49e2-9179-84d011b4fc1f
+# ╟─a4342ae4-14a2-4f0e-b995-a2675288afb8
+# ╟─16fb3b57-946c-405a-8b8d-db1a723c0c60
+# ╟─b4d86c5f-f0ff-404a-8114-8b8ab1e3e2b3
+# ╟─02ddfd12-f114-431b-b7c5-8c283ca0654e
+# ╟─cc3ddc15-f0c0-4ace-99b5-d11e7bd95708
+# ╟─d0c2dd28-3983-4049-b1f1-199e044d5042
+# ╟─bb351c3f-eab1-47b1-b09c-e37163bc9ab6
+# ╟─8495e7df-f200-4676-b4d0-d6cf826ff00f
+# ╟─5dc488e2-3482-4a3d-9627-2dad6f2b4668
+# ╟─f2ddf5c0-23f4-4308-b1e6-efe19e2b8f54
+# ╟─78b2a341-8536-46a8-b0f8-7d07ab0c265f
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
