@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.19
+# v1.0.3
 
 using Markdown
 using InteractiveUtils
@@ -51,7 +51,7 @@ Paquetes a utilizar
 md"""
 # Introducción
 
-En esta práctica vas a familiarizarte con el lenguaje de programación Julia y con el entorno de desarrollo de libros de notas Pluto.
+En esta práctica vas a familiarizarte con el lenguaje de programación Julia y con el entorno de desarrollo de cuadernos Pluto.
 """
 
 # ╔═╡ 6ea6788b-2a99-4926-9a3f-76f126cc1746
@@ -60,7 +60,7 @@ md"""
 
 1. Conocer las características del lenguaje de programación Julia.
 1. Conocer el sistema de paquetes en Julia.
-1. Crear un primer libro de notas con Pluto.
+1. Crear un primer cuaderno con Pluto.
 """
 
 # ╔═╡ ac2c34c8-5b0c-4886-a72f-7d46ae8e93e5
@@ -314,6 +314,22 @@ Un vector fila se define del siguiente modo:
 # ╔═╡ 291a83af-695d-4092-b5b0-b7802e57feb5
 w = [1 2 3]
 
+# ╔═╡ 4969cc95-4683-43ab-8f5c-8c88393a260e
+md"""
+Puedo acceder a los elementos del vector a través de un índice. Los índices de los vectores (y matrices) en Julia empiezan en 1.
+
+Por ejemplo, para extraer el segundo elemento del vector:
+"""
+
+# ╔═╡ d904354e-15fc-42fd-ad08-74b277b1f227
+md"""
+!!! info "Importante"
+	Los índices de vectores y matrices empiezan en 1.
+"""
+
+# ╔═╡ 99e19842-9f47-4530-b061-18095dfef828
+w[2]
+
 # ╔═╡ ceee8188-b782-4973-acda-1f0fa7776251
 md"""
 Un vector columna se define como:
@@ -322,13 +338,57 @@ Un vector columna se define como:
 # ╔═╡ 985df0cf-7d90-4946-b4f3-b4aa5c8ff1d0
 v = [1, 2, 3]
 
+# ╔═╡ acf6153e-e885-44d4-9ae2-966acb292003
+md"""
+De nuevo, para extraer un elemento utilizo un índice, teniendo en cuenta que le primer índice es el 1:
+"""
+
+# ╔═╡ 05f28546-69fe-429e-8d7a-6376b68f222f
+v[3]
+
+# ╔═╡ 23ab9dff-c052-43fd-8969-c529385ad769
+md"""
+Para extraer el primer elemento también puede utilizar el índice **start** y para el último **end**.
+"""
+
+# ╔═╡ 2718ade8-816c-484e-85d9-61076e021417
+v[1] == v[begin]
+
+# ╔═╡ 4284033d-b4da-4469-9e5b-fced8b8318aa
+v[3] == v[end]
+
 # ╔═╡ b63bf834-0e8a-4256-881f-7c833854f006
 md"""
 Si multiplicamos un vector fila por un vector columna obtenemos un número:
 """
 
+# ╔═╡ f284e651-35df-4d54-9e93-00edd2215064
+md"""
+El número de elementos en un vector la puedo obtener con la función **length**
+"""
+
+# ╔═╡ c3c811a1-5ac3-44f3-9baa-6e428721d800
+length(v)
+
+# ╔═╡ 82bdb9d2-fc13-48cb-a526-8d6a2b94f4b9
+md"""
+Para la multiplicación entre vectores o entre vectores y matrices se utiliza el operador *
+"""
+
 # ╔═╡ 709550c2-f1a3-435c-b12c-392ff0cb1cdf
 w * v
+
+# ╔═╡ c549c943-a68d-4403-922a-b129e66c70ea
+md"""
+!!! danger "Cuidado"
+	El tipo del resultado no es un número real es un vector con un único elemento, la pista son los corchetes.
+"""
+
+# ╔═╡ 47b95302-b9a0-47d0-bd3f-eec33b368df2
+typeof(w * v)
+
+# ╔═╡ a0014d74-d209-456b-88ff-093fb0fe11ce
+(w * v)[1]
 
 # ╔═╡ da178ede-538c-4f81-a9b1-37ad877006a0
 md"""
@@ -338,18 +398,21 @@ Si multiplicamos un vector columna por un vector fila obtenemos una matriz:
 # ╔═╡ cac2e919-57ce-4928-ab9b-d0c3f2505d08
 v * w
 
-# ╔═╡ 61634d4a-c260-49d3-a692-f33ee1326fa3
+# ╔═╡ 99df621a-8399-4d51-a460-339166551913
 md"""
-!!! danger "Cuidado!!!"
-	Los índices en Julia empiezan en 1.
+Podemos obtener el tamaño de una matriz con la función **size**:
 """
 
-# ╔═╡ 582fe7c8-add9-47a6-9e05-26d308f07099
-# v[0] # Error
-v[1] # Primer elemento
+# ╔═╡ 9dbdfa5a-87fb-4cd1-972a-13facb70cd50
+size(v * w)
 
-# ╔═╡ 7f2dae36-59c1-48c3-b6d3-e01254a759f2
-v[end] # Último elemento
+# ╔═╡ 47a75418-f6a6-43b4-a986-1565c590a598
+md"""
+La función length me devolverá el número de elementos en la matriz:
+"""
+
+# ╔═╡ 2d396fc9-910b-46ed-89e1-909f8e8745fd
+length(v * w)
 
 # ╔═╡ 087c52bf-abd3-445c-ba82-275a4b748dcf
  md"""
@@ -398,12 +461,7 @@ Si queremos sumar elemento a elemento de dos matrices:
 """
 
 # ╔═╡ 8760e35d-3f2c-4d3b-9925-9eb780ce5218
-m .+ m'
-
-# ╔═╡ 0432cf26-3512-4cfe-9b5f-58c4a9e181f9
-md"""
-Veremos más sobre el operador de **broadcasting** (el punto en .+) más adelante.
-"""
+m + m'
 
 # ╔═╡ bda972e1-f11d-434f-9226-e1a017aaa321
 md"""
@@ -482,11 +540,27 @@ Este mecanismo se conoce con el nombre del **multiple dispatch**, una misma func
 Por curiosidad echa un vistazo a los métodos definidos de la funcion +.
 """
 
+# ╔═╡ c5ee82c9-fbea-4a09-b89c-2414846e62f4
+md"""
+Finalmente, si la función se puede escribir en una sólo línea la podemos escribir así:
+"""
+
+# ╔═╡ c682f3f0-da11-4392-97b0-e78353721de2
+incrementa(a) = a + 1
+
+# ╔═╡ e22e5241-e8a2-41a1-84f9-98b8a123416e
+md"""
+Y la utilizamos como cualquier otra función:
+"""
+
+# ╔═╡ 8b4ded86-2e0e-4cf9-b507-855ee93b8617
+incrementa(5)
+
 # ╔═╡ c1d30003-4150-44a1-9507-3fba0606ecda
 md"""
 ## Programación funcional
 
-Todo en Julia son funciones, las funciones son el ladrillo básico en programación en Julia.
+Todo en Julia son funciones, las funciones son el ladrillo básico de la programación en Julia.
 
 Podemos tener funciones que reciben como argumento otras funciones; o funciones que devuelven funciones.
 """
@@ -504,6 +578,14 @@ aplica(1, 2, suma)
 
 # ╔═╡ 4fd1b774-b784-4e58-a54c-7fab4276969a
 resta(a, b) = a - b
+
+# ╔═╡ 0a6d782d-927a-4671-87d0-00b8a0a5415f
+md"""
+Y podmeos hacer lo mismo que con la función suma:
+"""
+
+# ╔═╡ b8cfa050-da50-4e4b-b7d5-35b0c8c01816
+aplica(1, 2, resta)
 
 # ╔═╡ 28333c0b-ac46-4278-8f94-cec6590fc2d7
 md"""
@@ -533,7 +615,8 @@ El operador de broadcasting es muy útil cuando trabajamos con vectores y querem
 """
 
 # ╔═╡ c6be9611-2bac-4f0a-9e3f-ea90a205484b
-operacion(x) = x^2 + 2x + 3 # Fíjate en que no hemos escrito el símbolo de multiplicación entre el 2 y la «x»;)
+operacion(x) = x^2 + 2x + 3 # Fíjate en que no hemos escrito el símbolo de
+									# multiplicación entre el 2 y la «x»;)
 
 # ╔═╡ fe8d51f9-356d-4d2b-820e-6b2059162dba
 operacion([1, 2, 3]) # Obtenemos un error
@@ -548,7 +631,7 @@ operacion.([1, 2, 3])
 
 # ╔═╡ 90ec341d-a232-4675-8049-b69569724791
 md"""
-## Comprenhension
+## Comprehension
 
 Podemos crear vectores a partir de datos iterables con la siguient sintaxis
 """
@@ -665,7 +748,8 @@ También podemos añadir nuevas columnas al **DataFrame**:
 """
 
 # ╔═╡ 21b5e94f-a7b7-405d-bad6-0abecd0771cd
-datos[!, :heightweight] = datos[:, :height] .* datos[:, :weight]
+# datos[!, :heightweight] = datos[:, :height] .* datos[:, :weight]
+datos.heightweight = datos[:, :height] .* datos[:, :weight]
 
 # ╔═╡ 7be7355c-2fd1-4ba3-b55d-c7fb1861708a
 md"""
@@ -689,7 +773,7 @@ Podemos visualizar el gráfio de una función anónima
 """
 
 # ╔═╡ 45444b94-b513-4326-b4f0-06cebc6165be
-plot(x -> 2x)
+plot(x -> x^2)
 
 # ╔═╡ 82a7ab45-c99d-4c3a-881d-c1e390062a00
 md"""
@@ -741,9 +825,9 @@ PlutoUI = "~0.7.68"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.7"
+julia_version = "1.12.7"
 manifest_format = "2.0"
-project_hash = "218a47d1458723ca42056d7e063318d8159b7bba"
+project_hash = "dab0f7599de4774a1e8cccaca5c546b5f9c8489a"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -845,7 +929,7 @@ weakdeps = ["Dates", "LinearAlgebra"]
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.1.1+0"
+version = "1.3.1+2"
 
 [[deps.ConcurrentUtilities]]
 deps = ["Serialization", "Sockets"]
@@ -910,7 +994,7 @@ version = "0.9.5"
 [[deps.Downloads]]
 deps = ["ArgTools", "FileWatching", "LibCURL", "NetworkOptions"]
 uuid = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
-version = "1.6.0"
+version = "1.7.0"
 
 [[deps.EpollShim_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -1119,6 +1203,11 @@ git-tree-sha1 = "e95866623950267c1e4878846f848d94810de475"
 uuid = "aacddb02-875f-59d6-b918-886e6ef4fbf8"
 version = "3.1.2+0"
 
+[[deps.JuliaSyntaxHighlighting]]
+deps = ["StyledStrings"]
+uuid = "ac6e5ff7-fb65-4e79-a425-ec3bc9c03011"
+version = "1.12.0"
+
 [[deps.LAME_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "059aabebaa7c82ccb853dd4a0ee9d17796f7e1bc"
@@ -1172,24 +1261,24 @@ uuid = "b27032c2-a3e7-50c8-80cd-2d36dbcbfd21"
 version = "0.6.4"
 
 [[deps.LibCURL_jll]]
-deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll", "Zlib_jll", "nghttp2_jll"]
+deps = ["Artifacts", "LibSSH2_jll", "Libdl", "OpenSSL_jll", "Zlib_jll", "nghttp2_jll"]
 uuid = "deac9b47-8bc7-5906-a0fe-35ac56dc84c0"
-version = "8.6.0+0"
+version = "8.15.0+0"
 
 [[deps.LibGit2]]
-deps = ["Base64", "LibGit2_jll", "NetworkOptions", "Printf", "SHA"]
+deps = ["LibGit2_jll", "NetworkOptions", "Printf", "SHA"]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
 version = "1.11.0"
 
 [[deps.LibGit2_jll]]
-deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll"]
+deps = ["Artifacts", "LibSSH2_jll", "Libdl", "OpenSSL_jll"]
 uuid = "e37daf67-58a4-590a-8e99-b0245dd2ffc5"
-version = "1.7.2+0"
+version = "1.9.0+0"
 
 [[deps.LibSSH2_jll]]
-deps = ["Artifacts", "Libdl", "MbedTLS_jll"]
+deps = ["Artifacts", "Libdl", "OpenSSL_jll"]
 uuid = "29816b5a-b9ab-546f-933c-edad1886dfa8"
-version = "1.11.0+1"
+version = "1.11.3+1"
 
 [[deps.Libdl]]
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
@@ -1234,7 +1323,7 @@ version = "2.41.1+0"
 [[deps.LinearAlgebra]]
 deps = ["Libdl", "OpenBLAS_jll", "libblastrampoline_jll"]
 uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
-version = "1.11.0"
+version = "1.12.0"
 
 [[deps.LogExpFunctions]]
 deps = ["DocStringExtensions", "IrrationalConstants", "LinearAlgebra"]
@@ -1273,7 +1362,7 @@ uuid = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
 version = "0.5.16"
 
 [[deps.Markdown]]
-deps = ["Base64"]
+deps = ["Base64", "JuliaSyntaxHighlighting", "StyledStrings"]
 uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
 version = "1.11.0"
 
@@ -1284,7 +1373,8 @@ uuid = "739be429-bea8-5141-9913-cc70e7f3736d"
 version = "1.1.9"
 
 [[deps.MbedTLS_jll]]
-deps = ["Artifacts", "Libdl"]
+deps = ["Artifacts", "JLLWrappers", "Libdl"]
+git-tree-sha1 = "926c6af3a037c68d02596a44c22ec3595f5f760b"
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
 version = "2.28.6+0"
 
@@ -1305,7 +1395,7 @@ version = "1.11.0"
 
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
-version = "2023.12.12"
+version = "2025.11.4"
 
 [[deps.NaNMath]]
 deps = ["OpenLibm_jll"]
@@ -1315,7 +1405,7 @@ version = "1.1.3"
 
 [[deps.NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
-version = "1.2.0"
+version = "1.3.0"
 
 [[deps.Ogg_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -1326,12 +1416,12 @@ version = "1.3.6+0"
 [[deps.OpenBLAS_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.27+1"
+version = "0.3.29+0"
 
 [[deps.OpenLibm_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "05823500-19ac-5b8b-9628-191a04bc5112"
-version = "0.8.5+0"
+version = "0.8.7+0"
 
 [[deps.OpenSSL]]
 deps = ["BitFlags", "Dates", "MozillaCACerts_jll", "OpenSSL_jll", "Sockets"]
@@ -1340,10 +1430,9 @@ uuid = "4d8831e6-92b7-49fb-bdf8-b643e874388c"
 version = "1.5.0"
 
 [[deps.OpenSSL_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl"]
-git-tree-sha1 = "87510f7292a2b21aeff97912b0898f9553cc5c2c"
+deps = ["Artifacts", "Libdl"]
 uuid = "458c3c95-2e84-50aa-8efc-19380b2a3a95"
-version = "3.5.1+0"
+version = "3.5.6+0"
 
 [[deps.Opus_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -1359,7 +1448,7 @@ version = "1.8.1"
 [[deps.PCRE2_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "efcefdf7-47ab-520b-bdef-62a2eaa19f15"
-version = "10.42.0+1"
+version = "10.44.0+1"
 
 [[deps.Pango_jll]]
 deps = ["Artifacts", "Cairo_jll", "Fontconfig_jll", "FreeType2_jll", "FriBidi_jll", "Glib_jll", "HarfBuzz_jll", "JLLWrappers", "Libdl"]
@@ -1382,7 +1471,7 @@ version = "0.44.2+0"
 [[deps.Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "Random", "SHA", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-version = "1.11.0"
+version = "1.12.1"
 weakdeps = ["REPL"]
 
     [deps.Pkg.extensions]
@@ -1485,7 +1574,7 @@ uuid = "e99dba38-086e-5de3-a5b1-6e4c66e897c3"
 version = "6.8.2+1"
 
 [[deps.REPL]]
-deps = ["InteractiveUtils", "Markdown", "Sockets", "StyledStrings", "Unicode"]
+deps = ["InteractiveUtils", "JuliaSyntaxHighlighting", "Markdown", "Sockets", "StyledStrings", "Unicode"]
 uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 version = "1.11.0"
 
@@ -1567,7 +1656,7 @@ version = "1.2.2"
 [[deps.SparseArrays]]
 deps = ["Libdl", "LinearAlgebra", "Random", "Serialization", "SuiteSparse_jll"]
 uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
-version = "1.11.0"
+version = "1.12.0"
 
 [[deps.StableRNGs]]
 deps = ["Random"]
@@ -1610,7 +1699,7 @@ version = "1.11.0"
 [[deps.SuiteSparse_jll]]
 deps = ["Artifacts", "Libdl", "libblastrampoline_jll"]
 uuid = "bea87d4a-7f5b-5778-9afe-8cc45184846c"
-version = "7.7.0+0"
+version = "7.8.3+2"
 
 [[deps.TOML]]
 deps = ["Dates"]
@@ -1874,7 +1963,7 @@ version = "1.6.0+0"
 [[deps.Zlib_jll]]
 deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
-version = "1.2.13+1"
+version = "1.3.1+2"
 
 [[deps.Zstd_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -1909,7 +1998,7 @@ version = "0.17.4+0"
 [[deps.libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.11.0+0"
+version = "5.15.0+0"
 
 [[deps.libdecor_jll]]
 deps = ["Artifacts", "Dbus_jll", "JLLWrappers", "Libdl", "Libglvnd_jll", "Pango_jll", "Wayland_jll", "xkbcommon_jll"]
@@ -1956,12 +2045,12 @@ version = "1.1.7+0"
 [[deps.nghttp2_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850ede-7688-5339-a07c-302acd2aaf8d"
-version = "1.59.0+0"
+version = "1.64.0+1"
 
 [[deps.p7zip_jll]]
-deps = ["Artifacts", "Libdl"]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
-version = "17.4.0+2"
+version = "17.7.0+0"
 
 [[deps.x264_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -1986,7 +2075,7 @@ version = "1.9.2+0"
 # ╠═0b911bfa-8724-11f0-00a2-8fd8ac4db5fc
 # ╠═4f3d4b25-349d-4976-8df9-3f2cc66b1d1a
 # ╟─28685d13-736b-49b9-a849-1d0ff17bad27
-# ╠═16cc8dd8-874e-4dab-bece-c19393eb692e
+# ╟─16cc8dd8-874e-4dab-bece-c19393eb692e
 # ╟─5fb9ecbb-d12f-4ddc-b3ef-668e400d0fd5
 # ╠═cd2961c0-65a8-486d-9253-bedaed423ea2
 # ╠═06aeb727-e150-4f7c-8935-661b2960195a
@@ -2036,15 +2125,30 @@ version = "1.9.2+0"
 # ╟─816c359c-2230-4d76-aac8-71741d3bc9d0
 # ╟─16e7e834-32ff-426c-9f35-94e52efdfc4b
 # ╠═291a83af-695d-4092-b5b0-b7802e57feb5
+# ╟─4969cc95-4683-43ab-8f5c-8c88393a260e
+# ╟─d904354e-15fc-42fd-ad08-74b277b1f227
+# ╠═99e19842-9f47-4530-b061-18095dfef828
 # ╟─ceee8188-b782-4973-acda-1f0fa7776251
 # ╠═985df0cf-7d90-4946-b4f3-b4aa5c8ff1d0
+# ╟─acf6153e-e885-44d4-9ae2-966acb292003
+# ╠═05f28546-69fe-429e-8d7a-6376b68f222f
+# ╟─23ab9dff-c052-43fd-8969-c529385ad769
+# ╠═2718ade8-816c-484e-85d9-61076e021417
+# ╠═4284033d-b4da-4469-9e5b-fced8b8318aa
 # ╟─b63bf834-0e8a-4256-881f-7c833854f006
+# ╟─f284e651-35df-4d54-9e93-00edd2215064
+# ╠═c3c811a1-5ac3-44f3-9baa-6e428721d800
+# ╟─82bdb9d2-fc13-48cb-a526-8d6a2b94f4b9
 # ╠═709550c2-f1a3-435c-b12c-392ff0cb1cdf
+# ╟─c549c943-a68d-4403-922a-b129e66c70ea
+# ╠═47b95302-b9a0-47d0-bd3f-eec33b368df2
+# ╠═a0014d74-d209-456b-88ff-093fb0fe11ce
 # ╟─da178ede-538c-4f81-a9b1-37ad877006a0
 # ╠═cac2e919-57ce-4928-ab9b-d0c3f2505d08
-# ╟─61634d4a-c260-49d3-a692-f33ee1326fa3
-# ╠═582fe7c8-add9-47a6-9e05-26d308f07099
-# ╠═7f2dae36-59c1-48c3-b6d3-e01254a759f2
+# ╟─99df621a-8399-4d51-a460-339166551913
+# ╠═9dbdfa5a-87fb-4cd1-972a-13facb70cd50
+# ╟─47a75418-f6a6-43b4-a986-1565c590a598
+# ╠═2d396fc9-910b-46ed-89e1-909f8e8745fd
 # ╟─087c52bf-abd3-445c-ba82-275a4b748dcf
 # ╠═a856dd86-3653-4b96-8b10-6972fb79fd66
 # ╟─277c9da5-3adb-4927-a737-9d1763030e86
@@ -2056,7 +2160,6 @@ version = "1.9.2+0"
 # ╠═ab21b257-9795-4f6a-a037-a2f38c221da8
 # ╟─f781b4f4-5516-4179-a424-3c363003e3dd
 # ╠═8760e35d-3f2c-4d3b-9925-9eb780ce5218
-# ╟─0432cf26-3512-4cfe-9b5f-58c4a9e181f9
 # ╟─bda972e1-f11d-434f-9226-e1a017aaa321
 # ╠═537d2afd-17c6-4913-88ac-0236421ef43c
 # ╟─d69794db-5ec8-4d3f-abbe-b84f89ab6a2d
@@ -2072,11 +2175,17 @@ version = "1.9.2+0"
 # ╟─1d64ba22-fa3e-46f1-a5d9-e08c7e1857c2
 # ╟─4f37e0f0-b4b3-4bdf-9201-e358af8889c9
 # ╟─e9f2fd9d-1421-4363-a0b4-f2a2b05810dc
+# ╟─c5ee82c9-fbea-4a09-b89c-2414846e62f4
+# ╠═c682f3f0-da11-4392-97b0-e78353721de2
+# ╟─e22e5241-e8a2-41a1-84f9-98b8a123416e
+# ╠═8b4ded86-2e0e-4cf9-b507-855ee93b8617
 # ╟─c1d30003-4150-44a1-9507-3fba0606ecda
 # ╠═e387e172-e5fd-47ca-b38a-77ba73b444a4
 # ╟─d38452b0-1244-4be6-a5e3-4dd4b2125506
 # ╠═e9f73d40-dcf9-4c5f-a77a-503962139b7b
 # ╠═4fd1b774-b784-4e58-a54c-7fab4276969a
+# ╟─0a6d782d-927a-4671-87d0-00b8a0a5415f
+# ╠═b8cfa050-da50-4e4b-b7d5-35b0c8c01816
 # ╟─28333c0b-ac46-4278-8f94-cec6590fc2d7
 # ╠═95b24ff4-ac4f-4fa2-af5e-026db39725d1
 # ╠═b52d3839-c73f-4d22-88f2-0ee29f699e26
