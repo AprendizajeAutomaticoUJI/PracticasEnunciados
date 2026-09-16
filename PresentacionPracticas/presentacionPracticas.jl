@@ -23,7 +23,7 @@ using CSV # Trabajo con ficheros CSV
 using Plots # Visualiza gráficos
 
 # ╔═╡ 4f3d4b25-349d-4976-8df9-3f2cc66b1d1a
-TableOfContents(title="Contenidos", depth=1)
+TableOfContents(title = "Contenidos", depth = 2)
 
 # ╔═╡ 28685d13-736b-49b9-a849-1d0ff17bad27
 md"""
@@ -633,7 +633,7 @@ operacion.([1, 2, 3])
 md"""
 ## Comprehension
 
-Podemos crear vectores a partir de datos iterables con la siguient sintaxis
+Podemos crear vectores a partir de datos iterables con la siguiente sintaxis
 """
 
 # ╔═╡ 7d59c291-fc19-4e84-b805-35e84077d9c2
@@ -718,6 +718,8 @@ md"""
 
 Existe una gran catidad de paquetes en Julia. Aquí unicamente vamos a ver algunos de los que más vamos a utilizar.
 
+## DataFrames
+
 Vamos a empezar con el paquete [**DataFrames**](https://dataframes.juliadata.org/stable/) que nos permite trabajar con datos en forma de tabla.
 
 Definimos la url desde donde queremos descargar los datos:
@@ -742,6 +744,27 @@ Podemos obtener una descripción de cada una de las columnas del **DataFrame** c
 # ╔═╡ f879d8b3-e3a1-4fd9-b9b2-ef494280700c
 describe(datos)
 
+# ╔═╡ 01e305a4-7110-4028-81a1-4ef7e3e3bb17
+md"""
+Fíjate en que en la primera columna tenemos el nombre de la variable con «:» delante, es un Symbol:
+"""
+
+# ╔═╡ 2f63c469-9005-4b1f-bfe1-875525866221
+typeof(:height)
+
+# ╔═╡ 9173860c-c8db-4aa9-9e85-5171ebd7b857
+md"""
+Vas a utilizar mucho los símbolos cuando trabajes con DataFrames.
+"""
+
+# ╔═╡ 5848c028-4c23-47c5-9ac4-033d58be26ce
+md"""
+Podemos indicar qué describores estadísticos queremos:
+"""
+
+# ╔═╡ ecb67768-a00e-4005-9182-ae60e9033b8f
+describe(datos, :mean, :std)
+
 # ╔═╡ 7e6dbdf8-5d03-4a27-bb54-e9892c755978
 md"""
 También podemos añadir nuevas columnas al **DataFrame**:
@@ -759,13 +782,105 @@ Ahora el **DataFrame** tiene una nueva columna:
 # ╔═╡ 90a69721-404a-4423-a089-e2af30071d9d
 datos
 
+# ╔═╡ b00b54a7-86c6-48f1-9e22-0ff9bb17f538
+md"""
+Podemos seleccionar un subconjunto de las características de este modo:
+"""
+
+# ╔═╡ a994d1bd-e37e-45fa-9054-ecb7d92a2a2b
+datos[:, [:height, :age]]
+
+# ╔═╡ ab3e94c6-f1ff-48c3-ad9d-85a5ee44b56a
+md"""
+O podemos utilizar una función si nos resulta más claro:
+"""
+
+# ╔═╡ c662fad1-c143-465e-b1e1-9e48fa84bd59
+select(datos, [:height, :age])
+
+# ╔═╡ a3676ee3-0c60-4943-9cd2-6b8a7ff4d04d
+md"""
+**select** nos devuelve un nuevo DataFrame sólo con las características seleccionadas.
+
+Si queremos seleccionar filas:
+"""
+
+# ╔═╡ 12f05977-ef07-47a5-9653-4ffc043c0aaf
+datos[[2, 4, 6],:]
+
+# ╔═╡ b1a0944d-ad9d-41f8-8b06-6424dfb1fa5b
+md"""
+También podemos seleccionar las filas cuyas características cumplan cierto criterio, por ejemplo, podemos seleccionar a las personas adultas con la condición de que su edad sea mayor o igual a 18 años:
+"""
+
+# ╔═╡ d75d7157-26f6-48b7-b226-7fab4586e3a7
+datos[datos.age .>= 18, :]
+
+# ╔═╡ 801a79c4-f2ee-48b7-853a-fc297b9fcc56
+md"""
+Fíjate en el operador de broadcasting en la celda anterior. *datos.age* nos devuelve un vector y aplicamos la condición sobre cada uno de los elementos de ese vector.
+
+Podemos incluso selecionar sólo cierta características en el DataFrame resultado:
+"""
+
+# ╔═╡ 2f164c09-47f0-4ee6-8f1a-5894960a0034
+datos[datos.age .>= 18, [:height, :weight]]
+
 # ╔═╡ cc654dcd-d3df-45b1-9536-5721a7e3c37e
 md"""
-Usando el paquete [Plots](https://docs.juliaplots.org/stable/) Podemos visualizar los datos en un gráfico de puntos (scatter plot):
+## Plots
+
+Otro paquete Julia que vas a utilizar mucho es [Plots](https://docs.juliaplots.org/stable/)
+Usando el paquete Plot, podemos visualizar los datos en un gráfico de puntos (scatter plot):
 """
 
 # ╔═╡ f8fd8f42-70af-48dc-922a-e0c6418c0991
 scatter(datos.weight, datos.height)
+
+# ╔═╡ 2c008800-1061-4175-93ce-873ff5e6f900
+md"""
+Para combinar dos gráficos en los mismos ejes cartesianos debemos escribir más de una línea de código:
+"""
+
+# ╔═╡ ef6f33c1-e864-4178-91a0-8c58f0535cb0
+let
+	scatter(datos.weight, datos.height)
+	plot!([10, 60], [75, 175])
+end
+
+# ╔═╡ 007b1ce2-ec7e-4129-aafb-425cd516219f
+md"""
+Fíjate en el símbolo «!» al final del nombre de la función **plot!**, ese símbolo indica que se está modificando el gráfico anterior, es lo mismo que hacer:
+"""
+
+# ╔═╡ 468919c2-9d64-46b6-8487-96d9408b660b
+let
+	tmp = scatter(datos.weight, datos.height)
+	plot(tmp, [10, 60], [75, 175])
+end
+
+# ╔═╡ 0f55a202-4461-4d05-9142-14fef78785f3
+md"""
+Podemos añadir leyendas a los datos, a los ejes y un título al gráfico:
+"""
+
+# ╔═╡ 288bdde6-8fff-461b-93c2-d6210c1422a1
+let
+	scatter(
+		datos.weight,
+		datos.height,
+		title = "Altura frente a peso",
+		xlabel = "Peso (Kg.)",
+		ylabel = "Altura (cm.)",
+		label = "Datos reales",
+		  legend = :bottomright,
+	)
+	plot!(
+		[10, 60],
+		[75, 175],
+		label = "Ajuste",
+	)
+end
 
 # ╔═╡ 7338f4f0-1421-47f9-9a85-a1243391047c
 md"""
@@ -773,15 +888,17 @@ Podemos visualizar el gráfio de una función anónima
 """
 
 # ╔═╡ 45444b94-b513-4326-b4f0-06cebc6165be
-plot(x -> x^2)
+plot(x -> x^2, labels = false)
 
 # ╔═╡ 82a7ab45-c99d-4c3a-881d-c1e390062a00
 md"""
-Y visualizar funciones predefinidas:
+Fíjate en que no hemos tenido que definir el dominio de las equis.
+
+También podemos visualizar funciones predefinidas:
 """
 
 # ╔═╡ d39680df-f47d-420a-8d18-34182de9dcc7
-plot(sin)
+plot(sin, labels = false)
 
 # ╔═╡ 92680b16-8a85-410b-b708-ed179692d023
 md"""
@@ -2222,12 +2339,33 @@ version = "1.9.2+0"
 # ╠═038e1dc9-225d-44cf-8284-3ef2e0e13df2
 # ╟─8dc32ec2-7533-4734-b4e3-18bc1f31a374
 # ╠═f879d8b3-e3a1-4fd9-b9b2-ef494280700c
+# ╟─01e305a4-7110-4028-81a1-4ef7e3e3bb17
+# ╠═2f63c469-9005-4b1f-bfe1-875525866221
+# ╟─9173860c-c8db-4aa9-9e85-5171ebd7b857
+# ╟─5848c028-4c23-47c5-9ac4-033d58be26ce
+# ╠═ecb67768-a00e-4005-9182-ae60e9033b8f
 # ╟─7e6dbdf8-5d03-4a27-bb54-e9892c755978
 # ╠═21b5e94f-a7b7-405d-bad6-0abecd0771cd
 # ╟─7be7355c-2fd1-4ba3-b55d-c7fb1861708a
 # ╠═90a69721-404a-4423-a089-e2af30071d9d
+# ╟─b00b54a7-86c6-48f1-9e22-0ff9bb17f538
+# ╠═a994d1bd-e37e-45fa-9054-ecb7d92a2a2b
+# ╟─ab3e94c6-f1ff-48c3-ad9d-85a5ee44b56a
+# ╠═c662fad1-c143-465e-b1e1-9e48fa84bd59
+# ╟─a3676ee3-0c60-4943-9cd2-6b8a7ff4d04d
+# ╠═12f05977-ef07-47a5-9653-4ffc043c0aaf
+# ╟─b1a0944d-ad9d-41f8-8b06-6424dfb1fa5b
+# ╠═d75d7157-26f6-48b7-b226-7fab4586e3a7
+# ╟─801a79c4-f2ee-48b7-853a-fc297b9fcc56
+# ╠═2f164c09-47f0-4ee6-8f1a-5894960a0034
 # ╟─cc654dcd-d3df-45b1-9536-5721a7e3c37e
 # ╠═f8fd8f42-70af-48dc-922a-e0c6418c0991
+# ╟─2c008800-1061-4175-93ce-873ff5e6f900
+# ╠═ef6f33c1-e864-4178-91a0-8c58f0535cb0
+# ╟─007b1ce2-ec7e-4129-aafb-425cd516219f
+# ╠═468919c2-9d64-46b6-8487-96d9408b660b
+# ╟─0f55a202-4461-4d05-9142-14fef78785f3
+# ╠═288bdde6-8fff-461b-93c2-d6210c1422a1
 # ╟─7338f4f0-1421-47f9-9a85-a1243391047c
 # ╠═45444b94-b513-4326-b4f0-06cebc6165be
 # ╟─82a7ab45-c99d-4c3a-881d-c1e390062a00
