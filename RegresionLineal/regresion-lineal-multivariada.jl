@@ -126,6 +126,12 @@ Es interesante tener un primer contacto con los datos utilizando el método **de
 md"""
 ## Explorar los datos para conocerlos mejor
 
+Puedes obtener un primer análisis de estadística descriptiva con:
+
+```julia
+describe(df)
+```
+
 En este caso cada una de las muestras tiene más de dos características, por lo 
 que no puedes representar todos los datos en un único gráfico. Sin embargo, sí 
 que puede representar gráficas con pares de características para tener una 
@@ -208,6 +214,8 @@ Ahora podemos verificar los tipos de datos de nuevo con la función **schema**, 
 └────────────────┴───────────────┴───────────────────────────────────┘
 ```
 
+Cuando creemos el modelo tendremos que codificar los datos de tipo categórico con One-Hot-Encoding.
+
 Con los tipos de datos correctos podemos dividir el conjunto original en un conjunto de entrenamiento (80% de los datos) y otro de prueba (20% de los datos) de este modo:
 
 ```julia
@@ -230,11 +238,20 @@ using GLM # El modelo que vamos a utilizar, LinearRegressor, está en este paque
 using MLJGLMInterface # Nos hace falta para «envolver» el modelo LinearRegressor y 					  # que MLJ pueda trabajar con él.
 
 LinearRegresor = @load LinearRegressor pkg=GLM # Cargamos el modelo.
-regresor = LinearRegresor() # Creamos una instancia.
-maquina = machine(regresor, X, y) |> fit! # Creamos la máquina y la entrenamos.
+modelo = Standardizer() |> OneHotEncoder() |> LinearRegressor()
+maquina = machine(modelo, X, y) |> fit! # Creamos la máquina y la entrenamos.
 predict_mean(maquina, Xprueba) # Hacemos predicciones.
 ```
 
+Fíjate en que el modelo está formado por una **tubería** de transformaciones:
+
+1. Primero estandarizamos los datos (**Standardizer()**).
+1. Luego codificamos las variables categóricas (Multiclass) con One-Hot-Encoding (**OneHotEncoder()**).
+1. Finalmente, tenemos el regresor lineal (**LinearRegressor()**).
+"""
+
+# ╔═╡ a38359b3-4f78-456d-9926-5179abade580
+md"""
 Elige una medida de error para poder comparar las predicciones del modelo.
 
 ¿Los residuos siguen una distribución normal? Representa la distribución de los 
@@ -607,6 +624,7 @@ version = "17.7.0+0"
 # ╠═5ede8d72-aa54-4543-ae3f-c5331bc1be2e
 # ╠═a16c7d5c-65fd-4939-b908-0a232bdee53a
 # ╠═4f5228a1-226f-4d04-886c-757f87c385eb
+# ╠═a38359b3-4f78-456d-9926-5179abade580
 # ╟─b8146f5c-758d-48da-a402-eaa2c1da7fda
 # ╟─7150628a-03ae-4413-bec9-8d89c5912879
 # ╠═5e42450f-9eea-49a0-bdfd-b3ccfdef14c9
