@@ -43,11 +43,17 @@ Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este libro
 	Recordad escribir al principio de libro vuestros nombres.
 """
 
+# ╔═╡ 873e6f88-89fe-4623-8259-74fa0c4e3e10
+md"""
+!!! danger "Declaración de uso de la IA"
+	Si hace uso de la IA, debes indicar claramente qué fragmentos de código has creado con su ayuda, y también debe incoorparar los prompts que has utilizado. Si no incluyes decaración de uso de la IA y se detecta su uso, la prácticas será calificada como **No Apta**.
+"""
+
 # ╔═╡ 3393a7cd-f802-4363-bfae-f53536dd8c7a
 md"""
 # Duración de la práctica
 
-A esta práctica le vamos a dedicar dos sesiones de prácticas.
+A esta práctica le vamos a dedicar una sesión de prácticas.
 """
 
 # ╔═╡ b1b6fdc6-eb9c-4d6d-a77e-c689fbe9c2b0
@@ -82,7 +88,7 @@ teoría **Proyectos de Aprendizaje Automático**.
 md"""
 # Objetivo
 
-Crear un modelo de regresión lineal multivariado para estimar el valor de una 
+Crear un modelo de regresión lineal multivariada para estimar el valor de una 
 variable dependiente a partir de un conjunto de otras variables.
 """
 
@@ -120,6 +126,12 @@ Es interesante tener un primer contacto con los datos utilizando el método **de
 md"""
 ## Explorar los datos para conocerlos mejor
 
+Puedes obtener un primer análisis de estadística descriptiva con:
+
+```julia
+describe(df)
+```
+
 En este caso cada una de las muestras tiene más de dos características, por lo 
 que no puedes representar todos los datos en un único gráfico. Sin embargo, sí 
 que puede representar gráficas con pares de características para tener una 
@@ -134,17 +146,79 @@ pairplot(df) # df es un DataFrame
 ¿Cuál es la correlación del resto de variables con el número de anillos?
 """
 
+# ╔═╡ 5ede8d72-aa54-4543-ae3f-c5331bc1be2e
+md"""
+!!! info "Importante"
+
+	Dado que los ordenadores de laboratorio tienen un hardware limitado, no utilices en ellos el paquete PairPlots, úsalo sólo en tu propio ordenador.
+"""
+
 # ╔═╡ a16c7d5c-65fd-4939-b908-0a232bdee53a
 md"""
 ## Preparar lo datos para que muestren los patrones
 
 Este conjunto de datos ya está *limpio*, no hay datos faltantes, afortunadamente no tenemos que preparar los datos.
 
-Utiliza el paquete [**MLJ**](https://juliaml.ai/) para dividir el conjunto inicial de los datos en dos subconjuntos, el conjunto de datos de entrenamiento (80% de los datos), y el conjunto de datos de prueba (20% restante de los datos). Recuerda especificar el origen de generación de los datos aleatorios para que tus experimentos sean reproducibles.
+Un paso importante es adaptar los tipos de datos Julia a los tipos de datos con los que trabaja los algoritmos del paquete [**MLJ**](https://juliaml.ai/). Vamos a comprobar los tipos, después de cargar los datos, los tipos Julia y ML que tenemos, para ello utilizamos la función schema(df)
 
 ```julia
 using MLJ
 
+schema(df)
+```
+
+Veras algo como
+
+```shell
+┌────────────────┬────────────┬─────────┐
+│ names          │ scitypes   │ types   │
+├────────────────┼────────────┼─────────┤
+│ Sex            │ Textual    │ String1 │
+│ Length         │ Continuous │ Float64 │
+│ Diameter       │ Continuous │ Float64 │
+│ Height         │ Continuous │ Float64 │
+│ Whole weight   │ Continuous │ Float64 │
+│ Shucked weigth │ Continuous │ Float64 │
+│ Viscera weight │ Continuous │ Float64 │
+│ Shell weight   │ Continuous │ Float64 │
+│ Rings          │ Count      │ Int64   │
+└────────────────┴────────────┴─────────┘
+```
+
+La variable *Sex* está codificada como una cadena (F=Femenino, M=Masculino, I=Infante); y *Rings* está codificada como Int64.
+
+Vamos a hacer un cambio de tipo y convertiremos *Sex* en una variable de tipo *Multiclass* y *Rings* la convertiremos en continua (el resultado de la regresión puede ser un número real). Para ello hacermos:
+
+```julia
+df_coerce = coerce(df,
+				  :Sex => Multiclass,
+				  :Rings => MLJ.Continuous,
+				 )
+```
+
+Ahora podemos verificar los tipos de datos de nuevo con la función **schema**, y obtendremos:
+
+```shell
+┌────────────────┬───────────────┬───────────────────────────────────┐
+│ names          │ scitypes      │ types                             │
+├────────────────┼───────────────┼───────────────────────────────────┤
+│ Sex            │ Multiclass{3} │ CategoricalValue{String1, UInt32} │
+│ Length         │ Continuous    │ Float64                           │
+│ Diameter       │ Continuous    │ Float64                           │
+│ Height         │ Continuous    │ Float64                           │
+│ Whole weight   │ Continuous    │ Float64                           │
+│ Shucked weigth │ Continuous    │ Float64                           │
+│ Viscera weight │ Continuous    │ Float64                           │
+│ Shell weight   │ Continuous    │ Float64                           │
+│ Rings          │ Continuous    │ Float64                           │
+└────────────────┴───────────────┴───────────────────────────────────┘
+```
+
+Cuando creemos el modelo tendremos que codificar los datos de tipo categórico con One-Hot-Encoding.
+
+Con los tipos de datos correctos podemos dividir el conjunto original en un conjunto de entrenamiento (80% de los datos) y otro de prueba (20% de los datos) de este modo:
+
+```julia
 entrenamiento, prueba = partition(df, 0.8, rng = 69)
 ```
 
@@ -164,11 +238,20 @@ using GLM # El modelo que vamos a utilizar, LinearRegressor, está en este paque
 using MLJGLMInterface # Nos hace falta para «envolver» el modelo LinearRegressor y 					  # que MLJ pueda trabajar con él.
 
 LinearRegresor = @load LinearRegressor pkg=GLM # Cargamos el modelo.
-regresor = LinearRegresor() # Creamos una instancia.
-maquina = machine(regresor, X, y) |> fit! # Creamos la máquina y la entrenamos.
+modelo = Standardizer() |> OneHotEncoder() |> LinearRegressor()
+maquina = machine(modelo, X, y) |> fit! # Creamos la máquina y la entrenamos.
 predict_mean(maquina, Xprueba) # Hacemos predicciones.
 ```
 
+Fíjate en que el modelo está formado por una **tubería** de transformaciones:
+
+1. Primero estandarizamos los datos (**Standardizer()**).
+1. Luego codificamos las variables categóricas (Multiclass) con One-Hot-Encoding (**OneHotEncoder()**).
+1. Finalmente, tenemos el regresor lineal (**LinearRegressor()**).
+"""
+
+# ╔═╡ a38359b3-4f78-456d-9926-5179abade580
+md"""
 Elige una medida de error para poder comparar las predicciones del modelo.
 
 ¿Los residuos siguen una distribución normal? Representa la distribución de los 
@@ -529,16 +612,19 @@ version = "17.7.0+0"
 # ╟─78c37d96-3c62-4159-97f0-48f81b5b6019
 # ╟─67e10dea-e182-49b5-ab5d-77c849d26872
 # ╠═be6e3754-b43f-42d5-9015-6bdb9bdfcb81
-# ╟─3393a7cd-f802-4363-bfae-f53536dd8c7a
+# ╠═873e6f88-89fe-4623-8259-74fa0c4e3e10
+# ╠═3393a7cd-f802-4363-bfae-f53536dd8c7a
 # ╟─b1b6fdc6-eb9c-4d6d-a77e-c689fbe9c2b0
 # ╟─fa751513-2fc7-49aa-a581-4dc2071041ad
-# ╟─87095e1f-dd7d-4762-a1bc-bd4d25a04b17
+# ╠═87095e1f-dd7d-4762-a1bc-bd4d25a04b17
 # ╟─0398e1bc-aff1-4e63-886b-04d344d7aedf
 # ╟─cb208fa1-fe6a-4b95-86b9-54fbf3a073b6
 # ╠═22438c9e-c473-489a-93fb-68d527a39fa9
 # ╠═e8269a48-36e1-4aa3-a279-ef14497349a5
+# ╠═5ede8d72-aa54-4543-ae3f-c5331bc1be2e
 # ╠═a16c7d5c-65fd-4939-b908-0a232bdee53a
 # ╠═4f5228a1-226f-4d04-886c-757f87c385eb
+# ╠═a38359b3-4f78-456d-9926-5179abade580
 # ╟─b8146f5c-758d-48da-a402-eaa2c1da7fda
 # ╟─7150628a-03ae-4413-bec9-8d89c5912879
 # ╠═5e42450f-9eea-49a0-bdfd-b3ccfdef14c9
