@@ -234,10 +234,9 @@ Esta es una pequeña receta de cómo trabajar con MLJ:
 
 ```julia
 using MLJ # No hace falta esta línea, es para que quede más claro el mecanismo.
-using GLM # El modelo que vamos a utilizar, LinearRegressor, está en este paquete.
-using MLJGLMInterface # Nos hace falta para «envolver» el modelo LinearRegressor y 					  # que MLJ pueda trabajar con él.
+using MLJLinearModels # Nos hace falta para «envolver» el modelo LinearRegressor y 					  # que MLJ pueda trabajar con él.
 
-LinearRegresor = @load LinearRegressor pkg=GLM # Cargamos el modelo.
+LinearRegresor = @load LinearRegressor pkg = MLJLinearModels # Cargamos el modelo.
 modelo = Standardizer() |> OneHotEncoder() |> LinearRegressor()
 maquina = machine(modelo, X, y) |> fit! # Creamos la máquina y la entrenamos.
 predict_mean(maquina, Xprueba) # Hacemos predicciones.
