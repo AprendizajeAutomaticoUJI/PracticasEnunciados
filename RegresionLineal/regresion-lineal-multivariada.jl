@@ -46,7 +46,7 @@ Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este libro
 # ╔═╡ 873e6f88-89fe-4623-8259-74fa0c4e3e10
 md"""
 !!! danger "Declaración de uso de la IA"
-	Si hace uso de la IA, debes indicar claramente qué fragmentos de código has creado con su ayuda, y también debe incoorparar los prompts que has utilizado. Si no incluyes decaración de uso de la IA y se detecta su uso, la prácticas será calificada como **No Apta**.
+	Si hace uso de la IA, debes indicar claramente qué fragmentos de código has creado con su ayuda, y también debe incorparar los prompts que has utilizado. Si no incluyes decaración de uso de la IA y se detecta su uso, la prácticas será calificada como **No Apta**.
 """
 
 # ╔═╡ 3393a7cd-f802-4363-bfae-f53536dd8c7a
@@ -611,23 +611,23 @@ version = "17.7.0+0"
 # ╟─8814a209-1c19-467a-933d-10469506c51c
 # ╟─78c37d96-3c62-4159-97f0-48f81b5b6019
 # ╟─67e10dea-e182-49b5-ab5d-77c849d26872
-# ╠═be6e3754-b43f-42d5-9015-6bdb9bdfcb81
-# ╠═873e6f88-89fe-4623-8259-74fa0c4e3e10
-# ╠═3393a7cd-f802-4363-bfae-f53536dd8c7a
+# ╟─be6e3754-b43f-42d5-9015-6bdb9bdfcb81
+# ╟─873e6f88-89fe-4623-8259-74fa0c4e3e10
+# ╟─3393a7cd-f802-4363-bfae-f53536dd8c7a
 # ╟─b1b6fdc6-eb9c-4d6d-a77e-c689fbe9c2b0
 # ╟─fa751513-2fc7-49aa-a581-4dc2071041ad
-# ╠═87095e1f-dd7d-4762-a1bc-bd4d25a04b17
+# ╟─87095e1f-dd7d-4762-a1bc-bd4d25a04b17
 # ╟─0398e1bc-aff1-4e63-886b-04d344d7aedf
 # ╟─cb208fa1-fe6a-4b95-86b9-54fbf3a073b6
-# ╠═22438c9e-c473-489a-93fb-68d527a39fa9
-# ╠═e8269a48-36e1-4aa3-a279-ef14497349a5
-# ╠═5ede8d72-aa54-4543-ae3f-c5331bc1be2e
-# ╠═a16c7d5c-65fd-4939-b908-0a232bdee53a
-# ╠═4f5228a1-226f-4d04-886c-757f87c385eb
-# ╠═a38359b3-4f78-456d-9926-5179abade580
+# ╟─22438c9e-c473-489a-93fb-68d527a39fa9
+# ╟─e8269a48-36e1-4aa3-a279-ef14497349a5
+# ╟─5ede8d72-aa54-4543-ae3f-c5331bc1be2e
+# ╟─a16c7d5c-65fd-4939-b908-0a232bdee53a
+# ╟─4f5228a1-226f-4d04-886c-757f87c385eb
+# ╟─a38359b3-4f78-456d-9926-5179abade580
 # ╟─b8146f5c-758d-48da-a402-eaa2c1da7fda
 # ╟─7150628a-03ae-4413-bec9-8d89c5912879
-# ╠═5e42450f-9eea-49a0-bdfd-b3ccfdef14c9
-# ╠═6a108dc3-c902-4701-bbc2-d36ca5bcb203
+# ╟─5e42450f-9eea-49a0-bdfd-b3ccfdef14c9
+# ╟─6a108dc3-c902-4701-bbc2-d36ca5bcb203
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
