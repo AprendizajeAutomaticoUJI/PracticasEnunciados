@@ -239,7 +239,7 @@ using MLJLinearModels # Nos hace falta para «envolver» el modelo LinearRegress
 LinearRegresor = @load LinearRegressor pkg = MLJLinearModels # Cargamos el modelo.
 modelo = Standardizer() |> OneHotEncoder() |> LinearRegressor()
 maquina = machine(modelo, X, y) |> fit! # Creamos la máquina y la entrenamos.
-predict_mean(maquina, Xprueba) # Hacemos predicciones.
+predict(maquina, Xprueba) # Hacemos predicciones.
 ```
 
 Fíjate en que el modelo está formado por una **tubería** de transformaciones:
