@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v1.0.3
+# v1.0.1
 
 using Markdown
 using InteractiveUtils
@@ -128,7 +128,7 @@ md"""
 
 Puedes obtener un primer análisis de estadística descriptiva con:
 
-```julia
+```.julia
 describe(df)
 ```
 
@@ -137,7 +137,7 @@ que no puedes representar todos los datos en un único gráfico. Sin embargo, s�
 que puede representar gráficas con pares de características para tener una 
 primera idea de sus dependencias, para ello es muy útil el método **pairplot** del paquete **PairPlots**:
 
-```julia
+```.julia
 using PairPlots
 
 pairplot(df) # df es un DataFrame
@@ -161,7 +161,7 @@ Este conjunto de datos ya está *limpio*, no hay datos faltantes, afortunadament
 
 Un paso importante es adaptar los tipos de datos Julia a los tipos de datos con los que trabaja los algoritmos del paquete [**MLJ**](https://juliaml.ai/). Vamos a comprobar los tipos, después de cargar los datos, los tipos Julia y ML que tenemos, para ello utilizamos la función schema(df)
 
-```julia
+```.julia
 using MLJ
 
 schema(df)
@@ -169,7 +169,7 @@ schema(df)
 
 Veras algo como
 
-```shell
+```.shell
 ┌────────────────┬────────────┬─────────┐
 │ names          │ scitypes   │ types   │
 ├────────────────┼────────────┼─────────┤
@@ -189,16 +189,16 @@ La variable *Sex* está codificada como una cadena (F=Femenino, M=Masculino, I=I
 
 Vamos a hacer un cambio de tipo y convertiremos *Sex* en una variable de tipo *Multiclass* y *Rings* la convertiremos en continua (el resultado de la regresión puede ser un número real). Para ello hacermos:
 
-```julia
+```.julia
 df_coerce = coerce(df,
 				  :Sex => Multiclass,
-				  :Rings => MLJ.Continuous,
+				  :Rings => Continuous,
 				 )
 ```
 
 Ahora podemos verificar los tipos de datos de nuevo con la función **schema**, y obtendremos:
 
-```shell
+```.shell
 ┌────────────────┬───────────────┬───────────────────────────────────┐
 │ names          │ scitypes      │ types                             │
 ├────────────────┼───────────────┼───────────────────────────────────┤
