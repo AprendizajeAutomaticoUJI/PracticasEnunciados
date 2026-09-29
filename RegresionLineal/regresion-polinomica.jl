@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v1.0.1
+# v1.0.3
 
 using Markdown
 using InteractiveUtils
@@ -40,6 +40,12 @@ Los datos los puedes descargar desde [aquí](https://raw.githubusercontent.com/A
 
 Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este 
 libro lo debes subir a aulavirtual para su evaluación.
+"""
+
+# ╔═╡ 91d43126-bd8e-4b08-8f37-ca686d52498b
+md"""
+!!! danger "Declaración de uso de la IA"
+	Si haces uso de la IA, debes indicar claramente qué fragmentos de código has creado con su ayuda, y también debe incorparar los prompts que has utilizado. Si no incluyes decaración de uso de la IA y se detecta su uso, la prácticas será calificada como **No Apta**.
 """
 
 # ╔═╡ 1540974b-4987-44bc-b638-63aab0c3062b
@@ -174,19 +180,6 @@ md"""
 El trabajo que debes entregar para su corrección es el libro de notas (fichero con extensión jl).
 
 Súbelo a aulavirtual. No es necesario que los suban todos los miembros del equipo, basta con que lo suba uno de vosotros.
-"""
-
-# ╔═╡ 88cfae16-6a8a-48ff-8d66-4d78025340cb
-md"""
-# Seguir practicando
-
-Como trabajo fuera de la entrega, pero por si te apetece seguir probando alternativas, puedes utilizar el paquete [MLJ](https://juliaml.ai/) como una envoltura sobre el paquete [GLM](https://juliastats.org/GLM.jl/stable/). En este caso tienes que crear tú las potencias de la característica en un nuevo DataFrame, y luego utilizar LinearRegressor con el nuevo DataFrame donde habrás incluído columnas con las potencias de la característica original.
-
-Un ejemplo. Si los datos originales los has cargado en un DataFrame que se llama *datos*, puedes construir un nuevo DataFrame llamado *polinomio* de este modo:
-
-```.julia
-df = DataFrame(x = datos.speed, x2 = datos.speed.^2, x3 = datos.speed.^3)
-```
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -493,25 +486,25 @@ version = "17.7.0+0"
 """
 
 # ╔═╡ Cell order:
-# ╠═bfa26380-88a3-11f0-193c-f10c4a53c567
-# ╠═aad6c742-ff75-48f7-aa06-36a1d9382618
-# ╠═e3390298-0faa-43df-aae7-ea8773cd0533
-# ╠═d2d9fe6a-7c1a-4860-84b1-0905a3b7ed9a
-# ╠═5fdf9a7d-c1ee-4a82-a9a3-05a7470ec662
+# ╟─bfa26380-88a3-11f0-193c-f10c4a53c567
+# ╟─aad6c742-ff75-48f7-aa06-36a1d9382618
+# ╟─e3390298-0faa-43df-aae7-ea8773cd0533
+# ╟─d2d9fe6a-7c1a-4860-84b1-0905a3b7ed9a
+# ╟─5fdf9a7d-c1ee-4a82-a9a3-05a7470ec662
+# ╟─91d43126-bd8e-4b08-8f37-ca686d52498b
 # ╟─1540974b-4987-44bc-b638-63aab0c3062b
-# ╠═8f411dd8-96b6-4d60-9f43-9c7ef4bdd569
+# ╟─8f411dd8-96b6-4d60-9f43-9c7ef4bdd569
 # ╟─7f390ed7-a596-47b0-96a7-318124323a9a
 # ╟─661cb223-9353-4c25-ba80-05fc4ea2524a
 # ╟─74e9b1e1-951b-4ded-9c5f-f4ca2c9af333
 # ╟─2608ec4d-0cfe-4b3f-9fb0-6180d1a142ea
-# ╠═a0151c2e-0aa5-4e0a-93d9-ff4c58f220f7
-# ╠═3a1ec0ba-db78-4130-a6f0-29c7677701c4
-# ╠═826d739c-1663-4e4e-8fa6-24a784c728fe
+# ╟─a0151c2e-0aa5-4e0a-93d9-ff4c58f220f7
+# ╟─3a1ec0ba-db78-4130-a6f0-29c7677701c4
+# ╟─826d739c-1663-4e4e-8fa6-24a784c728fe
 # ╟─e726f9e3-c606-434e-a783-923f7aab4ee0
 # ╟─046f1bfa-7b8c-42ba-8c2d-c8cbf237ad14
 # ╟─936a6fcb-a87b-4089-866d-927290a1dd38
-# ╠═21d0d337-f5a5-4cef-878b-f760757e4ed5
+# ╟─21d0d337-f5a5-4cef-878b-f760757e4ed5
 # ╟─09331abb-3273-4784-909a-94947cdc5f70
-# ╟─88cfae16-6a8a-48ff-8d66-4d78025340cb
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
