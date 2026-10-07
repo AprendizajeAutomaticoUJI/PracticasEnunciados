@@ -165,17 +165,17 @@ df_coerce = coerce(df,
 ```
 
 
-Además, a partir del conjunto original, debes crear dos conjuntos, una para entrenar el modelo y otro para hacer pruebas, como el conjunto de datos está desbalanceado, debes estratificar la partición de los datos, es decir, tomar del cojunto original la misma proporción de datos de las dos clases (en este caso tenemos sólo dos).
+Además, a partir del conjunto con coerciones, debes crear dos conjuntos, una para entrenar el modelo y otro para hacer pruebas, como el conjunto de datos está desbalanceado, debes estratificar la partición de los datos, es decir, tomar del cojunto original la misma proporción de datos de las dos clases (en este caso tenemos sólo dos).
 
 Esto lo puedes conseguir del siguiente modo:
 
 ```.julia
 using MLJ
 
-partition(df, 0.8, rng = 69, stratify = df.clase, shuffle = true)
+partition(df_coerce, 0.8, rng = 69, stratify = df_coerce.clase, shuffle = true)
 ```
 
-donde df es el nombre de tu DataFrame y df.clase es el vector que contiene información de las clases del conjunto de datos
+donde df\_coerce es el nombre de tu DataFrame y df\_coerce.clase es el vector que contiene información de las clases del conjunto de datos
 """
 
 # ╔═╡ 97aa8b88-436e-4932-8ae3-142c2545adcd
