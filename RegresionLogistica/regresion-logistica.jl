@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v1.0.1
+# v1.0.3
 
 using Markdown
 using InteractiveUtils
@@ -136,7 +136,7 @@ También puedes comprobar que el conjunto de datos está desbalaceado, hay más 
 
 # ╔═╡ d1689d4a-28d5-47e6-b21e-892793d4780c
 md"""
-## Preparar lo datos para que muestren los patrones
+## Preparar los datos para que muestren los patrones
 
 A parir de los resultados del apartado anterior, prepara los datos para resaltar los posibles patrones en ellos. En particular, elimina los datos con V6 igual a "NA", y cambia el tipo de los datos de esta columna, para ello puedes utilizar:
 
@@ -550,27 +550,27 @@ version = "17.7.0+0"
 """
 
 # ╔═╡ Cell order:
-# ╠═9e48c088-8ccb-11f0-13de-59949736e3cf
-# ╠═1d352265-df23-4c93-af53-ebdc0e937f75
-# ╠═e4948e5c-2afd-4b7c-9b38-853aa17c2356
-# ╠═78d8f43e-e2d0-43a9-b3f3-c8fcf21c4e93
-# ╠═2b49f649-dbe0-4b47-a7cf-18901e406159
-# ╠═36ef9e09-d0d6-4e7c-bbe0-9bb20eda5a20
-# ╠═b33523a2-f4e9-4e6a-a6b4-a7498658da04
-# ╠═089707e4-0a2b-4d69-a121-eedf27d20e60
-# ╠═f2595321-d4bc-4303-9d7d-afaec016e845
-# ╠═31b2c9a5-183c-43bc-955d-0845730b0bd0
-# ╠═a82a2083-b49f-4eaf-a2d7-0bcef7e4b8fe
-# ╠═181df0df-f5e5-4e8b-8cbf-4a6cb45bcab2
-# ╠═811e429b-1227-41df-a6ed-dd28710aaad4
-# ╠═f848c022-e460-40a5-ab8e-aeccb3c35437
-# ╠═d1689d4a-28d5-47e6-b21e-892793d4780c
-# ╠═aa01f04e-9d46-4802-98dd-915383da8a00
-# ╠═97aa8b88-436e-4932-8ae3-142c2545adcd
-# ╠═6a6b9d7a-c9a2-48ec-9644-acd31d3c6697
-# ╠═fce036e3-cbac-4e17-bf99-077e4532dafa
-# ╠═1d8c85dc-a009-441f-9bdc-c87b713bd208
-# ╠═b9a95e32-b469-424e-a501-9a6ad8634da2
-# ╠═cc81a964-0f7a-41aa-84d2-79e4e0dc2347
+# ╟─9e48c088-8ccb-11f0-13de-59949736e3cf
+# ╟─1d352265-df23-4c93-af53-ebdc0e937f75
+# ╟─e4948e5c-2afd-4b7c-9b38-853aa17c2356
+# ╟─78d8f43e-e2d0-43a9-b3f3-c8fcf21c4e93
+# ╟─2b49f649-dbe0-4b47-a7cf-18901e406159
+# ╟─36ef9e09-d0d6-4e7c-bbe0-9bb20eda5a20
+# ╟─b33523a2-f4e9-4e6a-a6b4-a7498658da04
+# ╟─089707e4-0a2b-4d69-a121-eedf27d20e60
+# ╟─f2595321-d4bc-4303-9d7d-afaec016e845
+# ╟─31b2c9a5-183c-43bc-955d-0845730b0bd0
+# ╟─a82a2083-b49f-4eaf-a2d7-0bcef7e4b8fe
+# ╟─181df0df-f5e5-4e8b-8cbf-4a6cb45bcab2
+# ╟─811e429b-1227-41df-a6ed-dd28710aaad4
+# ╟─f848c022-e460-40a5-ab8e-aeccb3c35437
+# ╟─d1689d4a-28d5-47e6-b21e-892793d4780c
+# ╟─aa01f04e-9d46-4802-98dd-915383da8a00
+# ╟─97aa8b88-436e-4932-8ae3-142c2545adcd
+# ╟─6a6b9d7a-c9a2-48ec-9644-acd31d3c6697
+# ╟─fce036e3-cbac-4e17-bf99-077e4532dafa
+# ╟─1d8c85dc-a009-441f-9bdc-c87b713bd208
+# ╟─b9a95e32-b469-424e-a501-9a6ad8634da2
+# ╟─cc81a964-0f7a-41aa-84d2-79e4e0dc2347
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
