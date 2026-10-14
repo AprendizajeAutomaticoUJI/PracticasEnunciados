@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.20.21
+# v1.0.3
 
 using Markdown
 using InteractiveUtils
@@ -136,9 +136,9 @@ datos[!, :V6] = parse.(Int64, datos[!, :V6])
 ```
 """
 
-# ╔═╡ db1a39bd-ef71-4641-b3c0-20418f0e9e18
+# ╔═╡ b1229752-346b-4556-96be-687f4955addc
 md"""
-Por otro lado, el modelo [SVC](https://juliaai.github.io/MLJ.jl/dev/models/SVC_LIBSVM/) del paquete [MLJ](https://juliaml.ai/), indica que en los datos de entrenamiento espera que *X* sea un DataFrame con columnas de valores Continuous, y que *y* sea un vector de OrderedFactor.
+La implementación de [SVC](https://juliaai.github.io/MLJ.jl/dev/models/SVC_LIBSVM/) del paquete [MLJ](https://juliaml.ai/), indica que en los datos de entrenamiento espera que *X* sea un DataFrame con columnas de valores Continuous, y que *y* sea un vector de o tipo *OrderedFactor* o *Multiclass*. En nuestro caso, como no hay una relación de orden entre **benigno** y **maligno** debemos elegir *Multiclass*.
 
 Puedes consultar los tipos de tu data frame y la conversión que entre tipos de Julia y tipos de MLJ (scitype) se va a aplicacar con la función:
 
@@ -149,10 +149,24 @@ schema(df)
 Para cambiar los tipos del DataFrame a los tipos que MLJ espera, utiliza:
 
 ```.julia
-convert(df, :Simbolo1 => scitype, :Simbolo2 => scitype,...)
-
-convert(df, :V1 => Continuous, ..., :clase => OrderedFactor)
+df_coerce = coerce(df,
+				  :Vx => Continuous.
+				  :clase => Multiclass,
+				 )
 ```
+
+
+Además, a partir del conjunto con coerciones, debes crear dos conjuntos, una para entrenar el modelo y otro para hacer pruebas, como el conjunto de datos está desbalanceado, debes estratificar la partición de los datos, es decir, tomar del cojunto original la misma proporción de datos de las dos clases (en este caso tenemos sólo dos).
+
+Esto lo puedes conseguir del siguiente modo:
+
+```.julia
+using MLJ
+
+partition(df_coerce, 0.8, rng = 69, stratify = df_coerce.clase, shuffle = true)
+```
+
+donde df\_coerce es el nombre de tu DataFrame y df\_coerce.clase es el vector que contiene información de las clases del conjunto de datos
 """
 
 # ╔═╡ a4173c51-e053-44ef-8e9f-fea645a02537
@@ -198,9 +212,16 @@ Presenta las principales conclusiones y respalda cada conclusión con los análi
 Compara los resultados que has obtenido usando una máquina de soporte vectorial con los que obtuviste al utilizar un regresor logístico.
 """
 
+# ╔═╡ 5ceec325-3b3b-44aa-8b85-0cd0fbd5e0a5
+md"""
+## Comparar los resultados con clasificación logística
+
+Compara los resultados que has obtenido con los resultados que obtuviste con el clasificador de regresión logística.
+"""
+
 # ╔═╡ 3b8842f4-7a93-422d-b194-0598b9fc23b2
 md"""
-## Critica del trabajo y posibles mejoras
+## Criticar el trabajo y proponer posibles mejoras
 
 A la luz de todos los resultados que has obtenido, ¿cómo podrías seguir mejorando tu modelo?
 """
@@ -226,7 +247,7 @@ PlutoUI = "~0.7.68"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.12.1"
+julia_version = "1.12.7"
 manifest_format = "2.0"
 project_hash = "701fb2bf464f8aa820d1ec11f0c1b4d98e4b75fe"
 
@@ -261,7 +282,7 @@ weakdeps = ["StyledStrings"]
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.3.0+1"
+version = "1.3.1+2"
 
 [[deps.Dates]]
 deps = ["Printf"]
@@ -271,7 +292,7 @@ version = "1.11.0"
 [[deps.Downloads]]
 deps = ["ArgTools", "FileWatching", "LibCURL", "NetworkOptions"]
 uuid = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
-version = "1.6.0"
+version = "1.7.0"
 
 [[deps.FileWatching]]
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
@@ -325,7 +346,7 @@ version = "0.6.4"
 [[deps.LibCURL_jll]]
 deps = ["Artifacts", "LibSSH2_jll", "Libdl", "OpenSSL_jll", "Zlib_jll", "nghttp2_jll"]
 uuid = "deac9b47-8bc7-5906-a0fe-35ac56dc84c0"
-version = "8.11.1+1"
+version = "8.15.0+0"
 
 [[deps.LibGit2]]
 deps = ["LibGit2_jll", "NetworkOptions", "Printf", "SHA"]
@@ -371,7 +392,7 @@ version = "1.11.0"
 
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
-version = "2025.5.20"
+version = "2025.11.4"
 
 [[deps.NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
@@ -385,7 +406,7 @@ version = "0.3.29+0"
 [[deps.OpenSSL_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "458c3c95-2e84-50aa-8efc-19380b2a3a95"
-version = "3.5.1+0"
+version = "3.5.6+0"
 
 [[deps.Parsers]]
 deps = ["Dates", "PrecompileTools", "UUIDs"]
@@ -396,7 +417,7 @@ version = "2.8.3"
 [[deps.Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "Random", "SHA", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-version = "1.12.0"
+version = "1.12.1"
 
     [deps.Pkg.extensions]
     REPLExt = "REPL"
@@ -511,9 +532,9 @@ uuid = "8e850ede-7688-5339-a07c-302acd2aaf8d"
 version = "1.64.0+1"
 
 [[deps.p7zip_jll]]
-deps = ["Artifacts", "Libdl"]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
-version = "17.5.0+2"
+version = "17.7.0+0"
 """
 
 # ╔═╡ Cell order:
@@ -531,10 +552,11 @@ version = "17.5.0+2"
 # ╟─64f50ce6-eac2-4dce-9a7f-39788d4d6136
 # ╟─dafd89a8-6f6b-45a3-a29a-d3b8e46effce
 # ╟─890ebb4b-623f-4c5e-81d5-3b17193be7ae
-# ╟─db1a39bd-ef71-4641-b3c0-20418f0e9e18
+# ╟─b1229752-346b-4556-96be-687f4955addc
 # ╟─a4173c51-e053-44ef-8e9f-fea645a02537
 # ╟─88b1dcf1-b690-45f2-b688-521f3649894b
 # ╟─accf2243-6489-4497-97c6-0e0318d48a73
+# ╟─5ceec325-3b3b-44aa-8b85-0cd0fbd5e0a5
 # ╟─3b8842f4-7a93-422d-b194-0598b9fc23b2
 # ╟─070b98cb-885b-41d1-89bf-88d79543198a
 # ╟─00000000-0000-0000-0000-000000000001
