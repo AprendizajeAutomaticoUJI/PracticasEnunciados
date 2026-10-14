@@ -176,14 +176,8 @@ md"""
 Con la información que has conseguido del análisis realizado, utiliza un kernel lineal para crea un primera versión de una Máquina de Soporte Vectorial y estima cuál es su precisión (accuracy), entropía cruzada (log_loss), y muestra la matriz de confusión:
 
 ```.julia
-predicciones = predict_mode(maquina, Xprueba)
-confusion_matrix(predicciones, yprueba)
-
-## También puedes hacer, el método predict devuelve más información
 predicciones = predict(maquina, Xprueba)
-confusion_matrix(mode.(prediccion), yprueba)
-roc_curve(predicciones, yprueba)
-auc(predicciones, yprueba)
+confusion_matrix(predicciones, yprueba)
 ```
 
 Al contrario que el algoritmo de regresión logística, el algoritmo SVC(SVM) no asigna una probabilidad a cada una de las estimaciones, por lo que no es posible, directamente, calcular la curva roc.
