@@ -173,7 +173,7 @@ donde df\_coerce es el nombre de tu DataFrame y df\_coerce.clase es el vector qu
 md"""
 ## Crear una primera versión del modelo
 
-Con la información que has conseguido del análisis realizado, utiliza un kernel lineal para crea un primera versión de una Máquina de Soporte Vectorial y estima cuál es su precisión (accuracy), entropía cruzada (log_loss), y muestra la matriz de confusión:
+Con la información que has conseguido del análisis realizado, utiliza un kernel lineal para crea un primera versión de una Máquina de Soporte Vectorial y estima cuál es su precisión (accuracy), y muestra la matriz de confusión:
 
 ```.julia
 predicciones = predict(maquina, Xprueba)
