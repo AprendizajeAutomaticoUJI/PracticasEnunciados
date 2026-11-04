@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v1.0.4
+# v1.1.0
 
 using Markdown
 using InteractiveUtils
@@ -38,6 +38,16 @@ Vas autilizar el mismo conjunto de datos que en las prácticas de regresión log
 Los datos los puedes descargar desde el [github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/biopsy.csv) de la asignatura.
 
 Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este libro lo debes subir a aulavirtual para su evaluación.
+
+!!! important "Recordatorio"
+
+	Recordad escribir al principio de libro vuestros nombres.
+"""
+
+# ╔═╡ a9627678-486b-4ba6-83c4-a72fd10a5fe0
+md"""
+!!! danger "Declaración de uso de la IA"
+	Si haces uso de la IA, debes indicar claramente qué fragmentos de código has creado con su ayuda, y también debe incorparar los prompts que has utilizado. Si no incluyes decaración de uso de la IA y se detecta su uso, la prácticas será calificada como **No Apta**.
 """
 
 # ╔═╡ 60f1614b-9995-4604-abeb-390a473df3d7
@@ -175,7 +185,7 @@ modelo = Chain(
 )
 ```
 
-La función de pérdidas que debes utilizar en el caso de clasificación es *log cross entropy**:
+La función de pérdidas que debes utilizar en el caso de clasificación es **log cross entropy**:
 
 ```julia
 perdidas(modelo, X, y) = Flux.Losses.logitbinarycrossentropy(modelo(X), y)
@@ -206,7 +216,7 @@ md"""
 
 Una vez que hayas comprobado que puedes entrenar el modelo y evaluar su rendimiento mostrando los resultados como una matriz de confusión, intenta mejorar el rendimiento de la red, para ello:
 
-1. Añade más capas a la red.
+1. Añade más capas a la red. Recuerda que, además de capas densas también tienes disponibles capas de normalizacion **BatchNorm** y capas de *dropout* **Dropout**.
 1. Varía el número de neuronas en las capas.
 1. Varía la función de activación.
 1. Varía el optimizador.
@@ -218,6 +228,8 @@ md"""
 ## Presentar la solución
 
 Haz un pequeño estudio comentando las conclusiones a las que has llegado con todos los experimentos que has hecho.
+
+Compara los resultados con los que obtuvisteis con lo modelos **Regresión Logística** y **Máquinas de Soporte Vectorial**.
 """
 
 # ╔═╡ 910422e6-7e79-4264-ade8-cdafc5accef3
@@ -583,6 +595,7 @@ uuid = "23338594-aafe-5451-b93e-139f81909106"
 # ╟─760e80d0-e51a-4e76-83c5-da136380ab32
 # ╟─80e917d5-fdb5-4e0f-aa76-e5240d258818
 # ╟─45282827-4532-4a29-9048-c28c9a806e03
+# ╟─a9627678-486b-4ba6-83c4-a72fd10a5fe0
 # ╟─60f1614b-9995-4604-abeb-390a473df3d7
 # ╟─f61ff3a9-3666-4ab9-8c1d-55606a6e72bd
 # ╟─509cf98c-9507-4a86-b924-3f6d75825349
