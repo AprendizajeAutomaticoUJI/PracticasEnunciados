@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v1.0.1
+# v1.0.3
 
 using Markdown
 using InteractiveUtils
@@ -38,6 +38,12 @@ El modelo deberá predecir si un tumor es benigno o maligno a partir de ciertas 
 Los datos los puedes descargar desde el [github](https://raw.githubusercontent.com/AprendizajeAutomaticoUJI/DataSets/master/biopsy.csv) de la asignatura.
 
 Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este libro lo debes subir a aulavirtual para su evaluación.
+"""
+
+# ╔═╡ 36ef9e09-d0d6-4e7c-bbe0-9bb20eda5a20
+md"""
+!!! danger "Declaración de uso de la IA"
+	Si haces uso de la IA, debes indicar claramente qué fragmentos de código has creado con su ayuda, y también debe incorparar los prompts que has utilizado. Si no incluyes decaración de uso de la IA y se detecta su uso, la prácticas será calificada como **No Apta**.
 """
 
 # ╔═╡ b33523a2-f4e9-4e6a-a6b4-a7498658da04
@@ -130,7 +136,7 @@ También puedes comprobar que el conjunto de datos está desbalaceado, hay más 
 
 # ╔═╡ d1689d4a-28d5-47e6-b21e-892793d4780c
 md"""
-## Preparar lo datos para que muestren los patrones
+## Preparar los datos para que muestren los patrones
 
 A parir de los resultados del apartado anterior, prepara los datos para resaltar los posibles patrones en ellos. En particular, elimina los datos con V6 igual a "NA", y cambia el tipo de los datos de esta columna, para ello puedes utilizar:
 
@@ -159,24 +165,24 @@ df_coerce = coerce(df,
 ```
 
 
-Además, a partir del conjunto original, debes crear dos conjuntos, una para entrenar el modelo y otro para hacer pruebas, como el conjunto de datos está desbalanceado, debes estratificar la partición de los datos, es decir, tomar del cojunto original la misma proporción de datos de las dos clases (en este caso tenemos sólo dos).
+Además, a partir del conjunto con coerciones, debes crear dos conjuntos, una para entrenar el modelo y otro para hacer pruebas, como el conjunto de datos está desbalanceado, debes estratificar la partición de los datos, es decir, tomar del cojunto original la misma proporción de datos de las dos clases (en este caso tenemos sólo dos).
 
 Esto lo puedes conseguir del siguiente modo:
 
 ```.julia
 using MLJ
 
-partition(df, 0.8, rng = 69, stratify = df.clase, shuffle = true)
+partition(df_coerce, 0.8, rng = 69, stratify = df_coerce.clase, shuffle = true)
 ```
 
-donde df es el nombre de tu DataFrame y df.clase es el vector que contiene información de las clases del conjunto de datos
+donde df\_coerce es el nombre de tu DataFrame y df\_coerce.clase es el vector que contiene información de las clases del conjunto de datos
 """
 
 # ╔═╡ 97aa8b88-436e-4932-8ae3-142c2545adcd
 md"""
 ## Crear una primera versión del modelo
 
-Con la información que has conseguido del análisis realizado, crea un primera versión de un regresor logístico y estima cuál es su precisión (accuracy), y muestra la matriz de confusión. Ten en cuenta que con la regresión logística da un valor de probabilidad de pertenencia a cada una de las clases, puedes obtener el valor de probabilidad de la clase con mayor probabilidad con **predict_mode(maquina, X)**, como en el siguiente ejemplo:
+Con la información que has conseguido del análisis realizado, crea un primera versión de un regresor logístico donde la variable predictora sea sólamente **V1**, y estima cuál es su precisión (accuracy), y muestra la matriz de confusión. Ten en cuenta que con la regresión logística da un valor de probabilidad de pertenencia a cada una de las clases, puedes obtener el valor de probabilidad de la clase con mayor probabilidad con **predict_mode(maquina, X)**, como en el siguiente ejemplo:
 
 ```.julia
 predicciones = predict_mode(maquina, Xprueba)
@@ -211,11 +217,9 @@ donde **nfolds** es el número de experimentos que vas a realizar
 md"""
 ## Ajustar el modelo para obtener una solución
 
-Con la información que has conseguido del análisis realizado, crea una primera versión de un regresor logístico que utilice una única característica. ¿Qué característica vas a utilizar? ¿Por qué has elegido esa característica?
+Ahora que ya tienes una primera versión del modelo funcionando, añade nuevas características **Vx** al modelo. ¿Cuál es la primera que eliges ahora que tu modelo ya tiene **V1**? ¿Por qué eliges esa nueva característica? ¿Cuánto se ha incrementado la precisión de tu modelo? Razona el posible cambio.
 
-Amplia el número de características a dos. ¿Cuál es la segunda característica que has seleccionado? ¿Por qué la has seleccionado? ¿Han mejorado los resultados? ¿Cuanto han mejorado?
-
-Finalmente, añade todas las características. ¿Cómo mejoran los resultados al ir añadiendo nuevas características?
+Sigue añadiendo características, una tras otra, hasta que tu modelo final las incluya todas.
 
 Haz una análisis detallado de todas las conclusiones que has extraído.
 """
@@ -551,6 +555,7 @@ version = "17.7.0+0"
 # ╟─e4948e5c-2afd-4b7c-9b38-853aa17c2356
 # ╟─78d8f43e-e2d0-43a9-b3f3-c8fcf21c4e93
 # ╟─2b49f649-dbe0-4b47-a7cf-18901e406159
+# ╟─36ef9e09-d0d6-4e7c-bbe0-9bb20eda5a20
 # ╟─b33523a2-f4e9-4e6a-a6b4-a7498658da04
 # ╟─089707e4-0a2b-4d69-a121-eedf27d20e60
 # ╟─f2595321-d4bc-4303-9d7d-afaec016e845
@@ -560,7 +565,7 @@ version = "17.7.0+0"
 # ╟─811e429b-1227-41df-a6ed-dd28710aaad4
 # ╟─f848c022-e460-40a5-ab8e-aeccb3c35437
 # ╟─d1689d4a-28d5-47e6-b21e-892793d4780c
-# ╟─aa01f04e-9d46-4802-98dd-915383da8a00
+# ╠═aa01f04e-9d46-4802-98dd-915383da8a00
 # ╟─97aa8b88-436e-4932-8ae3-142c2545adcd
 # ╟─6a6b9d7a-c9a2-48ec-9644-acd31d3c6697
 # ╟─fce036e3-cbac-4e17-bf99-077e4532dafa

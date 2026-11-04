@@ -46,7 +46,7 @@ Vas a crear un libro de notas de Pluto para desarrollar la práctica. Este libro
 # ╔═╡ 873e6f88-89fe-4623-8259-74fa0c4e3e10
 md"""
 !!! danger "Declaración de uso de la IA"
-	Si hace uso de la IA, debes indicar claramente qué fragmentos de código has creado con su ayuda, y también debe incorparar los prompts que has utilizado. Si no incluyes decaración de uso de la IA y se detecta su uso, la prácticas será calificada como **No Apta**.
+	Si haces uso de la IA, debes indicar claramente qué fragmentos de código has creado con su ayuda, y también debe incorparar los prompts que has utilizado. Si no incluyes decaración de uso de la IA y se detecta su uso, la prácticas será calificada como **No Apta**.
 """
 
 # ╔═╡ 3393a7cd-f802-4363-bfae-f53536dd8c7a
@@ -611,7 +611,7 @@ version = "17.7.0+0"
 # ╟─78c37d96-3c62-4159-97f0-48f81b5b6019
 # ╟─67e10dea-e182-49b5-ab5d-77c849d26872
 # ╟─be6e3754-b43f-42d5-9015-6bdb9bdfcb81
-# ╟─873e6f88-89fe-4623-8259-74fa0c4e3e10
+# ╠═873e6f88-89fe-4623-8259-74fa0c4e3e10
 # ╟─3393a7cd-f802-4363-bfae-f53536dd8c7a
 # ╟─b1b6fdc6-eb9c-4d6d-a77e-c689fbe9c2b0
 # ╟─fa751513-2fc7-49aa-a581-4dc2071041ad
